@@ -1,0 +1,93 @@
+package xklaim.deliveryRobot
+
+import com.fasterxml.jackson.databind.JsonNode
+import com.fasterxml.jackson.databind.ObjectMapper
+import klava.Locality
+import messages.ContactsState
+import messages.PoseStamped
+import messages.PoseWithCovarianceStamped
+import messages.Twist
+import messages.XklaimToRosConnection
+import ros.Publisher
+import ros.SubscriptionRequestMsg
+
+proc DeliverItem(String rosbridgeWebsocketURI,String robotId,Locality Arm) {
+	val local = self
+
+	// wait for the arrival at the arm robot
+	in("readyToReceiveTheItem")@self
+
+	// wait for the notification that the gripper is opened 
+	in("gripperOpened",var String itemId,var String itemType)@Arm
+	val itemid = itemId
+
+	// retrieve from the local knowledge the destination coordinates
+	read("type2destination",itemType,var Double x,var Double y)@self
+	val deliveryDestination = new PoseStamped().headerFrameId("world").posePositionXY(x, y).poseOrientation(1.0)
+
+	// connect to the ROS bridge
+	val bridge = new XklaimToRosConnection(rosbridgeWebsocketURI)
+
+	// initialize a publisher for the topic related to the control of the robot's wheels
+	val pub = new Publisher("/" + robotId + "/move_base_simple/goal", "geometry_msgs/PoseStamped", bridge)
+
+	// subscribe to the pressure sensor for detecting the presence of the item in the bowl
+	bridge.subscribe(
+		SubscriptionRequestMsg.generate("/" + robotId + "/pressure_sensor_state").setType("gazebo_msgs/ContactsState").
+			setThrottleRate(1).setQueueLength(1),
+		[ data, stringRep |
+			var mapper = new ObjectMapper()
+			var JsonNode rosMsgNode = data.get("msg")
+			var ContactsState state = mapper.treeToValue(rosMsgNode, ContactsState)
+
+			if (!state.states.isEmpty && state.states.get(0).total_wrench.force.z != 0.0) {
+				// publish destination for the delivery
+				pub.publish(deliveryDestination)
+
+				// unsubscribe from the pressure sensor topic
+				bridge.unsubscribe("/" + robotId + "/pressure_sensor_state")
+			}
+		]
+	)
+
+	// subscribe to see the current position of the robot and check if it is arrived at destination
+	bridge.subscribe(
+		SubscriptionRequestMsg.generate("/" + robotId + "/amcl_pose").setType(
+			"geometry_msgs/PoseWithCovarianceStamped").setThrottleRate(1).setQueueLength(1),
+		[ data, stringRep |
+			// extract the actual position from the delivery robot's status	
+			var mapper = new ObjectMapper();
+			var JsonNode rosMsgNode = data.get("msg");
+			var PoseWithCovarianceStamped current_position = mapper.treeToValue(rosMsgNode, PoseWithCovarianceStamped);
+
+			// calculate the delta between the actual position and the destination position
+			// to measure the completeness of the movement
+			val tolerance = 0.16
+			var deltaX = Math.abs(current_position.pose.pose.position.x - deliveryDestination.pose.position.x)
+			var deltaY = Math.abs(current_position.pose.pose.position.y - deliveryDestination.pose.position.y)
+
+			if (deltaX <= tolerance && deltaY <= tolerance) { /* the robot arrived at destination */
+				// stop the robot's wheels
+				val pubvel = new Publisher("/" + robotId + "/cmd_vel", "geometry_msgs/Twist", bridge);
+				val twistMsg = new Twist();
+				pubvel.publish(twistMsg);
+
+				var String coordinates = "("+deliveryDestination.pose.position.x+","+deliveryDestination.pose.position.y+")" 
+								
+				// notify that the item with identifier id has been delivered at the destination with coordinates (x,y) 
+				out("itemDelivered",itemid,coordinates)@local
+				
+				// set the robot as available for a new delivery
+				out("availableForDelivery")@local
+
+				// unsubscribe from the position topic
+				bridge.unsubscribe("/" + robotId + "/amcl_pose")
+			}
+		]
+	)
+
+} 
+
+
+
+

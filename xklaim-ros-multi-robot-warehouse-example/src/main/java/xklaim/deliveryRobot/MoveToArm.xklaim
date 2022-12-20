@@ -1,0 +1,65 @@
+package xklaim.deliveryRobot
+
+import com.fasterxml.jackson.databind.JsonNode
+import com.fasterxml.jackson.databind.ObjectMapper
+import klava.Locality
+import messages.PoseStamped
+import messages.PoseWithCovarianceStamped
+import messages.XklaimToRosConnection
+import ros.Publisher
+import ros.SubscriptionRequestMsg
+import ros.msgs.geometry_msgs.Twist
+
+proc MoveToArm(String rosbridgeWebsocketURI,String robotId,String sector,Locality Arm) {
+	val local = self
+	
+	// Coordinates of the arm robot (notably, the arm robot has a fixed position)  
+	val x = -0.21
+	val y = 0.31
+
+	// wait for a call by the arm robot
+	in("itemReadyForTheDelivery",sector)@Arm
+
+	// connect to the ROS bridge
+	val bridge = new XklaimToRosConnection(rosbridgeWebsocketURI)
+	
+	// initialize a publisher for the topic related to the control of the robot's wheels
+	val pub = new Publisher("/" + robotId + "/move_base_simple/goal", "geometry_msgs/PoseStamped", bridge)
+
+	// publish the destination position
+	val destination = new PoseStamped().headerFrameId("world").posePositionXY(x, y).poseOrientation(1.0)
+	pub.publish(destination)
+
+	// waiting until the destination position is reached
+	bridge.subscribe(
+		SubscriptionRequestMsg.generate("/" + robotId + "/amcl_pose").setType(
+			"geometry_msgs/PoseWithCovarianceStamped").setThrottleRate(1).setQueueLength(1),
+		[ data, stringRep |
+			// extract the actual position from the delivery robot's status	
+			var mapper = new ObjectMapper()
+			var JsonNode rosMsgNode = data.get("msg")
+			var PoseWithCovarianceStamped current_position = mapper.treeToValue(rosMsgNode, PoseWithCovarianceStamped)
+
+			// calculate the delta between the actual position and the destination position
+			// to measure the completeness of the movement
+			val tolerance = 0.16
+			var deltaX = Math.abs(current_position.pose.pose.position.x - destination.pose.position.x)
+			var deltaY = Math.abs(current_position.pose.pose.position.y - destination.pose.position.y)
+			if (deltaX <= tolerance && deltaY <= tolerance) { /* the delivery robot came to the arm robot */
+				// stop the wheels
+				val pubvel = new Publisher("/" + robotId + "/cmd_vel", "geometry_msgs/Twist", bridge)
+				val twistMsg = new Twist()
+				pubvel.publish(twistMsg)
+
+				// notify the arm robot that is ready to receive the item
+				out("ready")@Arm
+				
+				// activate the DeliveryItem process
+				out("readyToReceiveTheItem")@local
+
+				// unsubscribe from the robot state topic
+				bridge.unsubscribe("/" + robotId + "/amcl_pose")
+			}
+		]
+	)
+}

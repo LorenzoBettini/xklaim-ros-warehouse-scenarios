@@ -1,0 +1,52 @@
+package xklaim
+
+import klava.Locality
+import messages.ModelState
+import messages.XklaimToRosConnection
+import ros.Publisher
+
+proc PickUp(String rosbridgeWebsocketURI,Locality DeliveryRobot,double x, double y) {
+	var String coordinates = "("+x+","+y+")"
+	var poseX = x
+	var poseY = y
+
+	if (x > 0) {
+		poseX += 0.3
+	} else {
+		poseX -= 0.3
+	}
+	if (y < 0) {
+		poseY += 0.5
+	} else {
+		poseY -= 0.5
+	}
+	
+	while (true) {
+		in("itemDelivered",var String itemId,coordinates)@DeliveryRobot
+				
+		// wait for a short delay before picking up the item
+		Thread.sleep(2000)
+
+		// connect to the ROS bridge
+		val bridge = new XklaimToRosConnection(rosbridgeWebsocketURI)
+
+		// pick up the item and pose it in the destination area
+		val Pose_item = new Publisher("/gazebo/set_model_state", "gazebo_msgs/ModelState", bridge)
+		val modelstate = new ModelState()
+
+		modelstate.pose.position.x = poseX
+		modelstate.pose.position.y = poseY
+
+		modelstate.model_name = itemId
+		modelstate.reference_frame = "world"
+		Pose_item.publish(modelstate)
+
+		println("############ Item " + itemId + " posed at (" + poseX + "," + poseY + ")")
+
+		if (y < 0) {
+			poseY += 0.3
+		} else {
+			poseY -= 0.3
+		}
+	}
+}

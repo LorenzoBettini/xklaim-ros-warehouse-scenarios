@@ -1,0 +1,104 @@
+package xklaim
+
+import xklaim.arm.GetDown
+import xklaim.arm.GetUp
+import xklaim.arm.GoToInitialPosition
+import xklaim.arm.Grip
+import xklaim.arm.Lay
+import xklaim.arm.Release
+import xklaim.arm.Rotate
+import xklaim.deliveryRobot.DeliverItem
+import xklaim.deliveryRobot.MoveToArm
+
+net MRS physical "localhost:9999" {
+	node Arm {
+		val rosbridgeWebsocketURI = "ws://0.0.0.0:9090"
+		while (true) {
+			in("initialPosition")@self
+
+			in("item",var String itemId,var String sector, var String itemType,var Double x,var Double y)@self
+
+			eval(new GetDown(rosbridgeWebsocketURI,x,y))@self
+
+			eval(new Grip(rosbridgeWebsocketURI))@self
+
+			eval(new GetUp(rosbridgeWebsocketURI,x,y))@self
+
+			eval(new Rotate(rosbridgeWebsocketURI,sector))@self
+
+			eval(new Lay(rosbridgeWebsocketURI))@self
+
+			eval(new Release(rosbridgeWebsocketURI,itemId,itemType))@self
+
+			eval(new GoToInitialPosition(rosbridgeWebsocketURI))@self
+
+		}
+
+	}
+
+	node DeliveryRobot1 {
+		val rosbridgeWebsocketURI = "ws://0.0.0.0:9090"
+		val robotId = "robot1"
+		val sector ="sector1"
+
+		while (true) {
+			in("availableForDelivery")@self
+
+			eval(new MoveToArm(rosbridgeWebsocketURI,robotId,sector,Arm))@self
+
+			eval(new DeliverItem(rosbridgeWebsocketURI,robotId,Arm))@self
+		}
+	}
+
+	node DeliveryRobot2 {
+		val rosbridgeWebsocketURI = "ws://0.0.0.0:9090"
+		val robotId = "robot2"
+		val sector ="sector2"
+
+		while (true) {
+			in("availableForDelivery")@self
+
+			eval(new MoveToArm(rosbridgeWebsocketURI,robotId,sector,Arm))@self
+
+			eval(new DeliverItem(rosbridgeWebsocketURI,robotId,Arm))@self
+		}
+	}
+
+	node SimuationHandler {
+		val rosbridgeWebsocketURI = "ws://0.0.0.0:9090"
+
+		// --- initial setup of the scenario ---
+		// insert info about items (id, warehouse destination sector, type and coordinates)  
+		// in the arm robot's local knowledge (i.e., its tuple space) 			
+		out("item","item1","sector1","red",0.583518, 0.0)@Arm
+		out("item","item2","sector2","blue",0.554542, 0.187360)@Arm
+		out("item","item3","sector2","red",0.504, 0.307)@Arm 
+		out("item","item4","sector1","blue",0.332977,0.470854)@Arm
+
+		// insert mapping between item types and destinations in the delivery robots' local knowledge: 
+		// DeliveryRobot1 is in charge of delivering to the sector1 (left-hand side) 
+		out("type2destination","red",-9.0,-9.0)@DeliveryRobot1	
+		out("type2destination","blue",9.0,-9.0)@DeliveryRobot1
+		// DeliveryRobot2 is in charge of delivering to the sector2 (right-hand side)	
+		out("type2destination","red",9.0,9.0)@DeliveryRobot2
+		out("type2destination","blue",-9.0,9.0)@DeliveryRobot2
+		
+		
+		// activate the arm robot by inserting the information that it is in the initial position
+		out("initialPosition")@Arm
+
+		// activate the DeliveryRobot1 by inserting the information that it is available for a delivery
+		out("availableForDelivery")@DeliveryRobot1
+
+		// activate the DeliveryRobot2 by inserting the information that it is available for a delivery
+		out("availableForDelivery")@DeliveryRobot2
+
+		// activate the processes in charge of picking up and posing the delivered items 
+		// (there is one process for each pickup area)
+		eval(new PickUp(rosbridgeWebsocketURI,DeliveryRobot1,-9.0,-9.0))@self
+		eval(new PickUp(rosbridgeWebsocketURI,DeliveryRobot1,9.0,-9.0))@self
+		eval(new PickUp(rosbridgeWebsocketURI,DeliveryRobot2,-9.0,9.0))@self
+		eval(new PickUp(rosbridgeWebsocketURI,DeliveryRobot2,9.0,9.0))@self		
+	}
+}
+
