@@ -8,9 +8,6 @@ import ros.SubscriptionRequestMsg
 proc GetUp(String rosbridgeWebsocketURI, Double x, Double y) {
 	val local = self
 
-	// wait for the completion of the grip
-	in("gripCompleted")@self
-
 	// connect to the ROS bridge
 	val bridge = new XklaimToRosConnection(rosbridgeWebsocketURI)
 

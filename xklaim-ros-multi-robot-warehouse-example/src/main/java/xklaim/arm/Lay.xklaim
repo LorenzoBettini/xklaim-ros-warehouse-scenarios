@@ -8,12 +8,6 @@ import ros.SubscriptionRequestMsg
 proc Lay(String rosbridgeWebsocketURI) {
 	val local = self
 
-	// wait for the completion of the rotation 
-	in("rotationCompleted")@self
-
-	// wait for the arrival of the delivery robot
-	in("ready")@self
-
 	// connect to the ROS bridge
 	val bridge = new XklaimToRosConnection(rosbridgeWebsocketURI)
 

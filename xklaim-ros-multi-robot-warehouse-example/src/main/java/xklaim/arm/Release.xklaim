@@ -8,9 +8,6 @@ import ros.SubscriptionRequestMsg
 proc Release(String rosbridgeWebsocketURI,String itemId,String itemType) {
 	val local = self
 
-	// wait for the completion of the lay movement
-	in("layCompleted")@self
-
 	// connect to the ROS bridge
 	val bridge = new XklaimToRosConnection(rosbridgeWebsocketURI)
 

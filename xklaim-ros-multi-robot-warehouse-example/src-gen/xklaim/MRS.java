@@ -49,16 +49,23 @@ public class MRS extends LogicalNet {
             y = (Double) _Tuple.getItem(5);
             GetDown _getDown = new GetDown(rosbridgeWebsocketURI, x, y);
             eval(_getDown, this.self);
+            in(new Tuple(new Object[] {"getDownMovementsCompleted"}), this.self);
             Grip _grip = new Grip(rosbridgeWebsocketURI);
             eval(_grip, this.self);
+            in(new Tuple(new Object[] {"gripCompleted"}), this.self);
             GetUp _getUp = new GetUp(rosbridgeWebsocketURI, x, y);
             eval(_getUp, this.self);
+            in(new Tuple(new Object[] {"getUpCompleted"}), this.self);
             Rotate _rotate = new Rotate(rosbridgeWebsocketURI, sector);
             eval(_rotate, this.self);
+            in(new Tuple(new Object[] {"rotationCompleted"}), this.self);
+            in(new Tuple(new Object[] {"ready"}), this.self);
             Lay _lay = new Lay(rosbridgeWebsocketURI);
             eval(_lay, this.self);
+            in(new Tuple(new Object[] {"layCompleted"}), this.self);
             Release _release = new Release(rosbridgeWebsocketURI, itemId, itemType);
             eval(_release, this.self);
+            in(new Tuple(new Object[] {"releaseCompleted"}), this.self);
             GoToInitialPosition _goToInitialPosition = new GoToInitialPosition(rosbridgeWebsocketURI);
             eval(_goToInitialPosition, this.self);
           }

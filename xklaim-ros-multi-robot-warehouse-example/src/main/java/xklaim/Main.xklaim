@@ -15,21 +15,27 @@ net MRS physical "localhost:9999" {
 		val rosbridgeWebsocketURI = "ws://0.0.0.0:9090"
 		while (true) {
 			in("initialPosition")@self
-
 			in("item",var String itemId,var String sector, var String itemType,var Double x,var Double y)@self
-
 			eval(new GetDown(rosbridgeWebsocketURI,x,y))@self
 
+			in("getDownMovementsCompleted")@self
 			eval(new Grip(rosbridgeWebsocketURI))@self
 
+			in("gripCompleted")@self
 			eval(new GetUp(rosbridgeWebsocketURI,x,y))@self
 
+			in("getUpCompleted")@self
 			eval(new Rotate(rosbridgeWebsocketURI,sector))@self
 
+			in("rotationCompleted")@self
+			// wait for the arrival of the delivery robot
+			in("ready")@self
 			eval(new Lay(rosbridgeWebsocketURI))@self
 
+			in("layCompleted")@self
 			eval(new Release(rosbridgeWebsocketURI,itemId,itemType))@self
 
+			in("releaseCompleted")@self
 			eval(new GoToInitialPosition(rosbridgeWebsocketURI))@self
 
 		}

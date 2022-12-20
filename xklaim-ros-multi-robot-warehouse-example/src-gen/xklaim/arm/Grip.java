@@ -25,7 +25,6 @@ public class Grip extends KlavaProcess {
   @Override
   public void executeProcess() {
     final Locality local = this.self;
-    in(new Tuple(new Object[] {"getDownMovementsCompleted"}), this.self);
     final XklaimToRosConnection bridge = new XklaimToRosConnection(this.rosbridgeWebsocketURI);
     final Publisher pub = new Publisher("/gripper_controller/command", "trajectory_msgs/JointTrajectory", bridge);
     final List<Double> gripperPositions = Collections.<Double>unmodifiableList(CollectionLiterals.<Double>newArrayList(Double.valueOf(0.0138), Double.valueOf((-0.0138))));
