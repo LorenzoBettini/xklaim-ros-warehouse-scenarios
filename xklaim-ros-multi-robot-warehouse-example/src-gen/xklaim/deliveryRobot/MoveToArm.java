@@ -53,7 +53,7 @@ public class MoveToArm extends KlavaProcess {
           final Publisher pubvel = new Publisher((("/" + this.robotId) + "/cmd_vel"), "geometry_msgs/Twist", bridge);
           final Twist twistMsg = new Twist();
           pubvel.publish(twistMsg);
-          out(new Tuple(new Object[] {"ready"}), this.Arm);
+          out(new Tuple(new Object[] {"deliveryRobotArrived"}), this.Arm);
           out(new Tuple(new Object[] {"readyToReceiveTheItem"}), local);
           bridge.unsubscribe((("/" + this.robotId) + "/amcl_pose"));
         }

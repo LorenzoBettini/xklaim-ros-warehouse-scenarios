@@ -16,28 +16,31 @@ net MRS physical "localhost:9999" {
 		while (true) {
 			in("initialPosition")@self
 			in("item",var String itemId,var String sector, var String itemType,var Double x,var Double y)@self
-			eval(new GetDown(rosbridgeWebsocketURI,x,y))@self
+			val firstGetDownPositions = #[-0.2169, -0.5822, 3.14, 1.66, -0.01412]
+			executeNodeProcess(new GetDown(rosbridgeWebsocketURI,x,y,firstGetDownPositions))
+			
+			in("getDownCompleted")@self
+			val secondGetDownPositions = #[-0.9975, -0.4970, 3.1400, 1.6613, -0.0142]
+			executeNodeProcess(new GetDown(rosbridgeWebsocketURI,x,y,secondGetDownPositions))
 
-			in("getDownMovementsCompleted")@self
-			eval(new Grip(rosbridgeWebsocketURI))@self
+			in("getDownCompleted")@self
+			executeNodeProcess(new Grip(rosbridgeWebsocketURI))
 
 			in("gripCompleted")@self
-			eval(new GetUp(rosbridgeWebsocketURI,x,y))@self
+			executeNodeProcess(new GetUp(rosbridgeWebsocketURI,x,y))
 
 			in("getUpCompleted")@self
-			eval(new Rotate(rosbridgeWebsocketURI,sector))@self
+			executeNodeProcess(new Rotate(rosbridgeWebsocketURI,sector))
 
-			in("rotationCompleted")@self
-			// wait for the arrival of the delivery robot
-			in("ready")@self
-			eval(new Lay(rosbridgeWebsocketURI))@self
+			in("rotateCompleted")@self
+			in("deliveryRobotArrived")@self
+			executeNodeProcess(new Lay(rosbridgeWebsocketURI))
 
 			in("layCompleted")@self
-			eval(new Release(rosbridgeWebsocketURI,itemId,itemType))@self
+			executeNodeProcess(new Release(rosbridgeWebsocketURI,itemId,itemType))
 
 			in("releaseCompleted")@self
-			eval(new GoToInitialPosition(rosbridgeWebsocketURI))@self
-
+			executeNodeProcess(new GoToInitialPosition(rosbridgeWebsocketURI))
 		}
 
 	}
@@ -49,6 +52,13 @@ net MRS physical "localhost:9999" {
 
 		while (true) {
 			in("availableForDelivery")@self
+
+
+////////////////////// Creare un processo MoveTo e provare a riusare quello mettendo il resto al di fuori
+/////////////////// e poi racchiudere tutto in un solo processo in modo da evitare copia incolla del
+// behaviour dei delivery robot 
+
+
 
 			eval(new MoveToArm(rosbridgeWebsocketURI,robotId,sector,Arm))@self
 

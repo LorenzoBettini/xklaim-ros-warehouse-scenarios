@@ -50,7 +50,7 @@ proc Rotate(String rosbridgeWebsocketURI, String sector) {
 
 			if (norm <= tolerance) { /* the arm has completed the rotation movement */
 				// activate the get up process
-				out("rotationCompleted")@local
+				out("rotateCompleted")@local
 
 				// unsubscribe from the arm state topic
 				bridge.unsubscribe("/arm_controller/state")

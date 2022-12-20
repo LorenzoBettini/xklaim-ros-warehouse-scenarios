@@ -52,7 +52,7 @@ proc MoveToArm(String rosbridgeWebsocketURI,String robotId,String sector,Localit
 				pubvel.publish(twistMsg)
 
 				// notify the arm robot that is ready to receive the item
-				out("ready")@Arm
+				out("deliveryRobotArrived")@Arm
 				
 				// activate the DeliveryItem process
 				out("readyToReceiveTheItem")@local
