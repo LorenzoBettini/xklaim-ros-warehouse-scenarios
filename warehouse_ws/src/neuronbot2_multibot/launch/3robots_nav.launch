@@ -1,0 +1,33 @@
+<launch>
+    <arg name="ns1" default="robot1"/>
+    <arg name="ns2" default="robot2"/>
+    <arg name="ns3" default="robot3"/>
+	<arg name="map_name" default="$(find neuronbot2_multibot)/maps/house.yaml" />
+
+    <include file="$(find neuronbot2_nav)/launch/bringup.launch">
+        <arg name="namespace" value="$(arg ns1)"/>
+	    <arg name="map" value="$(arg map_name)" />
+        <arg name="x_pos" value="-7.0"/>
+        <arg name="y_pos" value=" 2.0"/>
+        <arg name="yaw" value=" 1.57"/>
+    </include>
+    <rosparam command="load" ns="$(arg ns1)" file="$(find neuronbot2_multibot)/params/multilayer_costmap.yaml" />
+
+    <include file="$(find neuronbot2_nav)/launch/bringup.launch">
+        <arg name="namespace" value="$(arg ns2)"/>
+	    <arg name="map" value="$(arg map_name)" />
+        <arg name="x_pos" value=" 7.0"/>
+        <arg name="y_pos" value="-1.0"/>
+        <arg name="yaw" value=" 1.57"/>
+    </include>
+    <rosparam command="load" ns="$(arg ns2)" file="$(find neuronbot2_multibot)/params/multilayer_costmap.yaml" />
+
+    <include file="$(find neuronbot2_nav)/launch/bringup.launch">
+        <arg name="namespace" value="$(arg ns3)"/>
+	    <arg name="map" value="$(arg map_name)" />
+        <arg name="x_pos" value=" 0.5"/>
+        <arg name="y_pos" value=" 3.0"/>
+        <arg name="yaw" value=" 0.0"/>
+    </include>
+    <rosparam command="load" ns="$(arg ns3)" file="$(find neuronbot2_multibot)/params/multilayer_costmap.yaml" />
+</launch>

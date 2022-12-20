@@ -1,0 +1,7 @@
+<launch>
+    <arg name="ns1" default="robot1"/>
+
+    <!-- Link all the 'xxx/map' frames to the same 'world' frame -->
+    <node pkg="tf2_ros" type="static_transform_publisher" name="map1_tf_publisher" args="0 0 0 0 0 0 world $(arg ns1)/map" />
+    <node name="rviz" pkg="rviz" type="rviz" args="-d $(find neuronbot2_multibot)/rviz/view_navigation_multibot.rviz" />    
+</launch>

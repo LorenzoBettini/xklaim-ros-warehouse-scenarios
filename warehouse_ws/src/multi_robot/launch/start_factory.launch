@@ -1,0 +1,24 @@
+<launch>
+    <env name="GAZEBO_MODEL_PATH" value="$(find neuronbot2_gazebo)/models"/>
+    <arg name="ns1" default="robot1"/>
+    <arg name="ns2" default="robot2"/>
+
+
+    <include file="$(find multi_robot)/launch/factory_two.launch">
+        <arg name="ns1" value="$(arg ns1)"/>
+        <arg name="ns2" value="$(arg ns2)"/>
+
+    </include>
+
+    <include file="$(find multi_robot)/launch/nav_factory_two.launch">
+        <arg name="ns1" value="$(arg ns1)"/>
+        <arg name="ns2" value="$(arg ns2)"/>
+
+    </include>
+    
+
+    <node pkg="tf2_ros" type="static_transform_publisher" name="map1_tf_publisher" args="0 0 0 0 0 0 world $(arg ns1)/map" />
+    <node pkg="tf2_ros" type="static_transform_publisher" name="map2_tf_publisher" args="0 0 0 0 0 0 world $(arg ns2)/map" />
+    
+    
+</launch>

@@ -1,0 +1,38 @@
+<?xml version="1.0" ?>
+
+<launch>
+  <!-- Launch Gazebo  -->
+  <arg name="urdf_path" default="$(find urdf_arm)/urdf/urdf_arm.urdf"/>
+
+ <arg name="init_pose" />
+  <!-- Load joint controller configurations from YAML file to parameter server -->
+  <rosparam file="$(find urdf_arm_moveit2)/config/ros_controllers.yaml" command="load"/>
+
+  <!-- convert joint states to TF transforms for rviz, etc -->
+  <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher"
+	respawn="false" output="screen">
+  </node>
+  
+ 
+
+  <param name="robot_description" textfile="$(arg urdf_path)" />
+
+
+  <!-- Load the controllers -->
+  <node name="controller_spawner" pkg="controller_manager" type="spawner" respawn="true"
+    output="screen" args="arm_controller gripper_controller joint_state_controller "/>
+    
+    
+
+
+
+  <!-- Run a python script to the send a service call to gazebo_ros to spawn a URDF robot -->
+ <!--  <node name="urdf_spawner" pkg="gazebo_ros" type="spawn_model" respawn="false" output="screen"
+	args="$(arg init_pose) -urdf -model seven_dof_arm -param robot_description"/>  -->
+	
+	  <node name="spawn_gazebo_model" pkg="gazebo_ros" type="spawn_model" args="$(arg init_pose) -urdf -param robot_description -model robot"
+    respawn="false" output="screen" />
+
+
+
+</launch>

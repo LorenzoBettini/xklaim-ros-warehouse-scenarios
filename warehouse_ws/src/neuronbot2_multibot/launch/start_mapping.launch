@@ -1,0 +1,24 @@
+<launch>
+    <env name="GAZEBO_MODEL_PATH" value="$(find neuronbot2_gazebo)/models"/>
+  <arg name="ns1" default="robot1"/>
+
+  
+    <include file="$(find neuronbot2_multibot)/launch/3robots_world_mapping_hospital.launch">
+        <arg name="ns1" value="$(arg ns1)"/>
+   
+        
+        
+           </include>
+
+    <node name="rviz" pkg="rviz" type="rviz" args="-d $(find neuronbot2_multibot)/rviz/view_navigation_multibot.rviz" />  
+
+
+
+    
+    
+    
+
+
+                                                                
+   
+</launch>

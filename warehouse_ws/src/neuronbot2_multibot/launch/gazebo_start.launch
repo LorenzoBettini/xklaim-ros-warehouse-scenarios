@@ -1,0 +1,29 @@
+<launch>
+    <env name="GAZEBO_MODEL_PATH" value="$(find neuronbot2_gazebo)/models"/>
+    <arg name="ns1" default="robot1"/>
+
+    <include file="$(find neuronbot2_multibot)/launch/house_world.launch">
+        <arg name="ns1" value="$(arg ns1)"/>
+
+    </include>
+
+    <include file="$(find neuronbot2_multibot)/launch/multibot_nav.launch">
+        <arg name="ns1" value="$(arg ns1)"/>
+    
+    </include>
+    
+     <node pkg="tf2_ros" type="static_transform_publisher" name="map1_tf_publisher" args="0 0 0 0 0 0 world $(arg ns1)/map" />
+     
+     <node pkg="tf" type="static_transform_publisher" name="base_link_odom" args="0 0 0 1.571 0 0 world /base_link 100" />
+     
+      <node pkg="tf" type="static_transform_publisher" name="grasp_link_odom" args="0 0 0 1.571 0 0 world /grasping_frame 100" />
+     
+      <node pkg="tf" type="static_transform_publisher" name="grip_link_odom" args="0 0 0 1.571 0 0 world /gripper_roll_link 100" />
+      
+      
+      
+   
+
+     
+     
+</launch>
