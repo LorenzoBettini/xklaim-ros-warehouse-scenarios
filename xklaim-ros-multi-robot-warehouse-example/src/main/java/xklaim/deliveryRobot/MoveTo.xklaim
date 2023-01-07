@@ -2,7 +2,6 @@ package xklaim.deliveryRobot
 
 import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.databind.ObjectMapper
-import klava.Locality
 import messages.PoseStamped
 import messages.PoseWithCovarianceStamped
 import messages.XklaimToRosConnection
@@ -10,19 +9,12 @@ import ros.Publisher
 import ros.SubscriptionRequestMsg
 import ros.msgs.geometry_msgs.Twist
 
-proc MoveToArm(String rosbridgeWebsocketURI,String robotId,String sector,Locality Arm) {
+proc MoveTo(String rosbridgeWebsocketURI,String robotId,String sector, Double x, Double y) {
 	val local = self
-	
-	// Coordinates of the arm robot (notably, the arm robot has a fixed position)  
-	val x = -0.21
-	val y = 0.31
-
-	// wait for a call by the arm robot
-	in("itemReadyForTheDelivery",sector)@Arm
 
 	// connect to the ROS bridge
 	val bridge = new XklaimToRosConnection(rosbridgeWebsocketURI)
-	
+
 	// initialize a publisher for the topic related to the control of the robot's wheels
 	val pub = new Publisher("/" + robotId + "/move_base_simple/goal", "geometry_msgs/PoseStamped", bridge)
 
@@ -51,11 +43,8 @@ proc MoveToArm(String rosbridgeWebsocketURI,String robotId,String sector,Localit
 				val twistMsg = new Twist()
 				pubvel.publish(twistMsg)
 
-				// notify the arm robot that is ready to receive the item
-				out("deliveryRobotArrived")@Arm
-				
-				// activate the DeliveryItem process
-				out("readyToReceiveTheItem")@local
+				// notify that the robot is arrived at destination 
+				out("moveToCompleted")@local
 
 				// unsubscribe from the robot state topic
 				bridge.unsubscribe("/" + robotId + "/amcl_pose")

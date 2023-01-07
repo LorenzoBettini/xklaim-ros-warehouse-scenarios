@@ -15,31 +15,31 @@ import ros.SubscriptionRequestMsg;
 import ros.msgs.geometry_msgs.Twist;
 
 @SuppressWarnings("all")
-public class MoveToArm extends KlavaProcess {
+public class MoveTo extends KlavaProcess {
   private String rosbridgeWebsocketURI;
   
   private String robotId;
   
   private String sector;
   
-  private Locality Arm;
+  private Double x;
   
-  public MoveToArm(final String rosbridgeWebsocketURI, final String robotId, final String sector, final Locality Arm) {
+  private Double y;
+  
+  public MoveTo(final String rosbridgeWebsocketURI, final String robotId, final String sector, final Double x, final Double y) {
     this.rosbridgeWebsocketURI = rosbridgeWebsocketURI;
     this.robotId = robotId;
     this.sector = sector;
-    this.Arm = Arm;
+    this.x = x;
+    this.y = y;
   }
   
   @Override
   public void executeProcess() {
     final Locality local = this.self;
-    final double x = (-0.21);
-    final double y = 0.31;
-    in(new Tuple(new Object[] {"itemReadyForTheDelivery", this.sector}), this.Arm);
     final XklaimToRosConnection bridge = new XklaimToRosConnection(this.rosbridgeWebsocketURI);
     final Publisher pub = new Publisher((("/" + this.robotId) + "/move_base_simple/goal"), "geometry_msgs/PoseStamped", bridge);
-    final PoseStamped destination = new PoseStamped().headerFrameId("world").posePositionXY(x, y).poseOrientation(1.0);
+    final PoseStamped destination = new PoseStamped().headerFrameId("world").posePositionXY((this.x).doubleValue(), (this.y).doubleValue()).poseOrientation(1.0);
     pub.publish(destination);
     final RosListenDelegate _function = (JsonNode data, String stringRep) -> {
       try {
@@ -53,8 +53,7 @@ public class MoveToArm extends KlavaProcess {
           final Publisher pubvel = new Publisher((("/" + this.robotId) + "/cmd_vel"), "geometry_msgs/Twist", bridge);
           final Twist twistMsg = new Twist();
           pubvel.publish(twistMsg);
-          out(new Tuple(new Object[] {"deliveryRobotArrived"}), this.Arm);
-          out(new Tuple(new Object[] {"readyToReceiveTheItem"}), local);
+          out(new Tuple(new Object[] {"moveToCompleted"}), local);
           bridge.unsubscribe((("/" + this.robotId) + "/amcl_pose"));
         }
       } catch (Throwable _e) {

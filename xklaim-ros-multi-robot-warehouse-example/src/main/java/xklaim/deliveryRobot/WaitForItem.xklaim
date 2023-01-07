@@ -1,0 +1,34 @@
+package xklaim.deliveryRobot
+
+import com.fasterxml.jackson.databind.JsonNode
+import com.fasterxml.jackson.databind.ObjectMapper
+import messages.ContactsState
+import messages.XklaimToRosConnection
+import ros.SubscriptionRequestMsg
+
+proc WaitForItem(String rosbridgeWebsocketURI,String robotId) {
+	val local = self
+
+	// connect to the ROS bridge
+	val bridge = new XklaimToRosConnection(rosbridgeWebsocketURI)
+
+	// subscribe to the pressure sensor for detecting the presence of the item in the bowl
+	bridge.subscribe(
+		SubscriptionRequestMsg.generate("/" + robotId + "/pressure_sensor_state").setType("gazebo_msgs/ContactsState").
+			setThrottleRate(1).setQueueLength(1),
+		[ data, stringRep |
+			var mapper = new ObjectMapper()
+			var JsonNode rosMsgNode = data.get("msg")
+			var ContactsState state = mapper.treeToValue(rosMsgNode, ContactsState)
+
+			if (!state.states.isEmpty && state.states.get(0).total_wrench.force.z != 0.0) {
+				// notify that the item is loaded in the delivery robot
+				out("itemLoaded")@local
+
+				// unsubscribe from the pressure sensor topic
+				bridge.unsubscribe("/" + robotId + "/pressure_sensor_state")
+			}
+		]
+	)
+
+}

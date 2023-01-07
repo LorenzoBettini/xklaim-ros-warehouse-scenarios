@@ -10,7 +10,7 @@ import org.eclipse.xtext.xbase.lib.InputOutput;
 import ros.Publisher;
 
 @SuppressWarnings("all")
-public class PickUp extends KlavaProcess {
+public class Unload extends KlavaProcess {
   private String rosbridgeWebsocketURI;
   
   private Locality DeliveryRobot;
@@ -19,7 +19,7 @@ public class PickUp extends KlavaProcess {
   
   private double y;
   
-  public PickUp(final String rosbridgeWebsocketURI, final Locality DeliveryRobot, final double x, final double y) {
+  public Unload(final String rosbridgeWebsocketURI, final Locality DeliveryRobot, final double x, final double y) {
     this.rosbridgeWebsocketURI = rosbridgeWebsocketURI;
     this.DeliveryRobot = DeliveryRobot;
     this.x = x;

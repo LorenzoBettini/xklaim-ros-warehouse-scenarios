@@ -1,26 +1,15 @@
 package xklaim;
 
-import java.util.Collections;
-import java.util.List;
 import klava.LogicalLocality;
 import klava.PhysicalLocality;
 import klava.Tuple;
 import klava.topology.ClientNode;
 import klava.topology.KlavaNodeCoordinator;
 import klava.topology.LogicalNet;
-import org.eclipse.xtext.xbase.lib.CollectionLiterals;
-import org.eclipse.xtext.xbase.lib.Conversions;
 import org.eclipse.xtext.xbase.lib.Exceptions;
 import org.mikado.imc.common.IMCException;
-import xklaim.arm.GetDown;
-import xklaim.arm.GetUp;
-import xklaim.arm.GoToInitialPosition;
-import xklaim.arm.Grip;
-import xklaim.arm.Lay;
-import xklaim.arm.Release;
-import xklaim.arm.Rotate;
-import xklaim.deliveryRobot.DeliverItem;
-import xklaim.deliveryRobot.MoveToArm;
+import xklaim.arm.ArmBehaviour;
+import xklaim.arm.DeliveryRobotBehaviour;
 
 @SuppressWarnings("all")
 public class MRS extends LogicalNet {
@@ -39,47 +28,8 @@ public class MRS extends LogicalNet {
         try {
           final String rosbridgeWebsocketURI = "ws://0.0.0.0:9090";
           while (true) {
-            {
-              in(new Tuple(new Object[] {"initialPosition"}), this.self);
-              String itemId = null;
-              String sector = null;
-              String itemType = null;
-              Double x = null;
-              Double y = null;
-              Tuple _Tuple = new Tuple(new Object[] {"item", String.class, String.class, String.class, Double.class, Double.class});
-              in(_Tuple, this.self);
-              itemId = (String) _Tuple.getItem(1);
-              sector = (String) _Tuple.getItem(2);
-              itemType = (String) _Tuple.getItem(3);
-              x = (Double) _Tuple.getItem(4);
-              y = (Double) _Tuple.getItem(5);
-              final List<Double> firstGetDownPositions = Collections.<Double>unmodifiableList(CollectionLiterals.<Double>newArrayList(Double.valueOf((-0.2169)), Double.valueOf((-0.5822)), Double.valueOf(3.14), Double.valueOf(1.66), Double.valueOf((-0.01412))));
-              GetDown _getDown = new GetDown(rosbridgeWebsocketURI, x, y, ((double[])Conversions.unwrapArray(firstGetDownPositions, double.class)));
-              this.executeNodeProcess(_getDown);
-              in(new Tuple(new Object[] {"getDownCompleted"}), this.self);
-              final List<Double> secondGetDownPositions = Collections.<Double>unmodifiableList(CollectionLiterals.<Double>newArrayList(Double.valueOf((-0.9975)), Double.valueOf((-0.4970)), Double.valueOf(3.1400), Double.valueOf(1.6613), Double.valueOf((-0.0142))));
-              GetDown _getDown_1 = new GetDown(rosbridgeWebsocketURI, x, y, ((double[])Conversions.unwrapArray(secondGetDownPositions, double.class)));
-              this.executeNodeProcess(_getDown_1);
-              in(new Tuple(new Object[] {"getDownCompleted"}), this.self);
-              Grip _grip = new Grip(rosbridgeWebsocketURI);
-              this.executeNodeProcess(_grip);
-              in(new Tuple(new Object[] {"gripCompleted"}), this.self);
-              GetUp _getUp = new GetUp(rosbridgeWebsocketURI, x, y);
-              this.executeNodeProcess(_getUp);
-              in(new Tuple(new Object[] {"getUpCompleted"}), this.self);
-              Rotate _rotate = new Rotate(rosbridgeWebsocketURI, sector);
-              this.executeNodeProcess(_rotate);
-              in(new Tuple(new Object[] {"rotateCompleted"}), this.self);
-              in(new Tuple(new Object[] {"deliveryRobotArrived"}), this.self);
-              Lay _lay = new Lay(rosbridgeWebsocketURI);
-              this.executeNodeProcess(_lay);
-              in(new Tuple(new Object[] {"layCompleted"}), this.self);
-              Release _release = new Release(rosbridgeWebsocketURI, itemId, itemType);
-              this.executeNodeProcess(_release);
-              in(new Tuple(new Object[] {"releaseCompleted"}), this.self);
-              GoToInitialPosition _goToInitialPosition = new GoToInitialPosition(rosbridgeWebsocketURI);
-              this.executeNodeProcess(_goToInitialPosition);
-            }
+            ArmBehaviour _armBehaviour = new ArmBehaviour(rosbridgeWebsocketURI);
+            this.executeNodeProcess(_armBehaviour);
           }
         } catch (Throwable _e) {
           throw Exceptions.sneakyThrow(_e);
@@ -100,17 +50,16 @@ public class MRS extends LogicalNet {
     private static class DeliveryRobot1Process extends KlavaNodeCoordinator {
       @Override
       public void executeProcess() {
-        final String rosbridgeWebsocketURI = "ws://0.0.0.0:9090";
-        final String robotId = "robot1";
-        final String sector = "sector1";
-        while (true) {
-          {
-            in(new Tuple(new Object[] {"availableForDelivery"}), this.self);
-            MoveToArm _moveToArm = new MoveToArm(rosbridgeWebsocketURI, robotId, sector, MRS.Arm);
-            eval(_moveToArm, this.self);
-            DeliverItem _deliverItem = new DeliverItem(rosbridgeWebsocketURI, robotId, MRS.Arm);
-            eval(_deliverItem, this.self);
+        try {
+          final String rosbridgeWebsocketURI = "ws://0.0.0.0:9090";
+          final String robotId = "robot1";
+          final String sector = "sector1";
+          while (true) {
+            DeliveryRobotBehaviour _deliveryRobotBehaviour = new DeliveryRobotBehaviour(rosbridgeWebsocketURI, robotId, sector, MRS.Arm);
+            this.executeNodeProcess(_deliveryRobotBehaviour);
           }
+        } catch (Throwable _e) {
+          throw Exceptions.sneakyThrow(_e);
         }
       }
     }
@@ -128,17 +77,16 @@ public class MRS extends LogicalNet {
     private static class DeliveryRobot2Process extends KlavaNodeCoordinator {
       @Override
       public void executeProcess() {
-        final String rosbridgeWebsocketURI = "ws://0.0.0.0:9090";
-        final String robotId = "robot2";
-        final String sector = "sector2";
-        while (true) {
-          {
-            in(new Tuple(new Object[] {"availableForDelivery"}), this.self);
-            MoveToArm _moveToArm = new MoveToArm(rosbridgeWebsocketURI, robotId, sector, MRS.Arm);
-            eval(_moveToArm, this.self);
-            DeliverItem _deliverItem = new DeliverItem(rosbridgeWebsocketURI, robotId, MRS.Arm);
-            eval(_deliverItem, this.self);
+        try {
+          final String rosbridgeWebsocketURI = "ws://0.0.0.0:9090";
+          final String robotId = "robot2";
+          final String sector = "sector2";
+          while (true) {
+            DeliveryRobotBehaviour _deliveryRobotBehaviour = new DeliveryRobotBehaviour(rosbridgeWebsocketURI, robotId, sector, MRS.Arm);
+            this.executeNodeProcess(_deliveryRobotBehaviour);
           }
+        } catch (Throwable _e) {
+          throw Exceptions.sneakyThrow(_e);
         }
       }
     }
@@ -168,14 +116,14 @@ public class MRS extends LogicalNet {
         out(new Tuple(new Object[] {"initialPosition"}), MRS.Arm);
         out(new Tuple(new Object[] {"availableForDelivery"}), MRS.DeliveryRobot1);
         out(new Tuple(new Object[] {"availableForDelivery"}), MRS.DeliveryRobot2);
-        PickUp _pickUp = new PickUp(rosbridgeWebsocketURI, MRS.DeliveryRobot1, (-9.0), (-9.0));
-        eval(_pickUp, this.self);
-        PickUp _pickUp_1 = new PickUp(rosbridgeWebsocketURI, MRS.DeliveryRobot1, 9.0, (-9.0));
-        eval(_pickUp_1, this.self);
-        PickUp _pickUp_2 = new PickUp(rosbridgeWebsocketURI, MRS.DeliveryRobot2, (-9.0), 9.0);
-        eval(_pickUp_2, this.self);
-        PickUp _pickUp_3 = new PickUp(rosbridgeWebsocketURI, MRS.DeliveryRobot2, 9.0, 9.0);
-        eval(_pickUp_3, this.self);
+        Unload _unload = new Unload(rosbridgeWebsocketURI, MRS.DeliveryRobot1, (-9.0), (-9.0));
+        eval(_unload, this.self);
+        Unload _unload_1 = new Unload(rosbridgeWebsocketURI, MRS.DeliveryRobot1, 9.0, (-9.0));
+        eval(_unload_1, this.self);
+        Unload _unload_2 = new Unload(rosbridgeWebsocketURI, MRS.DeliveryRobot2, (-9.0), 9.0);
+        eval(_unload_2, this.self);
+        Unload _unload_3 = new Unload(rosbridgeWebsocketURI, MRS.DeliveryRobot2, 9.0, 9.0);
+        eval(_unload_3, this.self);
       }
     }
     

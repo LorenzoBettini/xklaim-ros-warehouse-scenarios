@@ -5,7 +5,7 @@ import messages.ModelState
 import messages.XklaimToRosConnection
 import ros.Publisher
 
-proc PickUp(String rosbridgeWebsocketURI,Locality DeliveryRobot,double x, double y) {
+proc Unload(String rosbridgeWebsocketURI,Locality DeliveryRobot,double x, double y) {
 	var String coordinates = "("+x+","+y+")"
 	var poseX = x
 	var poseY = y
