@@ -6,10 +6,8 @@ import xklaim.arm.DeliveryRobotBehaviour
 net MRS physical "localhost:9999" {
 	node Arm {
 		val rosbridgeWebsocketURI = "ws://0.0.0.0:9090"
-		while (true) {
-			executeNodeProcess(new ArmBehaviour(rosbridgeWebsocketURI))
-		}
-
+		
+		eval(new ArmBehaviour(rosbridgeWebsocketURI))@self
 	}
 
 	node DeliveryRobot1 {
@@ -17,6 +15,7 @@ net MRS physical "localhost:9999" {
 		val robotId = "robot1"
 		val sector ="sector1"
 
+		////// Iterativo o ricorsivo????
 		while (true) {
 			executeNodeProcess(new DeliveryRobotBehaviour(rosbridgeWebsocketURI,robotId,sector,Arm))
 		}
@@ -53,7 +52,7 @@ net MRS physical "localhost:9999" {
 		
 		
 		// activate the arm robot by inserting the information that it is in the initial position
-		out("initialPosition")@Arm
+		// out("initialPosition")@Arm
 
 		// activate the DeliveryRobot1 by inserting the information that it is available for a delivery
 		out("availableForDelivery")@DeliveryRobot1
@@ -61,7 +60,7 @@ net MRS physical "localhost:9999" {
 		// activate the DeliveryRobot2 by inserting the information that it is available for a delivery
 		out("availableForDelivery")@DeliveryRobot2
 
-		// activate the processes in charge of picking up and posing the delivered items 
+		// activate the processes in charge of unloading items from delivery robots and posing them in the ground  
 		// (there is one process for each pickup area)
 		eval(new Unload(rosbridgeWebsocketURI,DeliveryRobot1,-9.0,-9.0))@self
 		eval(new Unload(rosbridgeWebsocketURI,DeliveryRobot1,9.0,-9.0))@self

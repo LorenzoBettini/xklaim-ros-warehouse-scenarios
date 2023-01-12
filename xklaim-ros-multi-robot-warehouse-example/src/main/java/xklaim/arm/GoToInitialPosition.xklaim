@@ -50,7 +50,7 @@ proc GoToInitialPosition(String rosbridgeWebsocketURI) {
 
 			if (norm <= tolerance) { /* the arm has reached the initial position */
 				// notify that it has reached the initial position, to restart the overall behavior 
-				out("initialPosition")@local
+				out("goToInitialPositionCompleted")@local
 
 				// unsubscribe from the arm state topic
 				bridge.unsubscribe("/arm_controller/state")

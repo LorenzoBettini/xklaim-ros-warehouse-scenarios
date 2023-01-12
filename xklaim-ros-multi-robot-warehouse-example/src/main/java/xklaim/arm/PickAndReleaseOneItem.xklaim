@@ -1,0 +1,67 @@
+package xklaim.arm
+
+proc PickAndReleaseOneItem(String rosbridgeWebsocketURI) {
+	val DOWN = new ArmTrajectory(#[-0.2169, -0.5822, 3.14, 1.66, -0.01412],0.000001) 
+	///// mettere dentro l'oggetto anche x e y e sectior
+	
+	//////// forse si può fare con un solo processo moveArm??????
+	//// prende in input un array con le trajectory position che sono costanti DOWN, UP, ecc. ????????????????
+	/// ci metterei lì anche le info su tolleranza e delta.
+	
+	
+	/// VALORI DI delta, tolerance 
+	// GetDown  0.0, 0.000001
+	// Grip     0.0, 0.007
+	// GetUp    0.0, 0.008
+	// Rotate   0.0, 0.008
+	// Lay 		0.0, 0.002
+	// GoToInitialPosition 0.0, 0.008
+	
+	/// stessa cosa per grip: useGripper(OPEN) useGripper(CLOSE)
+	
+	
+	// retrieve info about the item to be picked up  
+	in("item",var String itemId,var String sector, var String itemType,var Double x,var Double y)@self
+
+	// flex the arm of the robot towards down
+	val firstGetDownPositions = #[-0.2169, -0.5822, 3.14, 1.66, -0.01412]
+	eval(new GetDown(rosbridgeWebsocketURI, x, y, firstGetDownPositions))@self
+
+	in("getDownCompleted")@self
+
+	// go the arm down 
+	val secondGetDownPositions = #[-0.9975, -0.4970, 3.1400, 1.6613, -0.0142]
+	executeNodeProcess(new GetDown(rosbridgeWebsocketURI, x, y, secondGetDownPositions))
+
+	in("getDownCompleted")@self
+
+	// grip the item
+	executeNodeProcess(new Grip(rosbridgeWebsocketURI))
+
+	in("gripCompleted")@self
+
+	// get up the arm
+	executeNodeProcess(new GetUp(rosbridgeWebsocketURI, x, y)) 
+
+	in("getUpCompleted")@self
+
+	// rotate the arm
+	executeNodeProcess(new Rotate(rosbridgeWebsocketURI, sector))
+
+	in("rotateCompleted")@self
+	
+	// wait for the arrival of a delivery robot
+	in("deliveryRobotArrived")@self
+
+	// lay the item on the bowl on the top of the delivery robot 
+	executeNodeProcess(new Lay(rosbridgeWebsocketURI))     ////////////////// go down????????????????????
+
+	in("layCompleted")@self
+
+	// release the 
+	executeNodeProcess(new Release(rosbridgeWebsocketURI, itemId, itemType))
+
+	in("releaseCompleted")@self
+
+	executeNodeProcess(new GoToInitialPosition(rosbridgeWebsocketURI))
+}

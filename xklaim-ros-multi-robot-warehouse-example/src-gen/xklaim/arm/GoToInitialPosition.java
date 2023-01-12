@@ -48,7 +48,7 @@ public class GoToInitialPosition extends KlavaProcess {
         }
         final double norm = Math.sqrt(delta);
         if ((norm <= tolerance)) {
-          out(new Tuple(new Object[] {"initialPosition"}), local);
+          out(new Tuple(new Object[] {"goToInitialPositionCompleted"}), local);
           bridge.unsubscribe("/arm_controller/state");
         }
       };
