@@ -34,7 +34,6 @@ public class UseGripper extends KlavaProcess {
     final RosListenDelegate _function = (JsonNode data, String stringRep) -> {
       final JsonNode actual = data.get("msg").get("actual").get("positions");
       double delta = 0.0;
-      final double tolerance = 0.007;
       for (int i = 0; (i < ((List<Double>)Conversions.doWrapArray(this.gripperTrajectory.getTrajectoryPoints())).size()); i++) {
         double _delta = delta;
         double _asDouble = actual.get(i).asDouble();
@@ -44,7 +43,9 @@ public class UseGripper extends KlavaProcess {
         delta = (_delta + _pow);
       }
       final double norm = Math.sqrt(delta);
-      if ((norm <= tolerance)) {
+      double _tolerance = this.gripperTrajectory.getTolerance();
+      boolean _lessEqualsThan = (norm <= _tolerance);
+      if (_lessEqualsThan) {
         out(new Tuple(new Object[] {"UseGripperCompleted"}), local);
         bridge.unsubscribe("/gripper_controller/state");
       }

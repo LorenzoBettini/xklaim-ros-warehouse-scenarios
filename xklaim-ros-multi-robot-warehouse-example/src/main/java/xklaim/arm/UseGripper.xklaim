@@ -34,13 +34,12 @@ proc UseGripper(String rosbridgeWebsocketURI, GripperTrajectory gripperTrajector
 			// calculate the delta between the actual joint positions and the destination positions
 			// to measure the completeness of the gripper movement
 			var delta = 0.0
-			val tolerance = 0.007
 			for (var i = 0; i < gripperTrajectory.trajectoryPoints.size; i++) {
 				delta += Math.pow(actual.get(i).asDouble() - gripperTrajectory.trajectoryPoints.get(i), 2.0)
 			}
 			val norm = Math.sqrt(delta)
 
-			if (norm <= tolerance) { /* the gripper has completed the grip movement */
+			if (norm <= gripperTrajectory.tolerance) { /* the gripper has completed the grip movement */
 				// activate the get up process
 				out("UseGripperCompleted")@local
 
