@@ -49,7 +49,7 @@ proc PickAndReleaseOneItem(String rosbridgeWebsocketURI) {
 	in("MoveArmToCompleted")@self
 
 	// release the 
-	eval(new UseGripper(rosbridgeWebsocketURI,CLOSE))@self
+	eval(new UseGripper(rosbridgeWebsocketURI,OPEN))@self
 	
 	in("UseGripperCompleted")@self
 	

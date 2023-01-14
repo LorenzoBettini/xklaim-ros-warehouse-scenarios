@@ -53,7 +53,7 @@ public class PickAndReleaseOneItem extends KlavaProcess {
     MoveArmTo _moveArmTo_4 = new MoveArmTo(this.rosbridgeWebsocketURI, LAY_DOWN);
     eval(_moveArmTo_4, this.self);
     in(new Tuple(new Object[] {"MoveArmToCompleted"}), this.self);
-    UseGripper _useGripper_1 = new UseGripper(this.rosbridgeWebsocketURI, CLOSE);
+    UseGripper _useGripper_1 = new UseGripper(this.rosbridgeWebsocketURI, OPEN);
     eval(_useGripper_1, this.self);
     in(new Tuple(new Object[] {"UseGripperCompleted"}), this.self);
     out(new Tuple(new Object[] {"gripperOpened", itemId, itemType}), this.self);
