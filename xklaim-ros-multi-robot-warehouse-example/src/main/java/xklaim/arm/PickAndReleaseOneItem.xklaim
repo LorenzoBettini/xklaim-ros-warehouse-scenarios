@@ -11,6 +11,8 @@ proc PickAndReleaseOneItem(String rosbridgeWebsocketURI) {
 	val ROTATE = new ArmTrajectory(#[-0.9546, -0.20, -0.7241, 3.1400, 1.6613, -0.0142],0.008)
 	val LAY_DOWN = new ArmTrajectory(#[-0.9546, -0.0097, -0.9513, 3.1400, 1.7749, -0.0142],0.002)
 	val INITIAL_POSITION = new ArmTrajectory(#[0.000, 0.000, 0.000, 0.000, 0.000, 0.000],0.008)
+	val CLOSE = new GripperTrajectory(#[0.0138, -0.0138],0.007)
+	val OPEN = new GripperTrajectory(#[0.0, 0.0],0.0008)
 
 	eval(new MoveArmTo(rosbridgeWebsocketURI,HALF_DOWN))@self
 
@@ -21,9 +23,9 @@ proc PickAndReleaseOneItem(String rosbridgeWebsocketURI) {
 	in("MoveArmToCompleted")@self
 
 	// grip the item
-	executeNodeProcess(new Grip(rosbridgeWebsocketURI))
-
-	in("gripCompleted")@self
+	eval(new UseGripper(rosbridgeWebsocketURI,CLOSE))@self
+	
+	in("UseGripperCompleted")@self
 
 	// get up the arm
 	eval(new MoveArmTo(rosbridgeWebsocketURI,UP))@self
@@ -47,11 +49,14 @@ proc PickAndReleaseOneItem(String rosbridgeWebsocketURI) {
 	in("MoveArmToCompleted")@self
 
 	// release the 
-	executeNodeProcess(new Release(rosbridgeWebsocketURI, itemId, itemType))
-
-	in("releaseCompleted")@self
-
+	eval(new UseGripper(rosbridgeWebsocketURI,CLOSE))@self
+	
+	in("UseGripperCompleted")@self
+	
+	out("gripperOpened",itemId,itemType)@self
+		
 	eval(new MoveArmTo(rosbridgeWebsocketURI,INITIAL_POSITION))@self
+	
 	in("MoveArmToCompleted")@self
 	
 	out("initialPosition")@self	
