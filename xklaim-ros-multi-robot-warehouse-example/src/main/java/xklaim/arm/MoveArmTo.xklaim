@@ -14,8 +14,8 @@ proc MoveArmTo(String rosbridgeWebsocketURI, ArmTrajectory armTrajectory) {
 	// initialize a publisher for the topic related to the control of the movements of the arm robot 
 	val pub = new Publisher("/arm_controller/command", "trajectory_msgs/JointTrajectory", bridge)
 
-	// set joint positions for performing the first movement of the arm
-	val JointTrajectory movement = new JointTrajectory().positions(armTrajectory.trajectoryPoints).jointNames(#[
+	// set joint positions of the trajectory for performing the movement of the arm
+	val JointTrajectory trajectory = new JointTrajectory().positions(armTrajectory.trajectoryPoints).jointNames(#[
 		"joint1",
 		"joint2",
 		"joint3",
@@ -24,8 +24,8 @@ proc MoveArmTo(String rosbridgeWebsocketURI, ArmTrajectory armTrajectory) {
 		"joint6"
 	])
 
-	// publish the first movement trajectory
-	pub.publish(movement)
+	// publish the movement's trajectory
+	pub.publish(trajectory)
 
 	// subscribe to the topic providing the actual status of the arm 
 	bridge.subscribe(
@@ -36,7 +36,7 @@ proc MoveArmTo(String rosbridgeWebsocketURI, ArmTrajectory armTrajectory) {
 			val actual = data.get("msg").get("actual").get("positions")
 
 			// calculate the delta between the actual joint positions and the destination positions
-			// to measure the completeness of the first and second movements
+			// to measure the completeness of the movement
 			var delta = 0.0
 			for (var i = 0; i < armTrajectory.trajectoryPoints.size; i++) {
 				delta += Math.pow(actual.get(i).asDouble() - armTrajectory.trajectoryPoints.get(i), 2.0)
@@ -45,7 +45,7 @@ proc MoveArmTo(String rosbridgeWebsocketURI, ArmTrajectory armTrajectory) {
 
 			if (norm <= armTrajectory.tolerance) { /* the arm has completed the movement */
 				// notify the completion of the movement
-				out("getDownCompleted")@local
+				out("MoveArmToCompleted")@local
 
 				// unsubscribe from the arm state topic
 				bridge.unsubscribe("/arm_controller/state")

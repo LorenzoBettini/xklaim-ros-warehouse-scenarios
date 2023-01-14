@@ -5,7 +5,7 @@ import xklaim.arm.PickAndReleaseOneItem
 proc ArmBehaviour(String rosbridgeWebsocketURI) {
 	eval(new PickAndReleaseOneItem(rosbridgeWebsocketURI))@self
 	
-	in("goToInitialPositionCompleted")@self
+	in("initialPosition")@self
 	
 	eval(new ArmBehaviour(rosbridgeWebsocketURI))@self
 }

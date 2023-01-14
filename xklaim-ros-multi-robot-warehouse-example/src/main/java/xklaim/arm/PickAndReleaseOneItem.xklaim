@@ -12,19 +12,13 @@ proc PickAndReleaseOneItem(String rosbridgeWebsocketURI) {
 	val LAY_DOWN = new ArmTrajectory(#[-0.9546, -0.0097, -0.9513, 3.1400, 1.7749, -0.0142],0.002)
 	val INITIAL_POSITION = new ArmTrajectory(#[0.000, 0.000, 0.000, 0.000, 0.000, 0.000],0.008)
 
-	// flex the arm of the robot towards down
-	//val firstGetDownPositions = #[-0.2169, -0.5822, 3.14, 1.66, -0.01412]
-	//eval(new GetDown(rosbridgeWebsocketURI, x, y, firstGetDownPositions))@self
 	eval(new MoveArmTo(rosbridgeWebsocketURI,HALF_DOWN))@self
 
-	in("getDownCompleted")@self
+	in("MoveArmToCompleted")@self
 
-	// go the arm down 
-	//val secondGetDownPositions = #[-0.9975, -0.4970, 3.1400, 1.6613, -0.0142]
-	//executeNodeProcess(new GetDown(rosbridgeWebsocketURI, x, y, secondGetDownPositions))
 	eval(new MoveArmTo(rosbridgeWebsocketURI,COMPLETE_DOWN))@self
 
-	in("getDownCompleted")@self
+	in("MoveArmToCompleted")@self
 
 	// grip the item
 	executeNodeProcess(new Grip(rosbridgeWebsocketURI))
@@ -32,30 +26,33 @@ proc PickAndReleaseOneItem(String rosbridgeWebsocketURI) {
 	in("gripCompleted")@self
 
 	// get up the arm
-	executeNodeProcess(new GetUp(rosbridgeWebsocketURI, x, y)) 
+	eval(new MoveArmTo(rosbridgeWebsocketURI,UP))@self
 
-	in("getUpCompleted")@self
+	in("MoveArmToCompleted")@self
 	
 	// call for a delivery robot
 	out("itemReadyForTheDelivery",sector)@self
 
 	// rotate the arm
-	executeNodeProcess(new Rotate(rosbridgeWebsocketURI))
+	eval(new MoveArmTo(rosbridgeWebsocketURI,ROTATE))@self
 
-	in("rotateCompleted")@self
+	in("MoveArmToCompleted")@self
 	
 	// wait for the arrival of a delivery robot
 	in("deliveryRobotArrived")@self
 
 	// lay the item on the bowl on the top of the delivery robot 
-	executeNodeProcess(new Lay(rosbridgeWebsocketURI))     ////////////////// go down????????????????????
+	eval(new MoveArmTo(rosbridgeWebsocketURI,LAY_DOWN))@self
 
-	in("layCompleted")@self
+	in("MoveArmToCompleted")@self
 
 	// release the 
 	executeNodeProcess(new Release(rosbridgeWebsocketURI, itemId, itemType))
 
 	in("releaseCompleted")@self
 
-	executeNodeProcess(new GoToInitialPosition(rosbridgeWebsocketURI))
+	eval(new MoveArmTo(rosbridgeWebsocketURI,INITIAL_POSITION))@self
+	in("MoveArmToCompleted")@self
+	
+	out("initialPosition")@self	
 }

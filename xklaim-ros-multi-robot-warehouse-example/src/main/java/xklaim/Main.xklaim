@@ -5,6 +5,11 @@ import xklaim.arm.DeliveryRobotBehaviour
 
 net MRS physical "localhost:9999" {
 	node Arm {
+		///////// può valer la pena alleggerire il codice non usando rosbridgeWebsocketURI
+		// come argomento dei metodi costruttori di tutti i processi, ma 
+		// mettendolo su una tupla (la tupla deve essere locale al nodo perché 
+		// potrei in teoria configurare il bridger in modo diverso da robot a robot)
+		// parliamone 
 		val rosbridgeWebsocketURI = "ws://0.0.0.0:9090"
 		
 		eval(new ArmBehaviour(rosbridgeWebsocketURI))@self

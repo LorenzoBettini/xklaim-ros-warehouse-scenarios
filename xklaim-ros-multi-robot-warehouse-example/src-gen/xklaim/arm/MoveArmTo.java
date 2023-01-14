@@ -28,9 +28,9 @@ public class MoveArmTo extends KlavaProcess {
     final Locality local = this.self;
     final XklaimToRosConnection bridge = new XklaimToRosConnection(this.rosbridgeWebsocketURI);
     final Publisher pub = new Publisher("/arm_controller/command", "trajectory_msgs/JointTrajectory", bridge);
-    final JointTrajectory movement = new JointTrajectory().positions(this.armTrajectory.getTrajectoryPoints()).jointNames(
+    final JointTrajectory trajectory = new JointTrajectory().positions(this.armTrajectory.getTrajectoryPoints()).jointNames(
       new String[] { "joint1", "joint2", "joint3", "joint4", "joint5", "joint6" });
-    pub.publish(movement);
+    pub.publish(trajectory);
     final RosListenDelegate _function = (JsonNode data, String stringRep) -> {
       final JsonNode actual = data.get("msg").get("actual").get("positions");
       double delta = 0.0;
@@ -46,7 +46,7 @@ public class MoveArmTo extends KlavaProcess {
       double _tolerance = this.armTrajectory.getTolerance();
       boolean _lessEqualsThan = (norm <= _tolerance);
       if (_lessEqualsThan) {
-        out(new Tuple(new Object[] {"getDownCompleted"}), local);
+        out(new Tuple(new Object[] {"MoveArmToCompleted"}), local);
         bridge.unsubscribe("/arm_controller/state");
       }
     };
