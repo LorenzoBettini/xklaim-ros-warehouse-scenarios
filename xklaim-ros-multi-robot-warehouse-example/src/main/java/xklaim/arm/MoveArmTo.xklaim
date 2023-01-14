@@ -5,18 +5,17 @@ import messages.XklaimToRosConnection
 import ros.Publisher
 import ros.SubscriptionRequestMsg
 
-proc Rotate(String rosbridgeWebsocketURI) {
-	val local = self
+proc MoveArmTo(String rosbridgeWebsocketURI, ArmTrajectory armTrajectory) {
+	val local = self;
 
 	// connect to the ROS bridge
 	val bridge = new XklaimToRosConnection(rosbridgeWebsocketURI)
 
-	// initialize a publisher for the topic related to the control of the arm movements
+	// initialize a publisher for the topic related to the control of the movements of the arm robot 
 	val pub = new Publisher("/arm_controller/command", "trajectory_msgs/JointTrajectory", bridge)
 
-	// set joint positions for performing the rotate movement of the arm
-	val jointPositions = #[-0.9546, -0.20, -0.7241, 3.1400, 1.6613, -0.0142]
-	val JointTrajectory rotateTrajectory = new JointTrajectory().positions(jointPositions).jointNames(#[
+	// set joint positions for performing the first movement of the arm
+	val JointTrajectory movement = new JointTrajectory().positions(armTrajectory.trajectoryPoints).jointNames(#[
 		"joint1",
 		"joint2",
 		"joint3",
@@ -25,31 +24,28 @@ proc Rotate(String rosbridgeWebsocketURI) {
 		"joint6"
 	])
 
-	
-
-	// publish the trajectory to rotate the arm	 
-	pub.publish(rotateTrajectory)
+	// publish the first movement trajectory
+	pub.publish(movement)
 
 	// subscribe to the topic providing the actual status of the arm 
 	bridge.subscribe(
 		SubscriptionRequestMsg.generate("/arm_controller/state").setType("control_msgs/JointTrajectoryControllerState").
 			setThrottleRate(1).setQueueLength(1),
 		[ data, stringRep |
-			// extract the actual joint positions from the gripper's status	
+			// extract the actual joint positions from the arm's status	
 			val actual = data.get("msg").get("actual").get("positions")
 
 			// calculate the delta between the actual joint positions and the destination positions
-			// to measure the completeness of the gripper movement
+			// to measure the completeness of the first and second movements
 			var delta = 0.0
-			val tolerance = 0.008
-			for (var i = 0; i < jointPositions.size; i++) {
-				delta += Math.pow(actual.get(i).asDouble() - jointPositions.get(i), 2.0)
+			for (var i = 0; i < armTrajectory.trajectoryPoints.size; i++) {
+				delta += Math.pow(actual.get(i).asDouble() - armTrajectory.trajectoryPoints.get(i), 2.0)
 			}
 			val norm = Math.sqrt(delta)
 
-			if (norm <= tolerance) { /* the arm has completed the rotation movement */
-				// activate the get up process
-				out("rotateCompleted")@local
+			if (norm <= armTrajectory.tolerance) { /* the arm has completed the movement */
+				// notify the completion of the movement
+				out("getDownCompleted")@local
 
 				// unsubscribe from the arm state topic
 				bridge.unsubscribe("/arm_controller/state")

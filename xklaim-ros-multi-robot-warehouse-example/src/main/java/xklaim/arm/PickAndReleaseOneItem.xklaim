@@ -1,37 +1,28 @@
 package xklaim.arm
 
 proc PickAndReleaseOneItem(String rosbridgeWebsocketURI) {
-	val DOWN = new ArmTrajectory(#[-0.2169, -0.5822, 3.14, 1.66, -0.01412],0.000001) 
-	///// mettere dentro l'oggetto anche x e y e sectior
-	
-	//////// forse si può fare con un solo processo moveArm??????
-	//// prende in input un array con le trajectory position che sono costanti DOWN, UP, ecc. ????????????????
-	/// ci metterei lì anche le info su tolleranza e delta.
-	
-	
-	/// VALORI DI delta, tolerance 
-	// GetDown  0.0, 0.000001
-	// Grip     0.0, 0.007
-	// GetUp    0.0, 0.008
-	// Rotate   0.0, 0.008
-	// Lay 		0.0, 0.002
-	// GoToInitialPosition 0.0, 0.008
-	
-	/// stessa cosa per grip: useGripper(OPEN) useGripper(CLOSE)
-	
-	
 	// retrieve info about the item to be picked up  
 	in("item",var String itemId,var String sector, var String itemType,var Double x,var Double y)@self
 
+	// define trajectories for the arm movement 
+	val HALF_DOWN = new ArmTrajectory(#[-0.2169, -0.5822, 3.14, 1.66, -0.01412],x,y,0.000001)
+	val COMPLETE_DOWN = new ArmTrajectory(#[-0.9975, -0.4970, 3.1400, 1.6613, -0.0142],x,y,0.000001)
+	val UP = new ArmTrajectory(#[-0.2862, -0.5000, 3.1400, 1.6613, -0.0142],x,y,0.008)
+	val ROTATE = new ArmTrajectory(#[-0.9546, -0.20, -0.7241, 3.1400, 1.6613, -0.0142],0.008)
+	val LAY_DOWN = new ArmTrajectory(#[-0.9546, -0.0097, -0.9513, 3.1400, 1.7749, -0.0142],0.002)
+	val INITIAL_POSITION = new ArmTrajectory(#[0.000, 0.000, 0.000, 0.000, 0.000, 0.000],0.008)
+
 	// flex the arm of the robot towards down
-	val firstGetDownPositions = #[-0.2169, -0.5822, 3.14, 1.66, -0.01412]
-	eval(new GetDown(rosbridgeWebsocketURI, x, y, firstGetDownPositions))@self
+	//val firstGetDownPositions = #[-0.2169, -0.5822, 3.14, 1.66, -0.01412]
+	//eval(new GetDown(rosbridgeWebsocketURI, x, y, firstGetDownPositions))@self
+	eval(new MoveArmTo(rosbridgeWebsocketURI,HALF_DOWN))@self
 
 	in("getDownCompleted")@self
 
 	// go the arm down 
-	val secondGetDownPositions = #[-0.9975, -0.4970, 3.1400, 1.6613, -0.0142]
-	executeNodeProcess(new GetDown(rosbridgeWebsocketURI, x, y, secondGetDownPositions))
+	//val secondGetDownPositions = #[-0.9975, -0.4970, 3.1400, 1.6613, -0.0142]
+	//executeNodeProcess(new GetDown(rosbridgeWebsocketURI, x, y, secondGetDownPositions))
+	eval(new MoveArmTo(rosbridgeWebsocketURI,COMPLETE_DOWN))@self
 
 	in("getDownCompleted")@self
 
@@ -44,9 +35,12 @@ proc PickAndReleaseOneItem(String rosbridgeWebsocketURI) {
 	executeNodeProcess(new GetUp(rosbridgeWebsocketURI, x, y)) 
 
 	in("getUpCompleted")@self
+	
+	// call for a delivery robot
+	out("itemReadyForTheDelivery",sector)@self
 
 	// rotate the arm
-	executeNodeProcess(new Rotate(rosbridgeWebsocketURI, sector))
+	executeNodeProcess(new Rotate(rosbridgeWebsocketURI))
 
 	in("rotateCompleted")@self
 	

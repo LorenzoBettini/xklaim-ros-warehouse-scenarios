@@ -1,25 +1,26 @@
 package xklaim.arm;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import java.util.Collections;
 import java.util.List;
 import klava.Locality;
 import klava.Tuple;
 import klava.topology.KlavaProcess;
 import messages.JointTrajectory;
 import messages.XklaimToRosConnection;
-import org.eclipse.xtext.xbase.lib.CollectionLiterals;
 import org.eclipse.xtext.xbase.lib.Conversions;
 import ros.Publisher;
 import ros.RosListenDelegate;
 import ros.SubscriptionRequestMsg;
 
 @SuppressWarnings("all")
-public class Rotate extends KlavaProcess {
+public class MoveArmTo extends KlavaProcess {
   private String rosbridgeWebsocketURI;
   
-  public Rotate(final String rosbridgeWebsocketURI) {
+  private ArmTrajectory armTrajectory;
+  
+  public MoveArmTo(final String rosbridgeWebsocketURI, final ArmTrajectory armTrajectory) {
     this.rosbridgeWebsocketURI = rosbridgeWebsocketURI;
+    this.armTrajectory = armTrajectory;
   }
   
   @Override
@@ -27,25 +28,25 @@ public class Rotate extends KlavaProcess {
     final Locality local = this.self;
     final XklaimToRosConnection bridge = new XklaimToRosConnection(this.rosbridgeWebsocketURI);
     final Publisher pub = new Publisher("/arm_controller/command", "trajectory_msgs/JointTrajectory", bridge);
-    final List<Double> jointPositions = Collections.<Double>unmodifiableList(CollectionLiterals.<Double>newArrayList(Double.valueOf((-0.9546)), Double.valueOf((-0.20)), Double.valueOf((-0.7241)), Double.valueOf(3.1400), Double.valueOf(1.6613), Double.valueOf((-0.0142))));
-    final JointTrajectory rotateTrajectory = new JointTrajectory().positions(((double[])Conversions.unwrapArray(jointPositions, double.class))).jointNames(
+    final JointTrajectory movement = new JointTrajectory().positions(this.armTrajectory.getTrajectoryPoints()).jointNames(
       new String[] { "joint1", "joint2", "joint3", "joint4", "joint5", "joint6" });
-    pub.publish(rotateTrajectory);
+    pub.publish(movement);
     final RosListenDelegate _function = (JsonNode data, String stringRep) -> {
       final JsonNode actual = data.get("msg").get("actual").get("positions");
       double delta = 0.0;
-      final double tolerance = 0.008;
-      for (int i = 0; (i < jointPositions.size()); i++) {
+      for (int i = 0; (i < ((List<Double>)Conversions.doWrapArray(this.armTrajectory.getTrajectoryPoints())).size()); i++) {
         double _delta = delta;
         double _asDouble = actual.get(i).asDouble();
-        Double _get = jointPositions.get(i);
-        double _minus = (_asDouble - (_get).doubleValue());
+        double _get = this.armTrajectory.getTrajectoryPoints()[i];
+        double _minus = (_asDouble - _get);
         double _pow = Math.pow(_minus, 2.0);
         delta = (_delta + _pow);
       }
       final double norm = Math.sqrt(delta);
-      if ((norm <= tolerance)) {
-        out(new Tuple(new Object[] {"rotateCompleted"}), local);
+      double _tolerance = this.armTrajectory.getTolerance();
+      boolean _lessEqualsThan = (norm <= _tolerance);
+      if (_lessEqualsThan) {
+        out(new Tuple(new Object[] {"getDownCompleted"}), local);
         bridge.unsubscribe("/arm_controller/state");
       }
     };

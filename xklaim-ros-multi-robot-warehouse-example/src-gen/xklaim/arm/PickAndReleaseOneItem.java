@@ -1,11 +1,7 @@
 package xklaim.arm;
 
-import java.util.Collections;
-import java.util.List;
 import klava.Tuple;
 import klava.topology.KlavaProcess;
-import org.eclipse.xtext.xbase.lib.CollectionLiterals;
-import org.eclipse.xtext.xbase.lib.Conversions;
 
 @SuppressWarnings("all")
 public class PickAndReleaseOneItem extends KlavaProcess {
@@ -17,7 +13,6 @@ public class PickAndReleaseOneItem extends KlavaProcess {
   
   @Override
   public void executeProcess() {
-    final ArmTrajectory DOWN = new ArmTrajectory(new double[] { (-0.2169), (-0.5822), 3.14, 1.66, (-0.01412) }, 0.000001);
     String itemId = null;
     String sector = null;
     String itemType = null;
@@ -30,13 +25,17 @@ public class PickAndReleaseOneItem extends KlavaProcess {
     itemType = (String) _Tuple.getItem(3);
     x = (Double) _Tuple.getItem(4);
     y = (Double) _Tuple.getItem(5);
-    final List<Double> firstGetDownPositions = Collections.<Double>unmodifiableList(CollectionLiterals.<Double>newArrayList(Double.valueOf((-0.2169)), Double.valueOf((-0.5822)), Double.valueOf(3.14), Double.valueOf(1.66), Double.valueOf((-0.01412))));
-    GetDown _getDown = new GetDown(this.rosbridgeWebsocketURI, x, y, ((double[])Conversions.unwrapArray(firstGetDownPositions, double.class)));
-    eval(_getDown, this.self);
+    final ArmTrajectory HALF_DOWN = new ArmTrajectory(new double[] { (-0.2169), (-0.5822), 3.14, 1.66, (-0.01412) }, (x).doubleValue(), (y).doubleValue(), 0.000001);
+    final ArmTrajectory COMPLETE_DOWN = new ArmTrajectory(new double[] { (-0.9975), (-0.4970), 3.1400, 1.6613, (-0.0142) }, (x).doubleValue(), (y).doubleValue(), 0.000001);
+    final ArmTrajectory UP = new ArmTrajectory(new double[] { (-0.2862), (-0.5000), 3.1400, 1.6613, (-0.0142) }, (x).doubleValue(), (y).doubleValue(), 0.008);
+    final ArmTrajectory ROTATE = new ArmTrajectory(new double[] { (-0.9546), (-0.20), (-0.7241), 3.1400, 1.6613, (-0.0142) }, 0.008);
+    final ArmTrajectory LAY_DOWN = new ArmTrajectory(new double[] { (-0.9546), (-0.0097), (-0.9513), 3.1400, 1.7749, (-0.0142) }, 0.002);
+    final ArmTrajectory INITIAL_POSITION = new ArmTrajectory(new double[] { 0.000, 0.000, 0.000, 0.000, 0.000, 0.000 }, 0.008);
+    MoveArmTo _moveArmTo = new MoveArmTo(this.rosbridgeWebsocketURI, HALF_DOWN);
+    eval(_moveArmTo, this.self);
     in(new Tuple(new Object[] {"getDownCompleted"}), this.self);
-    final List<Double> secondGetDownPositions = Collections.<Double>unmodifiableList(CollectionLiterals.<Double>newArrayList(Double.valueOf((-0.9975)), Double.valueOf((-0.4970)), Double.valueOf(3.1400), Double.valueOf(1.6613), Double.valueOf((-0.0142))));
-    GetDown _getDown_1 = new GetDown(this.rosbridgeWebsocketURI, x, y, ((double[])Conversions.unwrapArray(secondGetDownPositions, double.class)));
-    this.executeNodeProcess(_getDown_1);
+    MoveArmTo _moveArmTo_1 = new MoveArmTo(this.rosbridgeWebsocketURI, COMPLETE_DOWN);
+    eval(_moveArmTo_1, this.self);
     in(new Tuple(new Object[] {"getDownCompleted"}), this.self);
     Grip _grip = new Grip(this.rosbridgeWebsocketURI);
     this.executeNodeProcess(_grip);
@@ -44,7 +43,8 @@ public class PickAndReleaseOneItem extends KlavaProcess {
     GetUp _getUp = new GetUp(this.rosbridgeWebsocketURI, x, y);
     this.executeNodeProcess(_getUp);
     in(new Tuple(new Object[] {"getUpCompleted"}), this.self);
-    Rotate _rotate = new Rotate(this.rosbridgeWebsocketURI, sector);
+    out(new Tuple(new Object[] {"itemReadyForTheDelivery", sector}), this.self);
+    Rotate _rotate = new Rotate(this.rosbridgeWebsocketURI);
     this.executeNodeProcess(_rotate);
     in(new Tuple(new Object[] {"rotateCompleted"}), this.self);
     in(new Tuple(new Object[] {"deliveryRobotArrived"}), this.self);
