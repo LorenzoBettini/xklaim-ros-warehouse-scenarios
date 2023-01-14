@@ -16,6 +16,7 @@ public class ArmBehaviour extends KlavaProcess {
     PickAndReleaseOneItem _pickAndReleaseOneItem = new PickAndReleaseOneItem(this.rosbridgeWebsocketURI);
     eval(_pickAndReleaseOneItem, this.self);
     in(new Tuple(new Object[] {"goToInitialPositionCompleted"}), this.self);
-    eval(this, this.self);
+    ArmBehaviour _armBehaviour = new ArmBehaviour(this.rosbridgeWebsocketURI);
+    eval(_armBehaviour, this.self);
   }
 }

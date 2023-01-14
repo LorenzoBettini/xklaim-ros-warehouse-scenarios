@@ -15,10 +15,7 @@ net MRS physical "localhost:9999" {
 		val robotId = "robot1"
 		val sector ="sector1"
 
-		////// Iterativo o ricorsivo????
-		while (true) {
-			executeNodeProcess(new DeliveryRobotBehaviour(rosbridgeWebsocketURI,robotId,sector,Arm))
-		}
+		eval(new DeliveryRobotBehaviour(rosbridgeWebsocketURI,robotId,sector,Arm))@self
 	}
 
 	node DeliveryRobot2 {
@@ -26,9 +23,7 @@ net MRS physical "localhost:9999" {
 		val robotId = "robot2"
 		val sector ="sector2"
 
-		while (true) {
-			executeNodeProcess(new DeliveryRobotBehaviour(rosbridgeWebsocketURI,robotId,sector,Arm))
-		}
+		eval(new DeliveryRobotBehaviour(rosbridgeWebsocketURI,robotId,sector,Arm))@self
 	}
 
 	node SimuationHandler {
@@ -55,10 +50,10 @@ net MRS physical "localhost:9999" {
 		// out("initialPosition")@Arm
 
 		// activate the DeliveryRobot1 by inserting the information that it is available for a delivery
-		out("availableForDelivery")@DeliveryRobot1
+		//out("availableForDelivery")@DeliveryRobot1
 
 		// activate the DeliveryRobot2 by inserting the information that it is available for a delivery
-		out("availableForDelivery")@DeliveryRobot2
+		//out("availableForDelivery")@DeliveryRobot2
 
 		// activate the processes in charge of unloading items from delivery robots and posing them in the ground  
 		// (there is one process for each pickup area)

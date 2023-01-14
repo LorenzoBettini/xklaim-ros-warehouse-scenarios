@@ -1,45 +1,12 @@
 package xklaim.arm
 
 import klava.Locality
-import xklaim.deliveryRobot.MoveTo
-import xklaim.deliveryRobot.WaitForItem
+import xklaim.arm.DeliveryOneItem
 
 proc DeliveryRobotBehaviour(String rosbridgeWebsocketURI,String robotId,String sector,Locality Arm) {
+	eval(new DeliveryOneItem(rosbridgeWebsocketURI,robotId,sector,Arm))@self
+	
 	in("availableForDelivery")@self
-
-	// wait for a call by the arm robot
-	in("itemReadyForTheDelivery",sector)@Arm
-
-	// Coordinates of the arm robot (notably, the arm robot has a fixed position)  
-	val x = -0.21
-	val y = 0.31
-	executeNodeProcess(new MoveTo(rosbridgeWebsocketURI, robotId, sector, x, y))
-
-	in("moveToCompleted")@self
-
-	// notify the arm robot that it is arrived and is ready to receive the item
-	out("deliveryRobotArrived")@Arm
-
-	// wait for the notification that the gripper is opened 
-	in("gripperOpened",var String itemId,var String itemType)@Arm
-
-	// activate the pressure sensor for detecting the presence of the item in the bowl and wait for the item
-	executeNodeProcess(new WaitForItem(rosbridgeWebsocketURI, robotId))
-	in("itemLoaded")@self
-
-	// retrieve from the local knowledge the destination coordinates
-	read("type2destination",itemType,var Double x2,var Double y2)@self
-
-	executeNodeProcess(new MoveTo(rosbridgeWebsocketURI, robotId, sector, x2, y2))
-
-	in("moveToCompleted")@self
-
-	var String coordinates = "(" + x2 + "," + y2 + ")"
-
-	// notify that the item with identifier id has been delivered 
-	out("itemDelivered",itemId,coordinates)@self
-
-	// set the robot as available for a new delivery
-	out("availableForDelivery")@self
-
+	
+	eval(new DeliveryRobotBehaviour(rosbridgeWebsocketURI,robotId,sector,Arm))@self
 }

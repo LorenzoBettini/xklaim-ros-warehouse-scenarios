@@ -6,7 +6,6 @@ import klava.Tuple;
 import klava.topology.ClientNode;
 import klava.topology.KlavaNodeCoordinator;
 import klava.topology.LogicalNet;
-import org.eclipse.xtext.xbase.lib.Exceptions;
 import org.mikado.imc.common.IMCException;
 import xklaim.arm.ArmBehaviour;
 import xklaim.arm.DeliveryRobotBehaviour;
@@ -44,17 +43,11 @@ public class MRS extends LogicalNet {
     private static class DeliveryRobot1Process extends KlavaNodeCoordinator {
       @Override
       public void executeProcess() {
-        try {
-          final String rosbridgeWebsocketURI = "ws://0.0.0.0:9090";
-          final String robotId = "robot1";
-          final String sector = "sector1";
-          while (true) {
-            DeliveryRobotBehaviour _deliveryRobotBehaviour = new DeliveryRobotBehaviour(rosbridgeWebsocketURI, robotId, sector, MRS.Arm);
-            this.executeNodeProcess(_deliveryRobotBehaviour);
-          }
-        } catch (Throwable _e) {
-          throw Exceptions.sneakyThrow(_e);
-        }
+        final String rosbridgeWebsocketURI = "ws://0.0.0.0:9090";
+        final String robotId = "robot1";
+        final String sector = "sector1";
+        DeliveryRobotBehaviour _deliveryRobotBehaviour = new DeliveryRobotBehaviour(rosbridgeWebsocketURI, robotId, sector, MRS.Arm);
+        eval(_deliveryRobotBehaviour, this.self);
       }
     }
     
@@ -71,17 +64,11 @@ public class MRS extends LogicalNet {
     private static class DeliveryRobot2Process extends KlavaNodeCoordinator {
       @Override
       public void executeProcess() {
-        try {
-          final String rosbridgeWebsocketURI = "ws://0.0.0.0:9090";
-          final String robotId = "robot2";
-          final String sector = "sector2";
-          while (true) {
-            DeliveryRobotBehaviour _deliveryRobotBehaviour = new DeliveryRobotBehaviour(rosbridgeWebsocketURI, robotId, sector, MRS.Arm);
-            this.executeNodeProcess(_deliveryRobotBehaviour);
-          }
-        } catch (Throwable _e) {
-          throw Exceptions.sneakyThrow(_e);
-        }
+        final String rosbridgeWebsocketURI = "ws://0.0.0.0:9090";
+        final String robotId = "robot2";
+        final String sector = "sector2";
+        DeliveryRobotBehaviour _deliveryRobotBehaviour = new DeliveryRobotBehaviour(rosbridgeWebsocketURI, robotId, sector, MRS.Arm);
+        eval(_deliveryRobotBehaviour, this.self);
       }
     }
     
@@ -107,8 +94,6 @@ public class MRS extends LogicalNet {
         out(new Tuple(new Object[] {"type2destination", "blue", 9.0, (-9.0)}), MRS.DeliveryRobot1);
         out(new Tuple(new Object[] {"type2destination", "red", 9.0, 9.0}), MRS.DeliveryRobot2);
         out(new Tuple(new Object[] {"type2destination", "blue", (-9.0), 9.0}), MRS.DeliveryRobot2);
-        out(new Tuple(new Object[] {"availableForDelivery"}), MRS.DeliveryRobot1);
-        out(new Tuple(new Object[] {"availableForDelivery"}), MRS.DeliveryRobot2);
         Unload _unload = new Unload(rosbridgeWebsocketURI, MRS.DeliveryRobot1, (-9.0), (-9.0));
         eval(_unload, this.self);
         Unload _unload_1 = new Unload(rosbridgeWebsocketURI, MRS.DeliveryRobot1, 9.0, (-9.0));
