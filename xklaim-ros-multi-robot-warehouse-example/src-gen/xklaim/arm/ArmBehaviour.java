@@ -5,18 +5,16 @@ import klava.topology.KlavaProcess;
 
 @SuppressWarnings("all")
 public class ArmBehaviour extends KlavaProcess {
-  private String rosbridgeWebsocketURI;
-  
-  public ArmBehaviour(final String rosbridgeWebsocketURI) {
-    this.rosbridgeWebsocketURI = rosbridgeWebsocketURI;
+  public ArmBehaviour() {
+    
   }
   
   @Override
   public void executeProcess() {
-    PickAndReleaseOneItem _pickAndReleaseOneItem = new PickAndReleaseOneItem(this.rosbridgeWebsocketURI);
+    PickAndReleaseOneItem _pickAndReleaseOneItem = new PickAndReleaseOneItem();
     eval(_pickAndReleaseOneItem, this.self);
     in(new Tuple(new Object[] {"initialPosition"}), this.self);
-    ArmBehaviour _armBehaviour = new ArmBehaviour(this.rosbridgeWebsocketURI);
+    ArmBehaviour _armBehaviour = new ArmBehaviour();
     eval(_armBehaviour, this.self);
   }
 }

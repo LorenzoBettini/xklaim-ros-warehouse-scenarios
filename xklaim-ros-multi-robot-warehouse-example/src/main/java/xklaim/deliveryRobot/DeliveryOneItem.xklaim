@@ -4,15 +4,17 @@ import klava.Locality
 import xklaim.deliveryRobot.MoveTo
 import xklaim.deliveryRobot.WaitForItem
 
-proc DeliveryOneItem(String rosbridgeWebsocketURI,String robotId,String sector,Locality Arm) {
+proc DeliveryOneItem(String robotId,String sector,Locality Arm) {
+	// retrieve the ROS bridge URI 
+	read("rosbridgeWebsocketURI",val String rosbridgeWebsocketURI)@self
+	
 	// wait for a call by the arm robot
 	in("itemReadyForTheDelivery",sector)@Arm
 
-	// Coordinates of the arm robot (notably, the arm robot has a fixed position)  
+	// move to the arm position (notably, the arm robot has a fixed, known position)  
 	val x = -0.21
 	val y = 0.31
-	executeNodeProcess(new MoveTo(rosbridgeWebsocketURI, robotId, sector, x, y))
-
+	eval(new MoveTo(robotId, sector, x, y))@self
 	in("moveToCompleted")@self
 
 	// notify the arm robot that it is arrived and is ready to receive the item
@@ -22,19 +24,18 @@ proc DeliveryOneItem(String rosbridgeWebsocketURI,String robotId,String sector,L
 	in("gripperOpened",var String itemId,var String itemType)@Arm
 
 	// activate the pressure sensor for detecting the presence of the item in the bowl and wait for the item
-	executeNodeProcess(new WaitForItem(rosbridgeWebsocketURI, robotId))
+	eval(new WaitForItem(robotId))@self
 	in("itemLoaded")@self
 
-	// retrieve from the local knowledge the destination coordinates
+	// retrieve from the local knowledge the delivery destination coordinates
 	read("type2destination",itemType,var Double x2,var Double y2)@self
 
-	executeNodeProcess(new MoveTo(rosbridgeWebsocketURI, robotId, sector, x2, y2))
-
+	// move to the delivery destination position
+	eval(new MoveTo(robotId, sector, x2, y2))@self
 	in("moveToCompleted")@self
 
-	var String coordinates = "(" + x2 + "," + y2 + ")"
-
-	// notify that the item with identifier id has been delivered 
+	// notify that the item with identifier itemId has been delivered
+	var String coordinates = "(" + x2 + "," + y2 + ")" 
 	out("itemDelivered",itemId,coordinates)@self
 
 	// set the robot as available for a new delivery

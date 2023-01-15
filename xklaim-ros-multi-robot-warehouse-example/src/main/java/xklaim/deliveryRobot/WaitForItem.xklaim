@@ -6,8 +6,11 @@ import messages.ContactsState
 import messages.XklaimToRosConnection
 import ros.SubscriptionRequestMsg
 
-proc WaitForItem(String rosbridgeWebsocketURI,String robotId) {
+proc WaitForItem(String robotId) {
 	val local = self
+	
+	// retrieve the ROS bridge URI 
+	read("rosbridgeWebsocketURI",val String rosbridgeWebsocketURI)@self
 
 	// connect to the ROS bridge
 	val bridge = new XklaimToRosConnection(rosbridgeWebsocketURI)

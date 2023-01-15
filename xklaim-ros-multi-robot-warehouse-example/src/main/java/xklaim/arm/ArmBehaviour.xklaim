@@ -2,10 +2,8 @@ package xklaim.arm
 
 import xklaim.arm.PickAndReleaseOneItem
 
-proc ArmBehaviour(String rosbridgeWebsocketURI) {
-	eval(new PickAndReleaseOneItem(rosbridgeWebsocketURI))@self
-	
+proc ArmBehaviour() {
+	eval(new PickAndReleaseOneItem())@self
 	in("initialPosition")@self
-	
-	eval(new ArmBehaviour(rosbridgeWebsocketURI))@self
+	eval(new ArmBehaviour())@self
 }

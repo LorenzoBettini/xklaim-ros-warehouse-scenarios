@@ -5,8 +5,11 @@ import messages.XklaimToRosConnection
 import ros.Publisher
 import ros.SubscriptionRequestMsg
 
-proc UseGripper(String rosbridgeWebsocketURI, GripperTrajectory gripperTrajectory) {
+proc UseGripper(GripperTrajectory gripperTrajectory) {
 	val local = self
+	
+	// retrieve the ROS bridge URI 
+	read("rosbridgeWebsocketURI",val String rosbridgeWebsocketURI)@self
 		
 	// connect to the ROS bridge
 	val bridge = new XklaimToRosConnection(rosbridgeWebsocketURI)
@@ -39,8 +42,8 @@ proc UseGripper(String rosbridgeWebsocketURI, GripperTrajectory gripperTrajector
 			}
 			val norm = Math.sqrt(delta)
 
-			if (norm <= gripperTrajectory.tolerance) { /* the gripper has completed the grip movement */
-				// activate the get up process
+			if (norm <= gripperTrajectory.tolerance) { 
+				// notify the completion of the gripper action
 				out("UseGripperCompleted")@local
 
 				// unsubscribe from the gripper state topic

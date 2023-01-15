@@ -14,19 +14,20 @@ import ros.SubscriptionRequestMsg;
 
 @SuppressWarnings("all")
 public class UseGripper extends KlavaProcess {
-  private String rosbridgeWebsocketURI;
-  
   private GripperTrajectory gripperTrajectory;
   
-  public UseGripper(final String rosbridgeWebsocketURI, final GripperTrajectory gripperTrajectory) {
-    this.rosbridgeWebsocketURI = rosbridgeWebsocketURI;
+  public UseGripper(final GripperTrajectory gripperTrajectory) {
     this.gripperTrajectory = gripperTrajectory;
   }
   
   @Override
   public void executeProcess() {
     final Locality local = this.self;
-    final XklaimToRosConnection bridge = new XklaimToRosConnection(this.rosbridgeWebsocketURI);
+    final String rosbridgeWebsocketURI;
+    Tuple _Tuple = new Tuple(new Object[] {"rosbridgeWebsocketURI", String.class});
+    read(_Tuple, this.self);
+    rosbridgeWebsocketURI = (String) _Tuple.getItem(1);
+    final XklaimToRosConnection bridge = new XklaimToRosConnection(rosbridgeWebsocketURI);
     final Publisher pub = new Publisher("/gripper_controller/command", "trajectory_msgs/JointTrajectory", bridge);
     final JointTrajectory trajectory = new JointTrajectory().positions(this.gripperTrajectory.getTrajectoryPoints()).jointNames(
       new String[] { "f_joint1", "f_joint2" });

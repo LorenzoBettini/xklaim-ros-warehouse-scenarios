@@ -16,8 +16,6 @@ import ros.msgs.geometry_msgs.Twist;
 
 @SuppressWarnings("all")
 public class MoveTo extends KlavaProcess {
-  private String rosbridgeWebsocketURI;
-  
   private String robotId;
   
   private String sector;
@@ -26,8 +24,7 @@ public class MoveTo extends KlavaProcess {
   
   private Double y;
   
-  public MoveTo(final String rosbridgeWebsocketURI, final String robotId, final String sector, final Double x, final Double y) {
-    this.rosbridgeWebsocketURI = rosbridgeWebsocketURI;
+  public MoveTo(final String robotId, final String sector, final Double x, final Double y) {
     this.robotId = robotId;
     this.sector = sector;
     this.x = x;
@@ -37,7 +34,11 @@ public class MoveTo extends KlavaProcess {
   @Override
   public void executeProcess() {
     final Locality local = this.self;
-    final XklaimToRosConnection bridge = new XklaimToRosConnection(this.rosbridgeWebsocketURI);
+    final String rosbridgeWebsocketURI;
+    Tuple _Tuple = new Tuple(new Object[] {"rosbridgeWebsocketURI", String.class});
+    read(_Tuple, this.self);
+    rosbridgeWebsocketURI = (String) _Tuple.getItem(1);
+    final XklaimToRosConnection bridge = new XklaimToRosConnection(rosbridgeWebsocketURI);
     final Publisher pub = new Publisher((("/" + this.robotId) + "/move_base_simple/goal"), "geometry_msgs/PoseStamped", bridge);
     final PoseStamped destination = new PoseStamped().headerFrameId("world").posePositionXY((this.x).doubleValue(), (this.y).doubleValue()).poseOrientation(1.0);
     pub.publish(destination);

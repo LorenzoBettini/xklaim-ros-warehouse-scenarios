@@ -24,8 +24,8 @@ public class MRS extends LogicalNet {
     private static class ArmProcess extends KlavaNodeCoordinator {
       @Override
       public void executeProcess() {
-        final String rosbridgeWebsocketURI = "ws://0.0.0.0:9090";
-        ArmBehaviour _armBehaviour = new ArmBehaviour(rosbridgeWebsocketURI);
+        out(new Tuple(new Object[] {"rosbridgeWebsocketURI", "ws://0.0.0.0:9090"}), this.self);
+        ArmBehaviour _armBehaviour = new ArmBehaviour();
         eval(_armBehaviour, this.self);
       }
     }
@@ -43,10 +43,10 @@ public class MRS extends LogicalNet {
     private static class DeliveryRobot1Process extends KlavaNodeCoordinator {
       @Override
       public void executeProcess() {
-        final String rosbridgeWebsocketURI = "ws://0.0.0.0:9090";
         final String robotId = "robot1";
         final String sector = "sector1";
-        DeliveryRobotBehaviour _deliveryRobotBehaviour = new DeliveryRobotBehaviour(rosbridgeWebsocketURI, robotId, sector, MRS.Arm);
+        out(new Tuple(new Object[] {"rosbridgeWebsocketURI", "ws://0.0.0.0:9090"}), this.self);
+        DeliveryRobotBehaviour _deliveryRobotBehaviour = new DeliveryRobotBehaviour(robotId, sector, MRS.Arm);
         eval(_deliveryRobotBehaviour, this.self);
       }
     }
@@ -64,10 +64,10 @@ public class MRS extends LogicalNet {
     private static class DeliveryRobot2Process extends KlavaNodeCoordinator {
       @Override
       public void executeProcess() {
-        final String rosbridgeWebsocketURI = "ws://0.0.0.0:9090";
         final String robotId = "robot2";
         final String sector = "sector2";
-        DeliveryRobotBehaviour _deliveryRobotBehaviour = new DeliveryRobotBehaviour(rosbridgeWebsocketURI, robotId, sector, MRS.Arm);
+        out(new Tuple(new Object[] {"rosbridgeWebsocketURI", "ws://0.0.0.0:9090"}), this.self);
+        DeliveryRobotBehaviour _deliveryRobotBehaviour = new DeliveryRobotBehaviour(robotId, sector, MRS.Arm);
         eval(_deliveryRobotBehaviour, this.self);
       }
     }
@@ -85,7 +85,6 @@ public class MRS extends LogicalNet {
     private static class SimuationHandlerProcess extends KlavaNodeCoordinator {
       @Override
       public void executeProcess() {
-        final String rosbridgeWebsocketURI = "ws://0.0.0.0:9090";
         out(new Tuple(new Object[] {"item", "item1", "sector1", "red", 0.583518, 0.0}), MRS.Arm);
         out(new Tuple(new Object[] {"item", "item2", "sector2", "blue", 0.554542, 0.187360}), MRS.Arm);
         out(new Tuple(new Object[] {"item", "item3", "sector2", "red", 0.504, 0.307}), MRS.Arm);
@@ -94,6 +93,7 @@ public class MRS extends LogicalNet {
         out(new Tuple(new Object[] {"type2destination", "blue", 9.0, (-9.0)}), MRS.DeliveryRobot1);
         out(new Tuple(new Object[] {"type2destination", "red", 9.0, 9.0}), MRS.DeliveryRobot2);
         out(new Tuple(new Object[] {"type2destination", "blue", (-9.0), 9.0}), MRS.DeliveryRobot2);
+        final String rosbridgeWebsocketURI = "ws://0.0.0.0:9090";
         Unload _unload = new Unload(rosbridgeWebsocketURI, MRS.DeliveryRobot1, (-9.0), (-9.0));
         eval(_unload, this.self);
         Unload _unload_1 = new Unload(rosbridgeWebsocketURI, MRS.DeliveryRobot1, 9.0, (-9.0));

@@ -5,10 +5,8 @@ import klava.topology.KlavaProcess;
 
 @SuppressWarnings("all")
 public class PickAndReleaseOneItem extends KlavaProcess {
-  private String rosbridgeWebsocketURI;
-  
-  public PickAndReleaseOneItem(final String rosbridgeWebsocketURI) {
-    this.rosbridgeWebsocketURI = rosbridgeWebsocketURI;
+  public PickAndReleaseOneItem() {
+    
   }
   
   @Override
@@ -33,31 +31,31 @@ public class PickAndReleaseOneItem extends KlavaProcess {
     final ArmTrajectory INITIAL_POSITION = new ArmTrajectory(new double[] { 0.000, 0.000, 0.000, 0.000, 0.000, 0.000 }, 0.008);
     final GripperTrajectory CLOSE = new GripperTrajectory(new double[] { 0.0138, (-0.0138) }, 0.007);
     final GripperTrajectory OPEN = new GripperTrajectory(new double[] { 0.0, 0.0 }, 0.0008);
-    MoveArmTo _moveArmTo = new MoveArmTo(this.rosbridgeWebsocketURI, HALF_DOWN);
+    MoveArmTo _moveArmTo = new MoveArmTo(HALF_DOWN);
     eval(_moveArmTo, this.self);
     in(new Tuple(new Object[] {"MoveArmToCompleted"}), this.self);
-    MoveArmTo _moveArmTo_1 = new MoveArmTo(this.rosbridgeWebsocketURI, COMPLETE_DOWN);
+    MoveArmTo _moveArmTo_1 = new MoveArmTo(COMPLETE_DOWN);
     eval(_moveArmTo_1, this.self);
     in(new Tuple(new Object[] {"MoveArmToCompleted"}), this.self);
-    UseGripper _useGripper = new UseGripper(this.rosbridgeWebsocketURI, CLOSE);
+    UseGripper _useGripper = new UseGripper(CLOSE);
     eval(_useGripper, this.self);
     in(new Tuple(new Object[] {"UseGripperCompleted"}), this.self);
-    MoveArmTo _moveArmTo_2 = new MoveArmTo(this.rosbridgeWebsocketURI, UP);
+    MoveArmTo _moveArmTo_2 = new MoveArmTo(UP);
     eval(_moveArmTo_2, this.self);
     in(new Tuple(new Object[] {"MoveArmToCompleted"}), this.self);
     out(new Tuple(new Object[] {"itemReadyForTheDelivery", sector}), this.self);
-    MoveArmTo _moveArmTo_3 = new MoveArmTo(this.rosbridgeWebsocketURI, ROTATE);
+    MoveArmTo _moveArmTo_3 = new MoveArmTo(ROTATE);
     eval(_moveArmTo_3, this.self);
     in(new Tuple(new Object[] {"MoveArmToCompleted"}), this.self);
     in(new Tuple(new Object[] {"deliveryRobotArrived"}), this.self);
-    MoveArmTo _moveArmTo_4 = new MoveArmTo(this.rosbridgeWebsocketURI, LAY_DOWN);
+    MoveArmTo _moveArmTo_4 = new MoveArmTo(LAY_DOWN);
     eval(_moveArmTo_4, this.self);
     in(new Tuple(new Object[] {"MoveArmToCompleted"}), this.self);
-    UseGripper _useGripper_1 = new UseGripper(this.rosbridgeWebsocketURI, OPEN);
+    UseGripper _useGripper_1 = new UseGripper(OPEN);
     eval(_useGripper_1, this.self);
     in(new Tuple(new Object[] {"UseGripperCompleted"}), this.self);
     out(new Tuple(new Object[] {"gripperOpened", itemId, itemType}), this.self);
-    MoveArmTo _moveArmTo_5 = new MoveArmTo(this.rosbridgeWebsocketURI, INITIAL_POSITION);
+    MoveArmTo _moveArmTo_5 = new MoveArmTo(INITIAL_POSITION);
     eval(_moveArmTo_5, this.self);
     in(new Tuple(new Object[] {"MoveArmToCompleted"}), this.self);
     out(new Tuple(new Object[] {"initialPosition"}), this.self);

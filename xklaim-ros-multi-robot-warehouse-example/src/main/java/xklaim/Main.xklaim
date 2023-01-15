@@ -5,35 +5,27 @@ import xklaim.arm.DeliveryRobotBehaviour
 
 net MRS physical "localhost:9999" {
 	node Arm {
-		///////// può valer la pena alleggerire il codice non usando rosbridgeWebsocketURI
-		// come argomento dei metodi costruttori di tutti i processi, ma 
-		// mettendolo su una tupla (la tupla deve essere locale al nodo perché 
-		// potrei in teoria configurare il bridger in modo diverso da robot a robot)
-		// parliamone 
-		val rosbridgeWebsocketURI = "ws://0.0.0.0:9090"
-		
-		eval(new ArmBehaviour(rosbridgeWebsocketURI))@self
+		out("rosbridgeWebsocketURI","ws://0.0.0.0:9090")@self
+		eval(new ArmBehaviour())@self
 	}
 
 	node DeliveryRobot1 {
-		val rosbridgeWebsocketURI = "ws://0.0.0.0:9090"
 		val robotId = "robot1"
 		val sector ="sector1"
 
-		eval(new DeliveryRobotBehaviour(rosbridgeWebsocketURI,robotId,sector,Arm))@self
+		out("rosbridgeWebsocketURI","ws://0.0.0.0:9090")@self
+		eval(new DeliveryRobotBehaviour(robotId,sector,Arm))@self
 	}
 
 	node DeliveryRobot2 {
-		val rosbridgeWebsocketURI = "ws://0.0.0.0:9090"
 		val robotId = "robot2"
 		val sector ="sector2"
 
-		eval(new DeliveryRobotBehaviour(rosbridgeWebsocketURI,robotId,sector,Arm))@self
+		out("rosbridgeWebsocketURI","ws://0.0.0.0:9090")@self
+		eval(new DeliveryRobotBehaviour(robotId,sector,Arm))@self
 	}
 
 	node SimuationHandler {
-		val rosbridgeWebsocketURI = "ws://0.0.0.0:9090"
-
 		// --- initial setup of the scenario ---
 		// insert info about items (id, warehouse destination sector, type and coordinates)  
 		// in the arm robot's local knowledge (i.e., its tuple space) 			
@@ -52,6 +44,7 @@ net MRS physical "localhost:9999" {
 		
 		// activate the processes in charge of unloading items from delivery robots and posing them in the ground  
 		// (there is one process for each pickup area)
+		val rosbridgeWebsocketURI = "ws://0.0.0.0:9090"
 		eval(new Unload(rosbridgeWebsocketURI,DeliveryRobot1,-9.0,-9.0))@self
 		eval(new Unload(rosbridgeWebsocketURI,DeliveryRobot1,9.0,-9.0))@self
 		eval(new Unload(rosbridgeWebsocketURI,DeliveryRobot2,-9.0,9.0))@self

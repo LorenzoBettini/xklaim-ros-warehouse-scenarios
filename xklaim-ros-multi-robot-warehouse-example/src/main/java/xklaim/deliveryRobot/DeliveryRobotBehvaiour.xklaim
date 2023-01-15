@@ -3,10 +3,8 @@ package xklaim.arm
 import klava.Locality
 import xklaim.arm.DeliveryOneItem
 
-proc DeliveryRobotBehaviour(String rosbridgeWebsocketURI,String robotId,String sector,Locality Arm) {
-	eval(new DeliveryOneItem(rosbridgeWebsocketURI,robotId,sector,Arm))@self
-	
+proc DeliveryRobotBehaviour(String robotId,String sector,Locality Arm) {
+	eval(new DeliveryOneItem(robotId,sector,Arm))@self
 	in("availableForDelivery")@self
-	
-	eval(new DeliveryRobotBehaviour(rosbridgeWebsocketURI,robotId,sector,Arm))@self
+	eval(new DeliveryRobotBehaviour(robotId,sector,Arm))@self
 }

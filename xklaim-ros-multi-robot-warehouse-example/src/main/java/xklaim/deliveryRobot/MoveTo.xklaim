@@ -9,8 +9,11 @@ import ros.Publisher
 import ros.SubscriptionRequestMsg
 import ros.msgs.geometry_msgs.Twist
 
-proc MoveTo(String rosbridgeWebsocketURI,String robotId,String sector, Double x, Double y) {
+proc MoveTo(String robotId,String sector, Double x, Double y) {
 	val local = self
+
+	// retrieve the ROS bridge URI 
+	read("rosbridgeWebsocketURI",val String rosbridgeWebsocketURI)@self
 
 	// connect to the ROS bridge
 	val bridge = new XklaimToRosConnection(rosbridgeWebsocketURI)

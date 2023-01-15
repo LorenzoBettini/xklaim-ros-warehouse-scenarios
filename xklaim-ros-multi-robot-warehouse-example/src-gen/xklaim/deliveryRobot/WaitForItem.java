@@ -16,19 +16,20 @@ import ros.SubscriptionRequestMsg;
 
 @SuppressWarnings("all")
 public class WaitForItem extends KlavaProcess {
-  private String rosbridgeWebsocketURI;
-  
   private String robotId;
   
-  public WaitForItem(final String rosbridgeWebsocketURI, final String robotId) {
-    this.rosbridgeWebsocketURI = rosbridgeWebsocketURI;
+  public WaitForItem(final String robotId) {
     this.robotId = robotId;
   }
   
   @Override
   public void executeProcess() {
     final Locality local = this.self;
-    final XklaimToRosConnection bridge = new XklaimToRosConnection(this.rosbridgeWebsocketURI);
+    final String rosbridgeWebsocketURI;
+    Tuple _Tuple = new Tuple(new Object[] {"rosbridgeWebsocketURI", String.class});
+    read(_Tuple, this.self);
+    rosbridgeWebsocketURI = (String) _Tuple.getItem(1);
+    final XklaimToRosConnection bridge = new XklaimToRosConnection(rosbridgeWebsocketURI);
     final RosListenDelegate _function = (JsonNode data, String stringRep) -> {
       try {
         ObjectMapper mapper = new ObjectMapper();
