@@ -30,7 +30,7 @@ public class PickAndReleaseOneItem extends KlavaProcess {
     final ArmTrajectory LAY_DOWN = new ArmTrajectory(new double[] { (-0.9546), (-0.0097), (-0.9513), 3.1400, 1.7749, (-0.0142) }, 0.002);
     final ArmTrajectory INITIAL_POSITION = new ArmTrajectory(new double[] { 0.000, 0.000, 0.000, 0.000, 0.000, 0.000 }, 0.008);
     final GripperTrajectory CLOSE = new GripperTrajectory(new double[] { 0.0138, (-0.0138) }, 0.007);
-    final GripperTrajectory OPEN = new GripperTrajectory(new double[] { 0.0, 0.0 }, 0.0008);
+    final GripperTrajectory OPEN = new GripperTrajectory(new double[] { 0.0, 0.0 }, 0.00008);
     MoveArmTo _moveArmTo = new MoveArmTo(HALF_DOWN);
     eval(_moveArmTo, this.self);
     in(new Tuple(new Object[] {"MoveArmToCompleted"}), this.self);

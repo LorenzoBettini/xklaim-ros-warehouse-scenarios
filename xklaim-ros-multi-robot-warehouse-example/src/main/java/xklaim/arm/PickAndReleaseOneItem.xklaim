@@ -12,7 +12,7 @@ proc PickAndReleaseOneItem() {
 	val LAY_DOWN = new ArmTrajectory(#[-0.9546, -0.0097, -0.9513, 3.1400, 1.7749, -0.0142], 0.002)
 	val INITIAL_POSITION = new ArmTrajectory(#[0.000, 0.000, 0.000, 0.000, 0.000, 0.000], 0.008)
 	val CLOSE = new GripperTrajectory(#[0.0138, -0.0138], 0.007)
-	val OPEN = new GripperTrajectory(#[0.0, 0.0], 0.0008)
+	val OPEN = new GripperTrajectory(#[0.0, 0.0], 0.00008)
 
 	// move the arm half down
 	eval(new MoveArmTo(HALF_DOWN))@self
