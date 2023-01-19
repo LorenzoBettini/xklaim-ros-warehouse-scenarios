@@ -2,6 +2,7 @@ package xklaim.arm;
 
 import klava.Tuple;
 import klava.topology.KlavaProcess;
+import xklaim.GlobalConstants;
 
 @SuppressWarnings("all")
 public class PickAndReleaseOneItem extends KlavaProcess {
@@ -16,7 +17,7 @@ public class PickAndReleaseOneItem extends KlavaProcess {
     String itemType = null;
     Double x = null;
     Double y = null;
-    Tuple _Tuple = new Tuple(new Object[] {"item", String.class, String.class, String.class, Double.class, Double.class});
+    Tuple _Tuple = new Tuple(new Object[] {GlobalConstants.ITEM, String.class, String.class, String.class, Double.class, Double.class});
     in(_Tuple, this.self);
     itemId = (String) _Tuple.getItem(1);
     sector = (String) _Tuple.getItem(2);
@@ -33,7 +34,7 @@ public class PickAndReleaseOneItem extends KlavaProcess {
     final GripperTrajectory OPEN = new GripperTrajectory(new double[] { 0.0, 0.0 }, 0.00008);
     MoveArmTo _moveArmTo = new MoveArmTo(HALF_DOWN);
     eval(_moveArmTo, this.self);
-    in(new Tuple(new Object[] {"MoveArmToCompleted"}), this.self);
+    in(new Tuple(new Object[] {ArmConstants.MOVE_ARM_TO_COMPLETED}), this.self);
     MoveArmTo _moveArmTo_1 = new MoveArmTo(COMPLETE_DOWN);
     eval(_moveArmTo_1, this.self);
     in(new Tuple(new Object[] {"MoveArmToCompleted"}), this.self);

@@ -1,8 +1,11 @@
 package xklaim.arm
 
+import static xklaim.arm.ArmConstants.*
+import static xklaim.GlobalConstants.*
+
 proc PickAndReleaseOneItem() {
 	// retrieve info about the item to be picked up  
-	in("item",var String itemId,var String sector, var String itemType,var Double x,var Double y)@self
+	in(ITEM,var String itemId,var String sector, var String itemType,var Double x,var Double y)@self
 
 	// define trajectories for the arm movement 
 	val HALF_DOWN = new ArmTrajectory(#[-0.2169, -0.5822, 3.14, 1.66, -0.01412], x, y, 0.000001)
@@ -16,7 +19,7 @@ proc PickAndReleaseOneItem() {
 
 	// move the arm half down
 	eval(new MoveArmTo(HALF_DOWN))@self
-	in("MoveArmToCompleted")@self
+	in(MOVE_ARM_TO_COMPLETED)@self
 
 	// move the arm completely down
 	eval(new MoveArmTo(COMPLETE_DOWN))@self

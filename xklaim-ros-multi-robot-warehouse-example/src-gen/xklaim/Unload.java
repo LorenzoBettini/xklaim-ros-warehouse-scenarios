@@ -29,7 +29,6 @@ public class Unload extends KlavaProcess {
   @Override
   public void executeProcess() {
     try {
-      String coordinates = (((("(" + Double.valueOf(this.x)) + ",") + Double.valueOf(this.y)) + ")");
       double poseX = this.x;
       double poseY = this.y;
       if ((this.x > 0)) {
@@ -49,7 +48,7 @@ public class Unload extends KlavaProcess {
       while (true) {
         {
           String itemId = null;
-          Tuple _Tuple = new Tuple(new Object[] {"itemDelivered", String.class, coordinates});
+          Tuple _Tuple = new Tuple(new Object[] {"itemDelivered", String.class, this.x, this.y});
           in(_Tuple, this.DeliveryRobot);
           itemId = (String) _Tuple.getItem(1);
           Thread.sleep(2000);

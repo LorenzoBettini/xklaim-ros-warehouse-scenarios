@@ -51,8 +51,7 @@ public class DeliveryOneItem extends KlavaProcess {
     MoveTo _moveTo_1 = new MoveTo(this.robotId, this.sector, x2, y2);
     eval(_moveTo_1, this.self);
     in(new Tuple(new Object[] {"moveToCompleted"}), this.self);
-    String coordinates = (((("(" + x2) + ",") + y2) + ")");
-    out(new Tuple(new Object[] {"itemDelivered", itemId, coordinates}), this.self);
+    out(new Tuple(new Object[] {"itemDelivered", itemId, x2, y2}), this.self);
     out(new Tuple(new Object[] {"availableForDelivery"}), this.self);
   }
 }

@@ -35,8 +35,7 @@ proc DeliveryOneItem(String robotId,String sector,Locality Arm) {
 	in("moveToCompleted")@self
 
 	// notify that the item with identifier itemId has been delivered
-	var String coordinates = "(" + x2 + "," + y2 + ")" 
-	out("itemDelivered",itemId,coordinates)@self
+	out("itemDelivered",itemId,x2,y2)@self
 
 	// set the robot as available for a new delivery
 	out("availableForDelivery")@self

@@ -6,7 +6,6 @@ import messages.XklaimToRosConnection
 import ros.Publisher
 
 proc Unload(String rosbridgeWebsocketURI,Locality DeliveryRobot,double x, double y) {
-	var String coordinates = "("+x+","+y+")"
 	var poseX = x
 	var poseY = y
 
@@ -22,7 +21,7 @@ proc Unload(String rosbridgeWebsocketURI,Locality DeliveryRobot,double x, double
 	}
 	
 	while (true) {
-		in("itemDelivered",var String itemId,coordinates)@DeliveryRobot
+		in("itemDelivered",var String itemId,x,y)@DeliveryRobot
 				
 		// wait for a short delay before picking up the item
 		Thread.sleep(2000)
