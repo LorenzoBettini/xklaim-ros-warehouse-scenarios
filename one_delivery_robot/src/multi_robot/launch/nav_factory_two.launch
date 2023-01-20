@@ -1,0 +1,17 @@
+<launch>
+    <arg name="ns1" default="robot1"/>
+	<arg name="map_name" default="$(find multi_robot)/maps/factory.yaml" />
+
+    <include file="$(find neuronbot2_nav)/launch/bringup.launch">
+        <arg name="namespace" value="$(arg ns1)"/>
+	    <arg name="map" value="$(arg map_name)" />
+    	<arg name="x_pos" value="0.59"/>
+    	<arg name="y_pos" value=" -12.4"/>
+        <arg name="yaw" value=" 1.57"/>
+    </include>
+    <rosparam command="load" ns="$(arg ns1)" file="$(find neuronbot2_multibot)/params/multilayer_costmap.yaml" />
+</launch>
+
+
+
+
