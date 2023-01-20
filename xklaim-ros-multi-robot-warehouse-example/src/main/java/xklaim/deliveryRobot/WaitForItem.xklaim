@@ -6,11 +6,15 @@ import messages.ContactsState
 import messages.XklaimToRosConnection
 import ros.SubscriptionRequestMsg
 
+import static xklaim.GlobalConstants.*
+import static xklaim.deliveryRobot.DeliveryRobotConstants.*
+
+
 proc WaitForItem(String robotId) {
 	val local = self
 	
 	// retrieve the ROS bridge URI 
-	read("rosbridgeWebsocketURI",val String rosbridgeWebsocketURI)@self
+	read(ROS_BRIDGE_SOCKET_URI,val String rosbridgeWebsocketURI)@self
 
 	// connect to the ROS bridge
 	val bridge = new XklaimToRosConnection(rosbridgeWebsocketURI)
@@ -26,7 +30,7 @@ proc WaitForItem(String robotId) {
 
 			if (!state.states.isEmpty && state.states.get(0).total_wrench.force.z != 0.0) {
 				// notify that the item is loaded in the delivery robot
-				out("itemLoaded")@local
+				out(ITEM_LOADED)@local
 
 				// unsubscribe from the pressure sensor topic
 				bridge.unsubscribe("/" + robotId + "/pressure_sensor_state")

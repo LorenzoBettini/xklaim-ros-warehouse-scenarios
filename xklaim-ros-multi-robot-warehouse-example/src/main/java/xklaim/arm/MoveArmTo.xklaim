@@ -5,11 +5,14 @@ import messages.XklaimToRosConnection
 import ros.Publisher
 import ros.SubscriptionRequestMsg
 
+import static xklaim.GlobalConstants.*
+import static xklaim.arm.ArmConstants.*
+
 proc MoveArmTo(ArmTrajectory armTrajectory) {
 	val local = self;
 
 	// retrieve the ROS bridge URI 
-	read("rosbridgeWebsocketURI",val String rosbridgeWebsocketURI)@self
+	read(ROS_BRIDGE_SOCKET_URI,val String rosbridgeWebsocketURI)@self
 
 	// connect to the ROS bridge
 	val bridge = new XklaimToRosConnection(rosbridgeWebsocketURI)
@@ -48,7 +51,7 @@ proc MoveArmTo(ArmTrajectory armTrajectory) {
 
 			if (norm <= armTrajectory.tolerance) { 
 				// notify the completion of the movement
-				out("MoveArmToCompleted")@local
+				out(MOVE_ARM_TO_COMPLETED)@local
 
 				// unsubscribe from the arm state topic
 				bridge.unsubscribe("/arm_controller/state")

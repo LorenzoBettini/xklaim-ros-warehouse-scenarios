@@ -13,6 +13,7 @@ import ros.Publisher;
 import ros.RosListenDelegate;
 import ros.SubscriptionRequestMsg;
 import ros.msgs.geometry_msgs.Twist;
+import xklaim.GlobalConstants;
 
 @SuppressWarnings("all")
 public class MoveTo extends KlavaProcess {
@@ -35,7 +36,7 @@ public class MoveTo extends KlavaProcess {
   public void executeProcess() {
     final Locality local = this.self;
     final String rosbridgeWebsocketURI;
-    Tuple _Tuple = new Tuple(new Object[] {"rosbridgeWebsocketURI", String.class});
+    Tuple _Tuple = new Tuple(new Object[] {GlobalConstants.ROS_BRIDGE_SOCKET_URI, String.class});
     read(_Tuple, this.self);
     rosbridgeWebsocketURI = (String) _Tuple.getItem(1);
     final XklaimToRosConnection bridge = new XklaimToRosConnection(rosbridgeWebsocketURI);
@@ -54,7 +55,7 @@ public class MoveTo extends KlavaProcess {
           final Publisher pubvel = new Publisher((("/" + this.robotId) + "/cmd_vel"), "geometry_msgs/Twist", bridge);
           final Twist twistMsg = new Twist();
           pubvel.publish(twistMsg);
-          out(new Tuple(new Object[] {"moveToCompleted"}), local);
+          out(new Tuple(new Object[] {DeliveryRobotConstants.MOVE_TO_COMPLETED}), local);
           bridge.unsubscribe((("/" + this.robotId) + "/amcl_pose"));
         }
       } catch (Throwable _e) {

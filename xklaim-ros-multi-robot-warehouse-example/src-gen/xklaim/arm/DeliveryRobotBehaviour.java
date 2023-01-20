@@ -3,6 +3,7 @@ package xklaim.arm;
 import klava.Locality;
 import klava.Tuple;
 import klava.topology.KlavaProcess;
+import xklaim.deliveryRobot.DeliveryRobotConstants;
 
 @SuppressWarnings("all")
 public class DeliveryRobotBehaviour extends KlavaProcess {
@@ -22,7 +23,7 @@ public class DeliveryRobotBehaviour extends KlavaProcess {
   public void executeProcess() {
     DeliveryOneItem _deliveryOneItem = new DeliveryOneItem(this.robotId, this.sector, this.Arm);
     eval(_deliveryOneItem, this.self);
-    in(new Tuple(new Object[] {"availableForDelivery"}), this.self);
+    in(new Tuple(new Object[] {DeliveryRobotConstants.AVAILABLE_FOR_DELIVERY}), this.self);
     DeliveryRobotBehaviour _deliveryRobotBehaviour = new DeliveryRobotBehaviour(this.robotId, this.sector, this.Arm);
     eval(_deliveryRobotBehaviour, this.self);
   }

@@ -5,7 +5,12 @@ import messages.ModelState
 import messages.XklaimToRosConnection
 import ros.Publisher
 
-proc Unload(String rosbridgeWebsocketURI,Locality DeliveryRobot,double x, double y) {
+import static xklaim.GlobalConstants.*
+
+proc Unload(Locality DeliveryRobot,double x, double y) {
+	// retrieve the ROS bridge URI 
+	read(ROS_BRIDGE_SOCKET_URI,val String rosbridgeWebsocketURI)@self
+	
 	var poseX = x
 	var poseY = y
 

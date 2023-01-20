@@ -23,41 +23,41 @@ proc PickAndReleaseOneItem() {
 
 	// move the arm completely down
 	eval(new MoveArmTo(COMPLETE_DOWN))@self
-	in("MoveArmToCompleted")@self
+	in(MOVE_ARM_TO_COMPLETED)@self
 
 	// close the gripper to grip the item
 	eval(new UseGripper(CLOSE))@self
-	in("UseGripperCompleted")@self
+	in(USE_GRIPPER_COMPLETED)@self
 
 	// move the arm up 
 	eval(new MoveArmTo(UP))@self
-	in("MoveArmToCompleted")@self
+	in(MOVE_ARM_TO_COMPLETED)@self
 
 	// call for a delivery robot
-	out("itemReadyForTheDelivery",sector)@self
+	out(ITEM_READY_FOR_DELIVERY,sector)@self
 
 	// rotate the arm
 	eval(new MoveArmTo(ROTATE))@self
-	in("MoveArmToCompleted")@self
+	in(MOVE_ARM_TO_COMPLETED)@self
 
 	// wait for the arrival of a delivery robot
-	in("deliveryRobotArrived")@self
+	in(DELIVERY_ROBOT_ARRIVED)@self
 
 	// move the arm down to lay the item on the delivery robot's bowl  
 	eval(new MoveArmTo(LAY_DOWN))@self
-	in("MoveArmToCompleted")@self
+	in(MOVE_ARM_TO_COMPLETED)@self
 
 	// open the gripper to release the item
 	eval(new UseGripper(OPEN))@self
-	in("UseGripperCompleted")@self
+	in(USE_GRIPPER_COMPLETED)@self
 
 	// notify that the gripper is opened
-	out("gripperOpened",itemId,itemType)@self
+	out(GRIPPER_OPENED,itemId,itemType)@self
 
 	// move the arm to the initial position
 	eval(new MoveArmTo(INITIAL_POSITION))@self
-	in("MoveArmToCompleted")@self
+	in(MOVE_ARM_TO_COMPLETED)@self
 
 	// notify that the arm is in the initial position
-	out("initialPosition")@self
+	out(IS_IN_THE_INITIAL_POSITION)@self
 }

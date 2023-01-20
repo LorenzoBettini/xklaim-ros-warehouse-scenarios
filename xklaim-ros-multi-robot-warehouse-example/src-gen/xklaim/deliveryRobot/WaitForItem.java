@@ -13,6 +13,7 @@ import org.eclipse.xtext.xbase.lib.Conversions;
 import org.eclipse.xtext.xbase.lib.Exceptions;
 import ros.RosListenDelegate;
 import ros.SubscriptionRequestMsg;
+import xklaim.GlobalConstants;
 
 @SuppressWarnings("all")
 public class WaitForItem extends KlavaProcess {
@@ -26,7 +27,7 @@ public class WaitForItem extends KlavaProcess {
   public void executeProcess() {
     final Locality local = this.self;
     final String rosbridgeWebsocketURI;
-    Tuple _Tuple = new Tuple(new Object[] {"rosbridgeWebsocketURI", String.class});
+    Tuple _Tuple = new Tuple(new Object[] {GlobalConstants.ROS_BRIDGE_SOCKET_URI, String.class});
     read(_Tuple, this.self);
     rosbridgeWebsocketURI = (String) _Tuple.getItem(1);
     final XklaimToRosConnection bridge = new XklaimToRosConnection(rosbridgeWebsocketURI);
@@ -36,7 +37,7 @@ public class WaitForItem extends KlavaProcess {
         JsonNode rosMsgNode = data.get("msg");
         ContactsState state = mapper.<ContactsState>treeToValue(rosMsgNode, ContactsState.class);
         if (((!((List<ContactState>)Conversions.doWrapArray(state.states)).isEmpty()) && ((state.states[0]).total_wrench.force.z != 0.0))) {
-          out(new Tuple(new Object[] {"itemLoaded"}), local);
+          out(new Tuple(new Object[] {DeliveryRobotConstants.ITEM_LOADED}), local);
           bridge.unsubscribe((("/" + this.robotId) + "/pressure_sensor_state"));
         }
       } catch (Throwable _e) {

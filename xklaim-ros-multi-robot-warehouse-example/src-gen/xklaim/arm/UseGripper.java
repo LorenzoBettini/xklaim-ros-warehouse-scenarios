@@ -11,6 +11,7 @@ import org.eclipse.xtext.xbase.lib.Conversions;
 import ros.Publisher;
 import ros.RosListenDelegate;
 import ros.SubscriptionRequestMsg;
+import xklaim.GlobalConstants;
 
 @SuppressWarnings("all")
 public class UseGripper extends KlavaProcess {
@@ -24,7 +25,7 @@ public class UseGripper extends KlavaProcess {
   public void executeProcess() {
     final Locality local = this.self;
     final String rosbridgeWebsocketURI;
-    Tuple _Tuple = new Tuple(new Object[] {"rosbridgeWebsocketURI", String.class});
+    Tuple _Tuple = new Tuple(new Object[] {GlobalConstants.ROS_BRIDGE_SOCKET_URI, String.class});
     read(_Tuple, this.self);
     rosbridgeWebsocketURI = (String) _Tuple.getItem(1);
     final XklaimToRosConnection bridge = new XklaimToRosConnection(rosbridgeWebsocketURI);
@@ -47,7 +48,7 @@ public class UseGripper extends KlavaProcess {
       double _tolerance = this.gripperTrajectory.getTolerance();
       boolean _lessEqualsThan = (norm <= _tolerance);
       if (_lessEqualsThan) {
-        out(new Tuple(new Object[] {"UseGripperCompleted"}), local);
+        out(new Tuple(new Object[] {ArmConstants.USE_GRIPPER_COMPLETED}), local);
         bridge.unsubscribe("/gripper_controller/state");
       }
     };

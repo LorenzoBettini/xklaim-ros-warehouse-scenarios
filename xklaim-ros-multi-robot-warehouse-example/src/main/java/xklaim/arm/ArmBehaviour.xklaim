@@ -1,9 +1,10 @@
 package xklaim.arm
 
 import xklaim.arm.PickAndReleaseOneItem
+import static xklaim.arm.ArmConstants.*
 
 proc ArmBehaviour() {
 	eval(new PickAndReleaseOneItem())@self
-	in("initialPosition")@self
+	in(IS_IN_THE_INITIAL_POSITION)@self
 	eval(new ArmBehaviour())@self
 }

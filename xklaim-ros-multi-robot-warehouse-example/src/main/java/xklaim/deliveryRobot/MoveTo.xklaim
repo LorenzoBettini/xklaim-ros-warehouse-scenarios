@@ -9,11 +9,14 @@ import ros.Publisher
 import ros.SubscriptionRequestMsg
 import ros.msgs.geometry_msgs.Twist
 
+import static xklaim.GlobalConstants.*
+import static xklaim.deliveryRobot.DeliveryRobotConstants.*
+
 proc MoveTo(String robotId,String sector, Double x, Double y) {
 	val local = self
 
 	// retrieve the ROS bridge URI 
-	read("rosbridgeWebsocketURI",val String rosbridgeWebsocketURI)@self
+	read(ROS_BRIDGE_SOCKET_URI,val String rosbridgeWebsocketURI)@self
 
 	// connect to the ROS bridge
 	val bridge = new XklaimToRosConnection(rosbridgeWebsocketURI)
@@ -47,7 +50,7 @@ proc MoveTo(String robotId,String sector, Double x, Double y) {
 				pubvel.publish(twistMsg)
 
 				// notify that the robot is arrived at destination 
-				out("moveToCompleted")@local
+				out(MOVE_TO_COMPLETED)@local
 
 				// unsubscribe from the robot state topic
 				bridge.unsubscribe("/" + robotId + "/amcl_pose")

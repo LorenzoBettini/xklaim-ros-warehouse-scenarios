@@ -3,9 +3,11 @@ package xklaim
 import xklaim.arm.ArmBehaviour
 import xklaim.arm.DeliveryRobotBehaviour
 
+import static xklaim.GlobalConstants.*
+
 net MRS physical "localhost:9999" {
 	node Arm {
-		out("rosbridgeWebsocketURI","ws://0.0.0.0:9090")@self
+		out(ROS_BRIDGE_SOCKET_URI,"ws://0.0.0.0:9090")@self
 		eval(new ArmBehaviour())@self
 	}
 
@@ -13,7 +15,7 @@ net MRS physical "localhost:9999" {
 		val robotId = "robot1"
 		val sector ="sector1"
 
-		out("rosbridgeWebsocketURI","ws://0.0.0.0:9090")@self
+		out(ROS_BRIDGE_SOCKET_URI,"ws://0.0.0.0:9090")@self
 		eval(new DeliveryRobotBehaviour(robotId,sector,Arm))@self
 	}
 
@@ -21,7 +23,7 @@ net MRS physical "localhost:9999" {
 		val robotId = "robot2"
 		val sector ="sector2"
 
-		out("rosbridgeWebsocketURI","ws://0.0.0.0:9090")@self
+		out(ROS_BRIDGE_SOCKET_URI,"ws://0.0.0.0:9090")@self
 		eval(new DeliveryRobotBehaviour(robotId,sector,Arm))@self
 	}
 
@@ -29,26 +31,26 @@ net MRS physical "localhost:9999" {
 		// --- initial setup of the scenario ---
 		// insert info about items (id, warehouse destination sector, type and coordinates)  
 		// in the arm robot's local knowledge (i.e., its tuple space) 			
-		out("item","item1","sector1","red",0.583518, 0.0)@Arm
-		out("item","item2","sector2","blue",0.554542, 0.187360)@Arm
-		out("item","item3","sector2","red",0.504, 0.307)@Arm 
-		out("item","item4","sector1","blue",0.332977,0.470854)@Arm
+		out(ITEM,"item1","sector1","red",0.583518, 0.0)@Arm
+		out(ITEM,"item2","sector2","blue",0.554542, 0.187360)@Arm
+		out(ITEM,"item3","sector2","red",0.504, 0.307)@Arm 
+		out(ITEM,"item4","sector1","blue",0.332977,0.470854)@Arm
 
 		// insert mapping between item types and destinations in the delivery robots' local knowledge: 
 		// DeliveryRobot1 is in charge of delivering to the sector1 (left-hand side) 
-		out("type2destination","red",-9.0,-9.0)@DeliveryRobot1	
-		out("type2destination","blue",9.0,-9.0)@DeliveryRobot1
+		out(TYPE_2_DESTINATION,"red",-9.0,-9.0)@DeliveryRobot1	
+		out(TYPE_2_DESTINATION,"blue",9.0,-9.0)@DeliveryRobot1
 		// DeliveryRobot2 is in charge of delivering to the sector2 (right-hand side)	
-		out("type2destination","red",9.0,9.0)@DeliveryRobot2
-		out("type2destination","blue",-9.0,9.0)@DeliveryRobot2
+		out(TYPE_2_DESTINATION,"red",9.0,9.0)@DeliveryRobot2
+		out(TYPE_2_DESTINATION,"blue",-9.0,9.0)@DeliveryRobot2
 		
 		// activate the processes in charge of unloading items from delivery robots and posing them in the ground  
 		// (there is one process for each pickup area)
-		val rosbridgeWebsocketURI = "ws://0.0.0.0:9090"
-		eval(new Unload(rosbridgeWebsocketURI,DeliveryRobot1,-9.0,-9.0))@self
-		eval(new Unload(rosbridgeWebsocketURI,DeliveryRobot1,9.0,-9.0))@self
-		eval(new Unload(rosbridgeWebsocketURI,DeliveryRobot2,-9.0,9.0))@self
-		eval(new Unload(rosbridgeWebsocketURI,DeliveryRobot2,9.0,9.0))@self		
+		out(ROS_BRIDGE_SOCKET_URI,"ws://0.0.0.0:9090")@self
+		eval(new Unload(DeliveryRobot1,-9.0,-9.0))@self
+		eval(new Unload(DeliveryRobot1,9.0,-9.0))@self
+		eval(new Unload(DeliveryRobot2,-9.0,9.0))@self
+		eval(new Unload(DeliveryRobot2,9.0,9.0))@self		
 	}
 }
 
