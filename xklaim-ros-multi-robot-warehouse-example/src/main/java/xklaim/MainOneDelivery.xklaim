@@ -24,19 +24,23 @@ net MRS_one_delivery physical "localhost:9999" {
 		// insert info about items (id, warehouse destination sector, type and coordinates)  
 		// in the arm robot's local knowledge (i.e., its tuple space) 			
 		out(ITEM,"item1","sector1","red",0.583518, 0.0)@Arm
-		out(ITEM,"item2","sector1","blue",0.554542, 0.187360)@Arm
+		out(ITEM,"item2","sector1","red",0.554542, 0.187360)@Arm
 		out(ITEM,"item3","sector1","red",0.504, 0.307)@Arm 
-		out(ITEM,"item4","sector1","blue",0.332977,0.470854)@Arm
+		out(ITEM,"item4","sector1","red",0.332977,0.470854)@Arm
+
+
+////// elimnare questa parte sulle destinations
+
 
 		// insert mapping between item types and destinations in the delivery robots' local knowledge: 
 		// DeliveryRobot1 is in charge of delivering to the sector1 (left-hand side) 
-		out(TYPE_2_DESTINATION,"red",-9.0,-9.0)@DeliveryRobot1	
+		out(TYPE_2_DESTINATION,"red",-8.0,0.0)@DeliveryRobot1	
 		out(TYPE_2_DESTINATION,"blue",9.0,-9.0)@DeliveryRobot1
 		
 		// activate the processes in charge of unloading items from delivery robots and posing them in the ground  
 		// (there is one process for each pickup area)
 		out(ROS_BRIDGE_SOCKET_URI,"ws://0.0.0.0:9090")@self
-		eval(new Unload(DeliveryRobot1,-9.0,-9.0))@self
+		eval(new Unload(DeliveryRobot1,-8.0,0.0))@self
 		eval(new Unload(DeliveryRobot1,9.0,-9.0))@self
 	}
 }

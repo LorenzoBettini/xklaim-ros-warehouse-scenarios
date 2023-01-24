@@ -63,13 +63,13 @@ public class MRS_one_delivery extends LogicalNet {
       @Override
       public void executeProcess() {
         out(new Tuple(new Object[] {GlobalConstants.ITEM, "item1", "sector1", "red", 0.583518, 0.0}), MRS_one_delivery.Arm);
-        out(new Tuple(new Object[] {GlobalConstants.ITEM, "item2", "sector1", "blue", 0.554542, 0.187360}), MRS_one_delivery.Arm);
+        out(new Tuple(new Object[] {GlobalConstants.ITEM, "item2", "sector1", "red", 0.554542, 0.187360}), MRS_one_delivery.Arm);
         out(new Tuple(new Object[] {GlobalConstants.ITEM, "item3", "sector1", "red", 0.504, 0.307}), MRS_one_delivery.Arm);
-        out(new Tuple(new Object[] {GlobalConstants.ITEM, "item4", "sector1", "blue", 0.332977, 0.470854}), MRS_one_delivery.Arm);
-        out(new Tuple(new Object[] {GlobalConstants.TYPE_2_DESTINATION, "red", (-9.0), (-9.0)}), MRS_one_delivery.DeliveryRobot1);
+        out(new Tuple(new Object[] {GlobalConstants.ITEM, "item4", "sector1", "red", 0.332977, 0.470854}), MRS_one_delivery.Arm);
+        out(new Tuple(new Object[] {GlobalConstants.TYPE_2_DESTINATION, "red", (-8.0), 0.0}), MRS_one_delivery.DeliveryRobot1);
         out(new Tuple(new Object[] {GlobalConstants.TYPE_2_DESTINATION, "blue", 9.0, (-9.0)}), MRS_one_delivery.DeliveryRobot1);
         out(new Tuple(new Object[] {GlobalConstants.ROS_BRIDGE_SOCKET_URI, "ws://0.0.0.0:9090"}), this.self);
-        Unload _unload = new Unload(MRS_one_delivery.DeliveryRobot1, (-9.0), (-9.0));
+        Unload _unload = new Unload(MRS_one_delivery.DeliveryRobot1, (-8.0), 0.0);
         eval(_unload, this.self);
         Unload _unload_1 = new Unload(MRS_one_delivery.DeliveryRobot1, 9.0, (-9.0));
         eval(_unload_1, this.self);
