@@ -1,0 +1,22 @@
+<launch>
+    <env name="GAZEBO_MODEL_PATH" value="$(find neuronbot2_gazebo)/models"/>
+    <arg name="ns1" default="robot1"/>
+    <arg name="ns2" default="robot2"/>
+    <arg name="ns3" default="robot3"/>
+
+    <include file="$(find neuronbot2_multibot)/launch/3robots_world_no.launch">
+        <arg name="ns1" value="$(arg ns1)"/>
+        <arg name="ns2" value="$(arg ns2)"/>
+        <arg name="ns3" value="$(arg ns3)"/>
+    </include>
+
+    <include file="$(find neuronbot2_multibot)/launch/3robots_nav.launch">
+        <arg name="ns1" value="$(arg ns1)"/>
+        <arg name="ns2" value="$(arg ns2)"/>
+        <arg name="ns3" value="$(arg ns3)"/>
+    </include>
+    
+ 
+    
+    
+</launch>

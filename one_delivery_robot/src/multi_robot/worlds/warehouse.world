@@ -1,0 +1,863 @@
+<?xml version="1.0" ?>
+<sdf version="1.4">
+    <world name="default">
+        <!-- World Camera Settings-->
+        <gui>
+            <camera name="user_camera">
+                <pose frame=''>24.1194 -0.328974 17.8913 0 0.683643 3.13619</pose>
+                <!--<pose frame=''>0.715311 -25.388 35.3666 0 0.999643 1.53219</pose>-->
+                <view_controller>orbit</view_controller>
+                <projection_type>perspective</projection_type>
+            </camera>
+        </gui>
+        <!--A global light source -->
+        <include>
+            <uri>model://sun</uri>
+            <cast_shadows>0</cast_shadows>
+        </include>
+        <!-- A ground plane -->
+        <include>
+            <uri>model://ground_plane</uri>
+        </include>
+        
+         <physics type="ode">
+      <real_time_update_rate>1000.0</real_time_update_rate>
+      <max_step_size>0.009</max_step_size>
+      <real_time_factor>1</real_time_factor>
+      <ode>
+        <solver>
+          <type>quick</type>
+          <iters>150</iters>
+          <precon_iters>0</precon_iters>
+          <sor>1.400000</sor>
+          <use_dynamic_moi_rescaling>1</use_dynamic_moi_rescaling>
+        </solver>
+        <constraints>
+          <cfm>0.00001</cfm>
+          <erp>0.2</erp>
+          <contact_max_correcting_vel>2000.000000</contact_max_correcting_vel>
+          <contact_surface_layer>0.01000</contact_surface_layer>
+        </constraints>
+      </ode>
+    </physics>
+
+        <!-- Warehouse pallets -->
+        <!--    <include>
+              <uri>model://warehouse_pallet</uri>
+          <name>warehouse_pallet_0</name>
+            </include>
+        -->
+
+        <!-- Temporarily delivered pallet -->
+        <include>
+            <uri>model://warehouse_pallet</uri>
+            <name>warehouse_pallet_0</name>
+            <pose>1 -15 0 0 0 0</pose>
+        </include>
+
+        <population name="pallet_population0">
+            <model name="pallet_set0">
+                <include>
+                    <uri>model://warehouse_pallet</uri>
+                    <pose>0 0 0 0 0 0</pose>
+                </include>
+            </model>
+            <pose>-7 -5 0 0 0 0</pose>
+            <distribution>
+                <type>grid</type>
+                <rows>2</rows>
+                <cols>3</cols>
+                <step>1.5 2 0</step>
+            </distribution>
+        </population>
+
+
+        <population name="pallet_population1">
+            <model name="pallet_set1">
+                <include>
+                    <uri>model://warehouse_pallet</uri>
+                    <pose>0 0 0 0 0 0</pose>
+                </include>
+            </model>
+            <pose>0 -5 0 0 0 0</pose>
+            <distribution>
+                <type>grid</type>
+                <rows>2</rows>
+                <cols>3</cols>
+                <step>1.5 2 0</step>
+            </distribution>
+        </population>
+
+
+        <population name="pallet_population2">
+            <model name="pallet_set2">
+                <include>
+                    <uri>model://warehouse_pallet</uri>
+                    <pose>0 0 0 0 0 0</pose>
+                </include>
+            </model>
+            <pose>7 -5 0 0 0 0</pose>
+            <distribution>
+                <type>grid</type>
+                <rows>2</rows>
+                <cols>3</cols>
+                <step>1.5 2 0</step>
+            </distribution>
+        </population>
+
+
+
+        <population name="pallet_population3">
+            <model name="pallet_set3">
+                <include>
+                    <uri>model://warehouse_pallet</uri>
+                    <pose>0 0 0 0 0 0</pose>
+                </include>
+            </model>
+            <pose>-7 5 0 0 0 0</pose>
+            <distribution>
+                <type>grid</type>
+                <rows>2</rows>
+                <cols>3</cols>
+                <step>1.5 2 0</step>
+            </distribution>
+        </population>
+
+
+        <population name="pallet_population4">
+            <model name="pallet_set4">
+                <include>
+                    <uri>model://warehouse_pallet</uri>
+                    <pose>0 0 0 0 0 0</pose>
+                </include>
+            </model>
+            <pose>0 5 0 0 0 0</pose>
+            <distribution>
+                <type>grid</type>
+                <rows>2</rows>
+                <cols>3</cols>
+                <step>1.5 2 0</step>
+            </distribution>
+        </population>
+
+
+        <population name="pallet_population5">
+            <model name="pallet_set5">
+                <include>
+                    <uri>model://warehouse_pallet</uri>
+                    <pose>0 0 0 0 0 0</pose>
+                </include>
+            </model>
+            <pose>7 5 0 0 0 0</pose>
+            <distribution>
+                <type>grid</type>
+                <rows>2</rows>
+                <cols>3</cols>
+                <step>1.5 2 0</step>
+            </distribution>
+        </population>
+
+        <!-- Put three Pallets each in Pickup and Delivery area too -->
+        <population name="pallet_population6">
+            <model name="pallet_set6">
+                <include>
+                    <uri>model://warehouse_pallet</uri>
+                    <pose>0 0 0 0 0 0</pose>
+                </include>
+            </model>
+            <pose>-2 -13.5 0 0 0 0</pose>
+            <distribution>
+                <type>grid</type>
+                <rows>3</rows>
+                <cols>1</cols>
+                <step>1.5 2 0</step>
+            </distribution>
+        </population>
+
+
+        <population name="pallet_population7">
+            <model name="pallet_set7">
+                <include>
+                    <uri>model://warehouse_pallet</uri>
+                    <pose>0 0 0 0 0 0</pose>
+                </include>
+            </model>
+            <pose>-2 13.5 0 0 0 0</pose>
+            <distribution>
+                <type>grid</type>
+                <rows>3</rows>
+                <cols>1</cols>
+                <step>1.5 2 0</step>
+            </distribution>
+        </population>
+
+
+<!--        &lt;!&ndash; Our Robot model &ndash;&gt;-->
+<!--        <model name="amazon_warehouse_robot">-->
+<!--            <include>-->
+<!--                <uri>model://amazon_robot</uri>-->
+<!--                <pose>0 0 0 0 0 0</pose>-->
+<!--            </include>-->
+<!--        </model>-->
+
+        <!-- Walls that surround the warehouse -->
+        <include>
+            <uri>model://warehouse_walls</uri>
+        </include>
+
+
+
+
+ <model name='item1'>
+      <link name='link'>
+        <inertial>
+          <mass>0.1</mass>
+          <inertia>
+            <ixx>0.16667</ixx>
+            <ixy>0</ixy>
+            <ixz>0</ixz>
+            <iyy>0.16667</iyy>
+            <iyz>0</iyz>
+            <izz>0.16667</izz>
+          </inertia>
+          <pose frame=''>0 0 0 0 -0 0</pose>
+        </inertial>
+        <self_collide>0</self_collide>
+        <enable_wind>0</enable_wind>
+        <kinematic>0</kinematic>
+        <pose frame=''>0 0 0 0 -0 0</pose>
+        <gravity>1</gravity>
+        <visual name='visual'>
+          <geometry>
+            <box>
+              <size>0.09433 0.024 0.07</size>
+            </box>
+          </geometry>
+                   <material>
+            <script>
+              <name>Gazebo/Red</name>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
+            </script>
+            <shader type='vertex'>
+              <normal_map>__default__</normal_map>
+            </shader>
+          </material>
+          <pose frame=''>0 0 0 0 -0 0</pose>
+          <transparency>0</transparency>
+          <cast_shadows>1</cast_shadows>
+        </visual>
+        <collision name='collision'>
+          <laser_retro>0</laser_retro>
+          <max_contacts>50</max_contacts>
+          <pose frame=''>0 0 0 0 -0 0</pose>
+          <geometry>
+            <box>
+              <size>0.09433 0.024 0.07</size>
+            </box>
+          </geometry>    
+          <surface>
+            <friction>
+              <ode>
+                <mu>0.998000</mu>
+                <mu2>0.998000</mu2>
+                <fdir1>0.000000 0.000000 0.000000</fdir1>
+                <slip1>0.000000</slip1>
+                <slip2>0.000000</slip2>
+              </ode>
+            </friction>
+            <bounce>
+              <restitution_coefficient>0.000000</restitution_coefficient>
+              <threshold>100000.000000</threshold>
+            </bounce>
+            <contact>
+              <ode>
+                <soft_cfm>0.000000</soft_cfm>
+                <soft_erp>0.200000</soft_erp>
+                <kp>100000.000000</kp>
+                <kd>1.000000</kd>
+                <max_vel>100.000000</max_vel>
+                <min_depth>0.001000</min_depth>
+              </ode>
+            </contact>
+          </surface>     
+        </collision>
+      </link>
+      <static>0</static>
+      <allow_auto_disable>0</allow_auto_disable>
+      <pose frame=''>0.583518 0.007 6e-06 6e-06 -4.8e-05 -2.1e-05</pose>
+    </model>
+     <model name='item3'>
+       <link name='link'>
+        <inertial>
+          <mass>0.1</mass>
+          <inertia>
+            <ixx>0.16667</ixx>
+            <ixy>0</ixy>
+            <ixz>0</ixz>
+            <iyy>0.16667</iyy>
+            <iyz>0</iyz>
+            <izz>0.16667</izz>
+          </inertia>
+          <pose frame=''>0 0 0 0 -0 0</pose>
+        </inertial>
+        <self_collide>0</self_collide>
+        <enable_wind>0</enable_wind>
+        <kinematic>0</kinematic>
+        <pose frame=''>0 0 0 0 -0 0</pose>
+        <gravity>1</gravity>
+        <visual name='visual'>
+          <geometry>
+            <box>
+              <size>0.09433 0.024 0.07</size>
+            </box>
+          </geometry>
+                   <material>
+            <script>
+              <name>Gazebo/Red</name>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
+            </script>
+            <shader type='vertex'>
+              <normal_map>__default__</normal_map>
+            </shader>
+          </material>
+          <pose frame=''>0 0 0 0 -0 0</pose>
+          <transparency>0</transparency>
+          <cast_shadows>1</cast_shadows>
+        </visual>
+        <collision name='collision'>
+          <laser_retro>0</laser_retro>
+          <max_contacts>50</max_contacts>
+          <pose frame=''>0 0 0 0 -0 0</pose>
+          <geometry>
+            <box>
+              <size>0.09433 0.024 0.07</size>
+            </box>
+          </geometry>    
+          <surface>
+            <friction>
+              <ode>
+                <mu>0.998000</mu>
+                <mu2>0.998000</mu2>
+                <fdir1>0.000000 0.000000 0.000000</fdir1>
+                <slip1>0.000000</slip1>
+                <slip2>0.000000</slip2>
+              </ode>
+            </friction>
+            <bounce>
+              <restitution_coefficient>0.000000</restitution_coefficient>
+              <threshold>100000.000000</threshold>
+            </bounce>
+            <contact>
+              <ode>
+                <soft_cfm>0.000000</soft_cfm>
+                <soft_erp>0.200000</soft_erp>
+                <kp>100000.000000</kp>
+                <kd>1.000000</kd>
+                <max_vel>100.000000</max_vel>
+                <min_depth>0.001000</min_depth>
+              </ode>
+            </contact>
+          </surface>     
+        </collision>
+      </link>
+      <static>0</static>
+      <allow_auto_disable>0</allow_auto_disable>
+      <pose frame=''>0.5020 0.314314 6e-06 6e-06 -4.8e-05 0.476497</pose>
+    </model>
+     <model name='item2'>
+      <link name='link'>
+        <inertial>
+          <mass>0.1</mass>
+          <inertia>
+            <ixx>0.16667</ixx>
+            <ixy>0</ixy>
+            <ixz>0</ixz>
+            <iyy>0.16667</iyy>
+            <iyz>0</iyz>
+            <izz>0.16667</izz>
+          </inertia>
+          <pose frame=''>0 0 0 0 -0 0</pose>
+        </inertial>
+        <self_collide>0</self_collide>
+        <enable_wind>0</enable_wind>
+        <kinematic>0</kinematic>
+        <pose frame=''>0 0 0 0 -0 0</pose>
+        <gravity>1</gravity>
+        <visual name='visual'>
+          <geometry>
+            <box>
+              <size>0.09433 0.024 0.07</size>
+            </box>
+          </geometry>
+                   <material>
+            <script>
+              <name>Gazebo/Blue</name>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
+            </script>
+            <shader type='vertex'>
+              <normal_map>__default__</normal_map>
+            </shader>
+          </material>
+          <pose frame=''>0 0 0 0 -0 0</pose>
+          <transparency>0</transparency>
+          <cast_shadows>1</cast_shadows>
+        </visual>
+        <collision name='collision'>
+          <laser_retro>0</laser_retro>
+          <max_contacts>50</max_contacts>
+          <pose frame=''>0 0 0 0 -0 0</pose>
+          <geometry>
+            <box>
+              <size>0.09433 0.024 0.07</size>
+            </box>
+          </geometry>    
+          <surface>
+            <friction>
+              <ode>
+                <mu>0.998000</mu>
+                <mu2>0.998000</mu2>
+                <fdir1>0.000000 0.000000 0.000000</fdir1>
+                <slip1>0.000000</slip1>
+                <slip2>0.000000</slip2>
+              </ode>
+            </friction>
+            <bounce>
+              <restitution_coefficient>0.000000</restitution_coefficient>
+              <threshold>100000.000000</threshold>
+            </bounce>
+            <contact>
+              <ode>
+                <soft_cfm>0.000000</soft_cfm>
+                <soft_erp>0.200000</soft_erp>
+                <kp>100000.000000</kp>
+                <kd>1.000000</kd>
+                <max_vel>100.000000</max_vel>
+                <min_depth>0.001000</min_depth>
+              </ode>
+            </contact>
+          </surface>     
+        </collision>
+      </link>
+      <static>0</static>
+      <allow_auto_disable>0</allow_auto_disable>
+      <pose frame=''>0.5515 0.1946 6e-06 6e-06 -4.8e-05 0.32</pose>
+    </model>
+    
+
+<model name='item4'>
+       <link name='link'>
+        <inertial>
+          <mass>0.1</mass>
+          <inertia>
+            <ixx>0.16667</ixx>
+            <ixy>0</ixy>
+            <ixz>0</ixz>
+            <iyy>0.16667</iyy>
+            <iyz>0</iyz>
+            <izz>0.16667</izz>
+          </inertia>
+          <pose frame=''>0 0 0 0 -0 0</pose>
+        </inertial>
+        <self_collide>0</self_collide>
+        <enable_wind>0</enable_wind>
+        <kinematic>0</kinematic>
+        <pose frame=''>0 0 0 0 -0 0</pose>
+        <gravity>1</gravity>
+        <visual name='visual'>
+          <geometry>
+            <box>
+              <size>0.09433 0.024 0.07</size>
+            </box>
+          </geometry>
+                   <material>
+            <script>
+              <name>Gazebo/Blue</name>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
+            </script>
+            <shader type='vertex'>
+              <normal_map>__default__</normal_map>
+            </shader>
+          </material>
+          <pose frame=''>0 0 0 0 -0 0</pose>
+          <transparency>0</transparency>
+          <cast_shadows>1</cast_shadows>
+        </visual>
+        <collision name='collision'>
+          <laser_retro>0</laser_retro>
+          <max_contacts>50</max_contacts>
+          <pose frame=''>0 0 0 0 -0 0</pose>
+          <geometry>
+            <box>
+              <size>0.09433 0.024 0.07</size>
+            </box>
+          </geometry>    
+          <surface>
+            <friction>
+              <ode>
+                <mu>0.998000</mu>
+                <mu2>0.998000</mu2>
+                <fdir1>0.000000 0.000000 0.000000</fdir1>
+                <slip1>0.000000</slip1>
+                <slip2>0.000000</slip2>
+              </ode>
+            </friction>
+            <bounce>
+              <restitution_coefficient>0.000000</restitution_coefficient>
+              <threshold>100000.000000</threshold>
+            </bounce>
+            <contact>
+              <ode>
+                <soft_cfm>0.000000</soft_cfm>
+                <soft_erp>0.200000</soft_erp>
+                <kp>100000.000000</kp>
+                <kd>1.000000</kd>
+                <max_vel>100.000000</max_vel>
+                <min_depth>0.001000</min_depth>
+              </ode>
+            </contact>
+          </surface>     
+        </collision>
+      </link>
+      <static>0</static>
+      <allow_auto_disable>0</allow_auto_disable>
+      <pose frame=''>0.326525 0.475232 6e-06 6e-06 -4.8e-05 0.946380</pose>
+    </model>
+    
+    
+      <model name='destination_1'>
+          <link name='link'>
+        <inertial>
+          <mass>0.1</mass>
+          <inertia>
+            <ixx>0.166667</ixx>
+            <ixy>0</ixy>
+            <ixz>0</ixz>
+            <iyy>0.166667</iyy>
+            <iyz>0</iyz>
+            <izz>0.166667</izz>
+          </inertia>
+          <pose frame=''>0 0 0 0 -0 0</pose>
+        </inertial>
+        <self_collide>0</self_collide>
+        <enable_wind>0</enable_wind>
+        <kinematic>0</kinematic>
+        <pose frame=''>0 0 0 0 -0 0</pose>
+        <gravity>1</gravity>
+        <visual name='visual'>
+          <geometry>
+            <box>
+              <size>1.0 1.0 0.001</size>
+            </box>
+          </geometry>
+      <material>
+            <script>
+              <name>Gazebo/Blue</name>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
+            </script>
+            <shader type='vertex'>
+              <normal_map>__default__</normal_map>
+            </shader>
+          </material>
+          <pose frame=''>0 0 0 0 -0 0</pose>
+          <transparency>0</transparency>
+          <cast_shadows>1</cast_shadows>
+        </visual>
+        <collision name='collision'>
+          <laser_retro>0</laser_retro>
+          <max_contacts>10</max_contacts>
+          <pose frame=''>0 0 0 0 -0 0</pose>
+          <geometry>
+            <box>
+              <size>1.0 1.0 0.0</size>
+            </box>
+          </geometry>    
+          <surface>
+            <friction>
+              <ode>
+                <mu>0.998000</mu>
+                <mu2>0.998000</mu2>
+                <fdir1>0.000000 0.000000 0.000000</fdir1>
+                <slip1>0.000000</slip1>
+                <slip2>0.000000</slip2>
+              </ode>
+            </friction>
+            <bounce>
+              <restitution_coefficient>0.000000</restitution_coefficient>
+              <threshold>100000.000000</threshold>
+            </bounce>
+            <contact>
+              <ode>
+                <soft_cfm>0.000000</soft_cfm>
+                <soft_erp>0.200000</soft_erp>
+                <kp>100000.000000</kp>
+                <kd>1.000000</kd>
+                <max_vel>100.000000</max_vel>
+                <min_depth>0.001000</min_depth>
+              </ode>
+            </contact>
+          </surface>     
+        </collision>
+      </link>
+      <static>1</static>
+      <allow_auto_disable>1</allow_auto_disable>
+          <pose>-9.0 9.0 0.0 0 -0 0</pose>
+    </model>
+    
+     <model name='destination_2'>
+          <link name='link'>
+        <inertial>
+          <mass>0.1</mass>
+          <inertia>
+            <ixx>0.166667</ixx>
+            <ixy>0</ixy>
+            <ixz>0</ixz>
+            <iyy>0.166667</iyy>
+            <iyz>0</iyz>
+            <izz>0.166667</izz>
+          </inertia>
+          <pose frame=''>0 0 0 0 -0 0</pose>
+        </inertial>
+        <self_collide>0</self_collide>
+        <enable_wind>0</enable_wind>
+        <kinematic>0</kinematic>
+        <pose frame=''>0 0 0 0 -0 0</pose>
+        <gravity>1</gravity>
+        <visual name='visual'>
+          <geometry>
+            <box>
+              <size>1.0 1.0 0.001</size>
+            </box>
+          </geometry>
+          <material>
+            <script>
+              <name>Gazebo/Red</name>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
+            </script>
+            <shader type='vertex'>
+              <normal_map>__default__</normal_map>
+            </shader>
+          </material>
+          <pose frame=''>0 0 0 0 -0 0</pose>
+          <transparency>0</transparency>
+          <cast_shadows>1</cast_shadows>
+        </visual>
+        <collision name='collision'>
+          <laser_retro>0</laser_retro>
+          <max_contacts>10</max_contacts>
+          <pose frame=''>0 0 0 0 -0 0</pose>
+          <geometry>
+            <box>
+              <size>1.0 1.0 0.0</size>
+            </box>
+          </geometry>    
+          <surface>
+            <friction>
+              <ode>
+                <mu>0.998000</mu>
+                <mu2>0.998000</mu2>
+                <fdir1>0.000000 0.000000 0.000000</fdir1>
+                <slip1>0.000000</slip1>
+                <slip2>0.000000</slip2>
+              </ode>
+            </friction>
+            <bounce>
+              <restitution_coefficient>0.000000</restitution_coefficient>
+              <threshold>100000.000000</threshold>
+            </bounce>
+            <contact>
+              <ode>
+                <soft_cfm>0.000000</soft_cfm>
+                <soft_erp>0.200000</soft_erp>
+                <kp>100000.000000</kp>
+                <kd>1.000000</kd>
+                <max_vel>100.000000</max_vel>
+                <min_depth>0.001000</min_depth>
+              </ode>
+            </contact>
+          </surface>     
+        </collision>
+      </link>
+      <static>1</static>
+      <allow_auto_disable>1</allow_auto_disable>
+          <pose>9.0 9.0 0.0 0 -0 0</pose>
+    </model>
+    
+          <model name='destination_3'>
+          <link name='link'>
+        <inertial>
+          <mass>0.1</mass>
+          <inertia>
+            <ixx>0.166667</ixx>
+            <ixy>0</ixy>
+            <ixz>0</ixz>
+            <iyy>0.166667</iyy>
+            <iyz>0</iyz>
+            <izz>0.166667</izz>
+          </inertia>
+          <pose frame=''>0 0 0 0 -0 0</pose>
+        </inertial>
+        <self_collide>0</self_collide>
+        <enable_wind>0</enable_wind>
+        <kinematic>0</kinematic>
+        <pose frame=''>0 0 0 0 -0 0</pose>
+        <gravity>1</gravity>
+        <visual name='visual'>
+          <geometry>
+            <box>
+              <size>1.0 1.0 0.001</size>
+            </box>
+          </geometry>
+         <material>
+            <script>
+              <name>Gazebo/Blue</name>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
+            </script>
+            <shader type='vertex'>
+              <normal_map>__default__</normal_map>
+            </shader>
+          </material>
+          <pose frame=''>0 0 0 0 -0 0</pose>
+          <transparency>0</transparency>
+          <cast_shadows>1</cast_shadows>
+        </visual>
+        <collision name='collision'>
+          <laser_retro>0</laser_retro>
+          <max_contacts>10</max_contacts>
+          <pose frame=''>0 0 0 0 -0 0</pose>
+          <geometry>
+            <box>
+              <size>1.0 1.0 0.0</size>
+            </box>
+          </geometry>    
+          <surface>
+            <friction>
+              <ode>
+                <mu>0.998000</mu>
+                <mu2>0.998000</mu2>
+                <fdir1>0.000000 0.000000 0.000000</fdir1>
+                <slip1>0.000000</slip1>
+                <slip2>0.000000</slip2>
+              </ode>
+            </friction>
+            <bounce>
+              <restitution_coefficient>0.000000</restitution_coefficient>
+              <threshold>100000.000000</threshold>
+            </bounce>
+            <contact>
+              <ode>
+                <soft_cfm>0.000000</soft_cfm>
+                <soft_erp>0.200000</soft_erp>
+                <kp>100000.000000</kp>
+                <kd>1.000000</kd>
+                <max_vel>100.000000</max_vel>
+                <min_depth>0.001000</min_depth>
+              </ode>
+            </contact>
+          </surface>     
+        </collision>
+      </link>
+      <static>1</static>
+      <allow_auto_disable>1</allow_auto_disable>
+          <pose>9.0 -9.0 0.0 0 -0 0</pose>
+    </model>
+    
+         <model name='destination_4'>
+          <link name='link'>
+        <inertial>
+          <mass>0.1</mass>
+          <inertia>
+            <ixx>0.166667</ixx>
+            <ixy>0</ixy>
+            <ixz>0</ixz>
+            <iyy>0.166667</iyy>
+            <iyz>0</iyz>
+            <izz>0.166667</izz>
+          </inertia>
+          <pose frame=''>0 0 0 0 -0 0</pose>
+        </inertial>
+        <self_collide>0</self_collide>
+        <enable_wind>0</enable_wind>
+        <kinematic>0</kinematic>
+        <pose frame=''>0 0 0 0 -0 0</pose>
+        <gravity>1</gravity>
+        <visual name='visual'>
+          <geometry>
+            <box>
+              <size>1.0 1.0 0.001</size>
+            </box>
+          </geometry>
+        <material>
+            <script>
+              <name>Gazebo/Red</name>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
+            </script>
+            <shader type='vertex'>
+              <normal_map>__default__</normal_map>
+            </shader>
+          </material>
+          <pose frame=''>0 0 0 0 -0 0</pose>
+          <transparency>0</transparency>
+          <cast_shadows>1</cast_shadows>
+        </visual>
+        <collision name='collision'>
+          <laser_retro>0</laser_retro>
+          <max_contacts>10</max_contacts>
+          <pose frame=''>0 0 0 0 -0 0</pose>
+          <geometry>
+            <box>
+              <size>1.0 1.0 0.0</size>
+            </box>
+          </geometry>    
+          <surface>
+            <friction>
+              <ode>
+                <mu>0.998000</mu>
+                <mu2>0.998000</mu2>
+                <fdir1>0.000000 0.000000 0.000000</fdir1>
+                <slip1>0.000000</slip1>
+                <slip2>0.000000</slip2>
+              </ode>
+            </friction>
+            <bounce>
+              <restitution_coefficient>0.000000</restitution_coefficient>
+              <threshold>100000.000000</threshold>
+            </bounce>
+            <contact>
+              <ode>
+                <soft_cfm>0.000000</soft_cfm>
+                <soft_erp>0.200000</soft_erp>
+                <kp>100000.000000</kp>
+                <kd>1.000000</kd>
+                <max_vel>100.000000</max_vel>
+                <min_depth>0.001000</min_depth>
+              </ode>
+            </contact>
+          </surface>     
+        </collision>
+      </link>
+      <static>1</static>
+      <allow_auto_disable>1</allow_auto_disable>
+          <pose>-9.0 -9.0 0.0 0 -0 0</pose>
+    </model>
+
+
+
+
+        <!-- A visual element to show staging area
+          <model name="staging_area">
+          <link name="staging_area_link">
+                <visual name="staging_area_visual">
+            <pose>10 0 0 0 0 0</pose>
+                  <cast_shadows>false</cast_shadows>
+            <geometry>
+              <plane>
+                <normal>0 0 1</normal>
+                <size>15 19</size>
+            </plane>
+            </geometry>
+                </visual>
+          </link>
+          </model>
+        -->
+    </world>
+</sdf>
