@@ -19,15 +19,12 @@ import xklaim.GlobalConstants;
 public class MoveTo extends KlavaProcess {
   private String robotId;
   
-  private String sector;
-  
   private Double x;
   
   private Double y;
   
-  public MoveTo(final String robotId, final String sector, final Double x, final Double y) {
+  public MoveTo(final String robotId, final Double x, final Double y) {
     this.robotId = robotId;
-    this.sector = sector;
     this.x = x;
     this.y = y;
   }

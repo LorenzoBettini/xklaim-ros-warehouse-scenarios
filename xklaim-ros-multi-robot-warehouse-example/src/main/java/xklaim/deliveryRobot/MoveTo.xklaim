@@ -12,7 +12,7 @@ import ros.msgs.geometry_msgs.Twist
 import static xklaim.GlobalConstants.*
 import static xklaim.deliveryRobot.DeliveryRobotConstants.*
 
-proc MoveTo(String robotId,String sector, Double x, Double y) {
+proc MoveTo(String robotId, Double x, Double y) {
 	val local = self
 
 	// retrieve the ROS bridge URI 
