@@ -1,0 +1,90 @@
+package xklaim.singleDeliveryRobot
+
+import com.fasterxml.jackson.databind.JsonNode
+import com.fasterxml.jackson.databind.ObjectMapper
+import messages.PoseStamped
+import messages.PoseWithCovarianceStamped
+import messages.XklaimToRosConnection
+import ros.Publisher
+import ros.SubscriptionRequestMsg
+import ros.msgs.geometry_msgs.Twist
+
+import static xklaim.GlobalConstants.*
+import static xklaim.singleDeliveryRobot.DeliveryRobotConstants.*
+
+proc MoveTo(String robotId,String sector, Double x, Double y) {
+	val local = self
+
+	// retrieve the ROS bridge URI 
+	read(ROS_BRIDGE_SOCKET_URI,val String rosbridgeWebsocketURI)@self
+
+	// connect to the ROS bridge
+	val bridge = new XklaimToRosConnection(rosbridgeWebsocketURI)
+
+	// initialize a publisher for the topic related to the control of the robot's wheels
+	//val pub = new Publisher("/" + robotId + "/move_base_simple/goal", "geometry_msgs/PoseStamped", bridge)
+	val pub = new Publisher("/" + robotId + "/cmd_vel", "geometry_msgs/Twist", bridge)
+
+	// publish the destination position
+	val destination = new PoseStamped().headerFrameId("world").posePositionXY(x, y).poseOrientation(1.0)
+	//pub.publish(destination)
+	val twistMsg2 = new Twist();
+		twistMsg2.linear.x = 1.5
+		twistMsg2.angular.z = 0.5
+	pub.publish(twistMsg2)
+
+	// waiting until the destination position is reached
+	bridge.subscribe(
+		SubscriptionRequestMsg.generate("/" + robotId + "/amcl_pose").setType(
+			"geometry_msgs/PoseWithCovarianceStamped").setThrottleRate(1).setQueueLength(1),
+		[ data, stringRep |
+			// extract the actual position from the delivery robot's status	
+			var mapper = new ObjectMapper()
+			var JsonNode rosMsgNode = data.get("msg")
+			var PoseWithCovarianceStamped current_position = mapper.treeToValue(rosMsgNode, PoseWithCovarianceStamped)
+
+			// calculate the delta between the actual position and the destination position
+			// to measure the completeness of the movement
+			val tolerance = 0.16
+			var deltaX = Math.abs(current_position.pose.pose.position.x - destination.pose.position.x)
+			var deltaY = Math.abs(current_position.pose.pose.position.y - destination.pose.position.y)
+			if (deltaX <= tolerance && deltaY <= tolerance) { /* the delivery robot came to the arm robot */
+				// stop the wheels
+				val pubvel = new Publisher("/" + robotId + "/cmd_vel", "geometry_msgs/Twist", bridge)
+				val twistMsg = new Twist()
+				pubvel.publish(twistMsg)
+
+				// notify that the robot is arrived at destination 
+				out(MOVE_TO_COMPLETED)@local
+
+				// unsubscribe from the robot state topic
+				bridge.unsubscribe("/" + robotId + "/amcl_pose")
+			}
+		]
+	)
+	
+	
+	
+	
+	// Subscribe to the Pose topic of the robot
+	bridge.subscribe(
+		SubscriptionRequestMsg.generate("/" + robotId + "/odom").setType("nav_msgs/Odometry").
+			setThrottleRate(1).setQueueLength(1), [ data, stringRep |
+			// Extract the position coordinates from the Json message
+			val pose = data.get("msg").get("pose").get("pose")
+			val position = pose.get("position")
+			val x = position.get("x").asDouble();
+			val y = position.get("y").asDouble();
+			// Extract the orientation data from the Json message and compute the theta angle
+			val orientation = pose.get("orientation")
+			val qx = orientation.get("x").asDouble();
+			val qy = orientation.get("y").asDouble();
+			val qz = orientation.get("z").asDouble();
+			val qw = orientation.get("w").asDouble();
+			val siny_cosp = 2 * (qw * qz + qx * qy);
+			val cosy_cosp = 1 - 2 * (qy * qy + qz * qz);
+			val theta = Math.atan2(siny_cosp, cosy_cosp);
+
+			println("position x:"+x+" y:"+y+"theta:"+theta)
+		])
+}

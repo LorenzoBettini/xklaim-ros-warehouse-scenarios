@@ -1,4 +1,4 @@
-package xklaim.deliveryRobot
+package xklaim.singleDeliveryRobot
 
 import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.databind.ObjectMapper
@@ -7,7 +7,8 @@ import messages.XklaimToRosConnection
 import ros.SubscriptionRequestMsg
 
 import static xklaim.GlobalConstants.*
-import static xklaim.deliveryRobot.DeliveryRobotConstants.*
+import static xklaim.singleDeliveryRobot.DeliveryRobotConstants.*
+
 
 proc WaitForItem(String robotId) {
 	val local = self

@@ -1,8 +1,8 @@
-package xklaim.deliveryRobot
+package xklaim.singleDeliveryRobot
 
 import klava.Locality
 
-import static xklaim.deliveryRobot.DeliveryRobotConstants.*
+import static xklaim.singleDeliveryRobot.DeliveryRobotConstants.*
 
 proc DeliveryRobotBehaviour(String robotId,String sector,Locality Arm) {
 	eval(new DeliveryOneItem(robotId,sector,Arm))@self

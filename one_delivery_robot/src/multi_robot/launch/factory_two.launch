@@ -56,8 +56,8 @@
   
 <include file="$(find neuronbot2_gazebo)/launch/robot.launch">
     <arg name="namespace" value="$(arg ns1)"/>
-    <arg name="x_pos" value="0.59"/>
-    <arg name="y_pos" value=" -12.4"/>
+    <arg name="x_pos" value="-2.0"/>
+    <arg name="y_pos" value=" -5.0"/>
     <arg name="z_pos" value=" 0.0"/>
     <arg name="yaw" value=" 1.57"/>
   </include>

@@ -1,12 +1,9 @@
-package xklaim.arm;
+package xklaim.deliveryRobot;
 
 import klava.Locality;
 import klava.Tuple;
 import klava.topology.KlavaProcess;
 import xklaim.GlobalConstants;
-import xklaim.deliveryRobot.DeliveryRobotConstants;
-import xklaim.deliveryRobot.MoveTo;
-import xklaim.deliveryRobot.WaitForItem;
 
 @SuppressWarnings("all")
 public class DeliveryOneItem extends KlavaProcess {

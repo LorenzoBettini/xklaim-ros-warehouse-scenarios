@@ -1,9 +1,9 @@
-package xklaim.deliveryRobot
+package xklaim.singleDeliveryRobot
 
 import klava.Locality
 
 import static xklaim.GlobalConstants.*
-import static xklaim.deliveryRobot.DeliveryRobotConstants.*
+import static xklaim.singleDeliveryRobot.DeliveryRobotConstants.*
 
 proc DeliveryOneItem(String robotId,String sector,Locality Arm) {
 	// wait for a call by the arm robot

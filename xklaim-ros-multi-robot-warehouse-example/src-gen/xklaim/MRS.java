@@ -8,7 +8,7 @@ import klava.topology.KlavaNodeCoordinator;
 import klava.topology.LogicalNet;
 import org.mikado.imc.common.IMCException;
 import xklaim.arm.ArmBehaviour;
-import xklaim.arm.DeliveryRobotBehaviour;
+import xklaim.deliveryRobot.DeliveryRobotBehaviour;
 
 @SuppressWarnings("all")
 public class MRS extends LogicalNet {
