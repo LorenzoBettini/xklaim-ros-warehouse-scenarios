@@ -1,9 +1,5 @@
 package xklaim.singleDeliveryRobot
 
-import com.fasterxml.jackson.databind.JsonNode
-import com.fasterxml.jackson.databind.ObjectMapper
-import messages.PoseStamped
-import messages.PoseWithCovarianceStamped
 import messages.XklaimToRosConnection
 import ros.Publisher
 import ros.SubscriptionRequestMsg
@@ -23,6 +19,11 @@ proc MoveTo(String robotId, Double x, Double y) {
 
 	// initialize a publisher for the topic related to the control of the robot's wheels
 	val pub = new Publisher("/" + robotId + "/cmd_vel", "geometry_msgs/Twist", bridge)
+
+	val intialMovement = new Twist()
+	intialMovement.linear.x = -0.3
+	pub.publish(intialMovement)
+	Thread.sleep(500)
 
 	// waiting until the destination position is reached
 	bridge.subscribe(
@@ -50,10 +51,10 @@ proc MoveTo(String robotId, Double x, Double y) {
 			// If the distance is greater than the tolerance then 
 			// move towards the destination, otherwise stop the wheels
 			// and notify the arrival to the destination position
-			val tolerance = 0.16
+			val tolerance = 0.2
 			if (distance >= tolerance) {
 				// Set linear velocity
-				var linearVelocity = 1.5
+				var linearVelocity = 0.5
 				if (distance < 1) {
 					linearVelocity *= distance
 				}
@@ -69,12 +70,11 @@ proc MoveTo(String robotId, Double x, Double y) {
 				destination.linear.x = linearVelocity
 				destination.angular.z = angularVelocity
 				pub.publish(destination)
+				Thread.sleep(10)
 			} else {
 				// stop the wheels
-				//val pubvel = new Publisher("/" + robotId + "/cmd_vel", "geometry_msgs/Twist", bridge)
-				val twistMsg = new Twist()
-				//pubvel.publish(twistMsg)
-				pub.publish(twistMsg)
+				val stop = new Twist()
+				pub.publish(stop)
 
 				// notify that the robot is arrived at destination 
 				out(MOVE_TO_COMPLETED)@local

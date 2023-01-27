@@ -37,13 +37,9 @@ public class DeliveryOneItem extends KlavaProcess {
     WaitForItem _waitForItem = new WaitForItem(this.robotId);
     eval(_waitForItem, this.self);
     in(new Tuple(new Object[] {DeliveryRobotConstants.ITEM_LOADED}), this.self);
-    Double x2 = null;
-    Double y2 = null;
-    Tuple _Tuple_1 = new Tuple(new Object[] {GlobalConstants.TYPE_2_DESTINATION, itemType, Double.class, Double.class});
-    read(_Tuple_1, this.self);
-    x2 = (Double) _Tuple_1.getItem(2);
-    y2 = (Double) _Tuple_1.getItem(3);
-    MoveTo _moveTo_1 = new MoveTo(this.robotId, x2, y2);
+    final double x2 = (-8.0);
+    final double y2 = 0.0;
+    MoveTo _moveTo_1 = new MoveTo(this.robotId, Double.valueOf(x2), Double.valueOf(y2));
     eval(_moveTo_1, this.self);
     in(new Tuple(new Object[] {DeliveryRobotConstants.MOVE_TO_COMPLETED}), this.self);
     out(new Tuple(new Object[] {GlobalConstants.ITEM_DELIVERED, itemId, x2, y2}), this.self);
