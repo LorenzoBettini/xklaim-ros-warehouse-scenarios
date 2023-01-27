@@ -12,7 +12,7 @@ proc DeliveryOneItem(String robotId,String sector,Locality Arm) {
 	// move to the arm position (notably, the arm robot has a fixed, known position)  
 	val x = -0.21
 	val y = 0.31
-	eval(new MoveTo(robotId, sector, x, y))@self
+	eval(new MoveTo(robotId, x, y))@self
 	in(MOVE_TO_COMPLETED)@self
 
 	// notify the arm robot that it is arrived and is ready to receive the item
@@ -29,7 +29,7 @@ proc DeliveryOneItem(String robotId,String sector,Locality Arm) {
 	read(TYPE_2_DESTINATION,itemType,var Double x2,var Double y2)@self
 
 	// move to the delivery destination position
-	eval(new MoveTo(robotId, sector, x2, y2))@self
+	eval(new MoveTo(robotId, x2, y2))@self
 	in(MOVE_TO_COMPLETED)@self
 
 	// notify that the item with identifier itemId has been delivered

@@ -24,7 +24,7 @@ public class DeliveryOneItem extends KlavaProcess {
     in(new Tuple(new Object[] {GlobalConstants.ITEM_READY_FOR_DELIVERY, this.sector}), this.Arm);
     final double x = (-0.21);
     final double y = 0.31;
-    MoveTo _moveTo = new MoveTo(this.robotId, this.sector, Double.valueOf(x), Double.valueOf(y));
+    MoveTo _moveTo = new MoveTo(this.robotId, Double.valueOf(x), Double.valueOf(y));
     eval(_moveTo, this.self);
     in(new Tuple(new Object[] {DeliveryRobotConstants.MOVE_TO_COMPLETED}), this.self);
     out(new Tuple(new Object[] {GlobalConstants.DELIVERY_ROBOT_ARRIVED}), this.Arm);
@@ -43,7 +43,7 @@ public class DeliveryOneItem extends KlavaProcess {
     read(_Tuple_1, this.self);
     x2 = (Double) _Tuple_1.getItem(2);
     y2 = (Double) _Tuple_1.getItem(3);
-    MoveTo _moveTo_1 = new MoveTo(this.robotId, this.sector, x2, y2);
+    MoveTo _moveTo_1 = new MoveTo(this.robotId, x2, y2);
     eval(_moveTo_1, this.self);
     in(new Tuple(new Object[] {DeliveryRobotConstants.MOVE_TO_COMPLETED}), this.self);
     out(new Tuple(new Object[] {GlobalConstants.ITEM_DELIVERED, itemId, x2, y2}), this.self);
