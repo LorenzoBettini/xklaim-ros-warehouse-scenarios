@@ -5,8 +5,8 @@
     <include file="$(find neuronbot2_nav)/launch/bringup.launch">
         <arg name="namespace" value="$(arg ns1)"/>
 	    <arg name="map" value="$(arg map_name)" />
-    	<arg name="x_pos" value="-2.0"/>
-    	<arg name="y_pos" value=" -5.0"/>
+    	<arg name="x_pos" value="-3.0"/>
+    	<arg name="y_pos" value=" 6.0"/>
         <arg name="yaw" value=" 1.57"/>
     </include>
     <rosparam command="load" ns="$(arg ns1)" file="$(find neuronbot2_multibot)/params/multilayer_costmap.yaml" />
