@@ -5,17 +5,13 @@ import messages.XklaimToRosConnection
 import ros.Publisher
 import ros.SubscriptionRequestMsg
 
-import static xklaim.GlobalConstants.*
 import static xklaim.arm.ArmConstants.*
 
 proc MoveArmTo(ArmTrajectory armTrajectory) {
 	val local = self;
 
-	// retrieve the ROS bridge URI 
-	read(ROS_BRIDGE_SOCKET_URI,val String rosbridgeWebsocketURI)@self
-
 	// connect to the ROS bridge
-	val bridge = new XklaimToRosConnection(rosbridgeWebsocketURI)
+	val bridge = new XklaimToRosConnection(ROS_BRIDGE_SOCKET_URI)
 
 	// initialize a publisher for the topic related to the control of the arm movements   
 	val pub = new Publisher("/arm_controller/command", "trajectory_msgs/JointTrajectory", bridge)

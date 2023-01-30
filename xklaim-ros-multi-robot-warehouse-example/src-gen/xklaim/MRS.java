@@ -24,7 +24,6 @@ public class MRS extends LogicalNet {
     private static class ArmProcess extends KlavaNodeCoordinator {
       @Override
       public void executeProcess() {
-        out(new Tuple(new Object[] {GlobalConstants.ROS_BRIDGE_SOCKET_URI, "ws://0.0.0.0:9090"}), this.self);
         ArmBehaviour _armBehaviour = new ArmBehaviour();
         eval(_armBehaviour, this.self);
       }
@@ -45,7 +44,6 @@ public class MRS extends LogicalNet {
       public void executeProcess() {
         final String robotId = "robot1";
         final String sector = "sector1";
-        out(new Tuple(new Object[] {GlobalConstants.ROS_BRIDGE_SOCKET_URI, "ws://0.0.0.0:9090"}), this.self);
         DeliveryRobotBehaviour _deliveryRobotBehaviour = new DeliveryRobotBehaviour(robotId, sector, MRS.Arm);
         eval(_deliveryRobotBehaviour, this.self);
       }
@@ -66,7 +64,6 @@ public class MRS extends LogicalNet {
       public void executeProcess() {
         final String robotId = "robot2";
         final String sector = "sector2";
-        out(new Tuple(new Object[] {GlobalConstants.ROS_BRIDGE_SOCKET_URI, "ws://0.0.0.0:9090"}), this.self);
         DeliveryRobotBehaviour _deliveryRobotBehaviour = new DeliveryRobotBehaviour(robotId, sector, MRS.Arm);
         eval(_deliveryRobotBehaviour, this.self);
       }
@@ -93,7 +90,6 @@ public class MRS extends LogicalNet {
         out(new Tuple(new Object[] {GlobalConstants.TYPE_2_DESTINATION, "blue", 9.0, (-9.0)}), MRS.DeliveryRobot1);
         out(new Tuple(new Object[] {GlobalConstants.TYPE_2_DESTINATION, "red", 9.0, 9.0}), MRS.DeliveryRobot2);
         out(new Tuple(new Object[] {GlobalConstants.TYPE_2_DESTINATION, "blue", (-9.0), 9.0}), MRS.DeliveryRobot2);
-        out(new Tuple(new Object[] {GlobalConstants.ROS_BRIDGE_SOCKET_URI, "ws://0.0.0.0:9090"}), this.self);
         Unload _unload = new Unload(MRS.DeliveryRobot1, (-9.0), (-9.0));
         eval(_unload, this.self);
         Unload _unload_1 = new Unload(MRS.DeliveryRobot1, 9.0, (-9.0));

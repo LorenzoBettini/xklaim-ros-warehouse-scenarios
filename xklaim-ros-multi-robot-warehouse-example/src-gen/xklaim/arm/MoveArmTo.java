@@ -11,7 +11,6 @@ import org.eclipse.xtext.xbase.lib.Conversions;
 import ros.Publisher;
 import ros.RosListenDelegate;
 import ros.SubscriptionRequestMsg;
-import xklaim.GlobalConstants;
 
 @SuppressWarnings("all")
 public class MoveArmTo extends KlavaProcess {
@@ -24,11 +23,7 @@ public class MoveArmTo extends KlavaProcess {
   @Override
   public void executeProcess() {
     final Locality local = this.self;
-    final String rosbridgeWebsocketURI;
-    Tuple _Tuple = new Tuple(new Object[] {GlobalConstants.ROS_BRIDGE_SOCKET_URI, String.class});
-    read(_Tuple, this.self);
-    rosbridgeWebsocketURI = (String) _Tuple.getItem(1);
-    final XklaimToRosConnection bridge = new XklaimToRosConnection(rosbridgeWebsocketURI);
+    final XklaimToRosConnection bridge = new XklaimToRosConnection(ArmConstants.ROS_BRIDGE_SOCKET_URI);
     final Publisher pub = new Publisher("/arm_controller/command", "trajectory_msgs/JointTrajectory", bridge);
     final JointTrajectory trajectory = new JointTrajectory().positions(this.armTrajectory.getTrajectoryPoints()).jointNames(
       new String[] { "joint1", "joint2", "joint3", "joint4", "joint5", "joint6" });

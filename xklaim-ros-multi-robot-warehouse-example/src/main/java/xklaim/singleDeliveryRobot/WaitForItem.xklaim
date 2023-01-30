@@ -6,18 +6,13 @@ import messages.ContactsState
 import messages.XklaimToRosConnection
 import ros.SubscriptionRequestMsg
 
-import static xklaim.GlobalConstants.*
 import static xklaim.singleDeliveryRobot.DeliveryRobotConstants.*
-
 
 proc WaitForItem(String robotId) {
 	val local = self
 	
-	// retrieve the ROS bridge URI 
-	read(ROS_BRIDGE_SOCKET_URI,val String rosbridgeWebsocketURI)@self
-
 	// connect to the ROS bridge
-	val bridge = new XklaimToRosConnection(rosbridgeWebsocketURI)
+	val bridge = new XklaimToRosConnection(ROS_BRIDGE_SOCKET_URI)
 
 	// subscribe to the pressure sensor for detecting the presence of the item in the bowl
 	bridge.subscribe(

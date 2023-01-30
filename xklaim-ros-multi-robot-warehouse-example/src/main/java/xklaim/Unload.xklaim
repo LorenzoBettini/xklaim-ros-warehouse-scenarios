@@ -8,9 +8,6 @@ import ros.Publisher
 import static xklaim.GlobalConstants.*
 
 proc Unload(Locality DeliveryRobot,double x, double y) {
-	// retrieve the ROS bridge URI 
-	read(ROS_BRIDGE_SOCKET_URI,val String rosbridgeWebsocketURI)@self
-	
 	var poseX = x
 	var poseY = y
 
@@ -32,7 +29,7 @@ proc Unload(Locality DeliveryRobot,double x, double y) {
 		Thread.sleep(2000)
 
 		// connect to the ROS bridge
-		val bridge = new XklaimToRosConnection(rosbridgeWebsocketURI)
+		val bridge = new XklaimToRosConnection(ROS_BRIDGE_SOCKET_URI_SIMULATION)
 
 		// pick up the item and pose it in the destination area
 		val Pose_item = new Publisher("/gazebo/set_model_state", "gazebo_msgs/ModelState", bridge)

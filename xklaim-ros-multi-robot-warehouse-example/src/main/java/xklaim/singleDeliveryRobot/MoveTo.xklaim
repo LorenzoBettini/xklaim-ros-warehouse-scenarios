@@ -1,28 +1,24 @@
 package xklaim.singleDeliveryRobot
 
+import com.fasterxml.jackson.databind.JsonNode
+import com.fasterxml.jackson.databind.ObjectMapper
+import messages.Odometry
 import messages.XklaimToRosConnection
 import ros.Publisher
 import ros.SubscriptionRequestMsg
 import ros.msgs.geometry_msgs.Twist
 
-import static xklaim.GlobalConstants.*
 import static xklaim.singleDeliveryRobot.DeliveryRobotConstants.*
-import com.fasterxml.jackson.databind.ObjectMapper
-import com.fasterxml.jackson.databind.JsonNode
-import messages.Odometry
 
 proc MoveTo(String robotId, Double x, Double y) {
 	val local = self
-
-	// retrieve the ROS bridge URI 
-	read(ROS_BRIDGE_SOCKET_URI,val String rosbridgeWebsocketURI)@self
 
 	// set the tolerance for distance and angle error 
 	val distanceTolerance = 0.1;
 	val angleTolerance = 0.1;
 
 	// connect to the ROS bridge
-	val bridge = new XklaimToRosConnection(rosbridgeWebsocketURI)
+	val bridge = new XklaimToRosConnection(ROS_BRIDGE_SOCKET_URI)
 
 	// initialize a publisher for the topic related to the control of the robot's wheels
 	val pub = new Publisher("/" + robotId + "/cmd_vel", "geometry_msgs/Twist", bridge)

@@ -26,10 +26,6 @@ public class Unload extends KlavaProcess {
   @Override
   public void executeProcess() {
     try {
-      final String rosbridgeWebsocketURI;
-      Tuple _Tuple = new Tuple(new Object[] {GlobalConstants.ROS_BRIDGE_SOCKET_URI, String.class});
-      read(_Tuple, this.self);
-      rosbridgeWebsocketURI = (String) _Tuple.getItem(1);
       double poseX = this.x;
       double poseY = this.y;
       if ((this.x > 0)) {
@@ -49,11 +45,11 @@ public class Unload extends KlavaProcess {
       while (true) {
         {
           String itemId = null;
-          Tuple _Tuple_1 = new Tuple(new Object[] {"itemDelivered", String.class, this.x, this.y});
-          in(_Tuple_1, this.DeliveryRobot);
-          itemId = (String) _Tuple_1.getItem(1);
+          Tuple _Tuple = new Tuple(new Object[] {"itemDelivered", String.class, this.x, this.y});
+          in(_Tuple, this.DeliveryRobot);
+          itemId = (String) _Tuple.getItem(1);
           Thread.sleep(2000);
-          final XklaimToRosConnection bridge = new XklaimToRosConnection(rosbridgeWebsocketURI);
+          final XklaimToRosConnection bridge = new XklaimToRosConnection(GlobalConstants.ROS_BRIDGE_SOCKET_URI_SIMULATION);
           final Publisher Pose_item = new Publisher("/gazebo/set_model_state", "gazebo_msgs/ModelState", bridge);
           final ModelState modelstate = new ModelState();
           modelstate.pose.position.x = poseX;
