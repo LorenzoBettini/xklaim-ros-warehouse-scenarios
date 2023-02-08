@@ -16,7 +16,7 @@ net MRS_one_delivery physical "localhost:9999" {
 		eval(new DeliveryRobotBehaviour(robotId, sector, Arm))@self
 	}
 
-	node SimuationHandler {
+	node SimulationHandler {
 		// --- initial setup of the scenario ---
 		// insert info about items (id, warehouse destination sector, type and coordinates)  
 		// in the arm robot's local knowledge (i.e., its tuple space) 			

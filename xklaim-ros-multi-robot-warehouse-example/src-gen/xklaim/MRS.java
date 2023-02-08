@@ -18,7 +18,7 @@ public class MRS extends LogicalNet {
   
   private static final LogicalLocality DeliveryRobot2 = new LogicalLocality("DeliveryRobot2");
   
-  private static final LogicalLocality SimuationHandler = new LogicalLocality("SimuationHandler");
+  private static final LogicalLocality SimulationHandler = new LogicalLocality("SimulationHandler");
   
   public static class Arm extends ClientNode {
     private static class ArmProcess extends KlavaNodeCoordinator {
@@ -78,8 +78,8 @@ public class MRS extends LogicalNet {
     }
   }
   
-  public static class SimuationHandler extends ClientNode {
-    private static class SimuationHandlerProcess extends KlavaNodeCoordinator {
+  public static class SimulationHandler extends ClientNode {
+    private static class SimulationHandlerProcess extends KlavaNodeCoordinator {
       @Override
       public void executeProcess() {
         out(new Tuple(new Object[] {GlobalConstants.ITEM, "item1", "sector1", "red", 0.583518, 0.0}), MRS.Arm);
@@ -101,12 +101,12 @@ public class MRS extends LogicalNet {
       }
     }
     
-    public SimuationHandler() {
-      super(new PhysicalLocality("localhost:9999"), new LogicalLocality("SimuationHandler"));
+    public SimulationHandler() {
+      super(new PhysicalLocality("localhost:9999"), new LogicalLocality("SimulationHandler"));
     }
     
     public void addMainProcess() throws IMCException {
-      addNodeCoordinator(new MRS.SimuationHandler.SimuationHandlerProcess());
+      addNodeCoordinator(new MRS.SimulationHandler.SimulationHandlerProcess());
     }
   }
   
@@ -118,10 +118,10 @@ public class MRS extends LogicalNet {
     MRS.Arm arm = new MRS.Arm();
     MRS.DeliveryRobot1 deliveryRobot1 = new MRS.DeliveryRobot1();
     MRS.DeliveryRobot2 deliveryRobot2 = new MRS.DeliveryRobot2();
-    MRS.SimuationHandler simuationHandler = new MRS.SimuationHandler();
+    MRS.SimulationHandler simulationHandler = new MRS.SimulationHandler();
     arm.addMainProcess();
     deliveryRobot1.addMainProcess();
     deliveryRobot2.addMainProcess();
-    simuationHandler.addMainProcess();
+    simulationHandler.addMainProcess();
   }
 }

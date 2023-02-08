@@ -16,7 +16,7 @@ public class MRS_one_delivery extends LogicalNet {
   
   private static final LogicalLocality DeliveryRobot1 = new LogicalLocality("DeliveryRobot1");
   
-  private static final LogicalLocality SimuationHandler = new LogicalLocality("SimuationHandler");
+  private static final LogicalLocality SimulationHandler = new LogicalLocality("SimuationHandler");
   
   public static class Arm extends ClientNode {
     private static class ArmProcess extends KlavaNodeCoordinator {
@@ -56,8 +56,8 @@ public class MRS_one_delivery extends LogicalNet {
     }
   }
   
-  public static class SimuationHandler extends ClientNode {
-    private static class SimuationHandlerProcess extends KlavaNodeCoordinator {
+  public static class SimulationHandler extends ClientNode {
+    private static class SimulationHandlerProcess extends KlavaNodeCoordinator {
       @Override
       public void executeProcess() {
         out(new Tuple(new Object[] {GlobalConstants.ITEM, "item1", "sector1", "red", 0.583518, 0.0}), MRS_one_delivery.Arm);
@@ -69,12 +69,12 @@ public class MRS_one_delivery extends LogicalNet {
       }
     }
     
-    public SimuationHandler() {
+    public SimulationHandler() {
       super(new PhysicalLocality("localhost:9999"), new LogicalLocality("SimuationHandler"));
     }
     
     public void addMainProcess() throws IMCException {
-      addNodeCoordinator(new MRS_one_delivery.SimuationHandler.SimuationHandlerProcess());
+      addNodeCoordinator(new MRS_one_delivery.SimulationHandler.SimulationHandlerProcess());
     }
   }
   
@@ -85,7 +85,7 @@ public class MRS_one_delivery extends LogicalNet {
   public void addNodes() throws IMCException {
     MRS_one_delivery.Arm arm = new MRS_one_delivery.Arm();
     MRS_one_delivery.DeliveryRobot1 deliveryRobot1 = new MRS_one_delivery.DeliveryRobot1();
-    MRS_one_delivery.SimuationHandler simuationHandler = new MRS_one_delivery.SimuationHandler();
+    MRS_one_delivery.SimulationHandler simuationHandler = new MRS_one_delivery.SimulationHandler();
     arm.addMainProcess();
     deliveryRobot1.addMainProcess();
     simuationHandler.addMainProcess();
