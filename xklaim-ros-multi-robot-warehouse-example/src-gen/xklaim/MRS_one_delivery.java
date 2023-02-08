@@ -16,7 +16,7 @@ public class MRS_one_delivery extends LogicalNet {
   
   private static final LogicalLocality DeliveryRobot1 = new LogicalLocality("DeliveryRobot1");
   
-  private static final LogicalLocality SimulationHandler = new LogicalLocality("SimuationHandler");
+  private static final LogicalLocality SimulationHandler = new LogicalLocality("SimulationHandler");
   
   public static class Arm extends ClientNode {
     private static class ArmProcess extends KlavaNodeCoordinator {
@@ -70,7 +70,7 @@ public class MRS_one_delivery extends LogicalNet {
     }
     
     public SimulationHandler() {
-      super(new PhysicalLocality("localhost:9999"), new LogicalLocality("SimuationHandler"));
+      super(new PhysicalLocality("localhost:9999"), new LogicalLocality("SimulationHandler"));
     }
     
     public void addMainProcess() throws IMCException {
@@ -85,9 +85,9 @@ public class MRS_one_delivery extends LogicalNet {
   public void addNodes() throws IMCException {
     MRS_one_delivery.Arm arm = new MRS_one_delivery.Arm();
     MRS_one_delivery.DeliveryRobot1 deliveryRobot1 = new MRS_one_delivery.DeliveryRobot1();
-    MRS_one_delivery.SimulationHandler simuationHandler = new MRS_one_delivery.SimulationHandler();
+    MRS_one_delivery.SimulationHandler simulationHandler = new MRS_one_delivery.SimulationHandler();
     arm.addMainProcess();
     deliveryRobot1.addMainProcess();
-    simuationHandler.addMainProcess();
+    simulationHandler.addMainProcess();
   }
 }
