@@ -44,6 +44,8 @@ public class MRS extends LogicalNet {
       public void executeProcess() {
         final String robotId = "robot1";
         final String sector = "sector1";
+        out(new Tuple(new Object[] {GlobalConstants.TYPE_2_DESTINATION, "red", (-9.0), (-9.0)}), this.self);
+        out(new Tuple(new Object[] {GlobalConstants.TYPE_2_DESTINATION, "blue", 9.0, (-9.0)}), this.self);
         DeliveryRobotBehaviour _deliveryRobotBehaviour = new DeliveryRobotBehaviour(robotId, sector, MRS.Arm);
         eval(_deliveryRobotBehaviour, this.self);
       }
@@ -64,6 +66,8 @@ public class MRS extends LogicalNet {
       public void executeProcess() {
         final String robotId = "robot2";
         final String sector = "sector2";
+        out(new Tuple(new Object[] {GlobalConstants.TYPE_2_DESTINATION, "red", 9.0, 9.0}), this.self);
+        out(new Tuple(new Object[] {GlobalConstants.TYPE_2_DESTINATION, "blue", (-9.0), 9.0}), this.self);
         DeliveryRobotBehaviour _deliveryRobotBehaviour = new DeliveryRobotBehaviour(robotId, sector, MRS.Arm);
         eval(_deliveryRobotBehaviour, this.self);
       }
@@ -86,10 +90,6 @@ public class MRS extends LogicalNet {
         out(new Tuple(new Object[] {GlobalConstants.ITEM, "item2", "sector2", "blue", 0.554542, 0.187360}), MRS.Arm);
         out(new Tuple(new Object[] {GlobalConstants.ITEM, "item3", "sector2", "red", 0.504, 0.307}), MRS.Arm);
         out(new Tuple(new Object[] {GlobalConstants.ITEM, "item4", "sector1", "blue", 0.332977, 0.470854}), MRS.Arm);
-        out(new Tuple(new Object[] {GlobalConstants.TYPE_2_DESTINATION, "red", (-9.0), (-9.0)}), MRS.DeliveryRobot1);
-        out(new Tuple(new Object[] {GlobalConstants.TYPE_2_DESTINATION, "blue", 9.0, (-9.0)}), MRS.DeliveryRobot1);
-        out(new Tuple(new Object[] {GlobalConstants.TYPE_2_DESTINATION, "red", 9.0, 9.0}), MRS.DeliveryRobot2);
-        out(new Tuple(new Object[] {GlobalConstants.TYPE_2_DESTINATION, "blue", (-9.0), 9.0}), MRS.DeliveryRobot2);
         Unload _unload = new Unload(MRS.DeliveryRobot1, (-9.0), (-9.0));
         eval(_unload, this.self);
         Unload _unload_1 = new Unload(MRS.DeliveryRobot1, 9.0, (-9.0));
