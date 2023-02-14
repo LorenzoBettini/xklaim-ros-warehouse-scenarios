@@ -18,7 +18,7 @@ public class MRS extends LogicalNet {
   
   private static final LogicalLocality DeliveryRobot2 = new LogicalLocality("DeliveryRobot2");
   
-  private static final LogicalLocality SimulationHandler = new LogicalLocality("SimulationHandler");
+  private static final LogicalLocality Environment = new LogicalLocality("Environment");
   
   public static class Arm extends ClientNode {
     private static class ArmProcess extends KlavaNodeCoordinator {
@@ -82,14 +82,14 @@ public class MRS extends LogicalNet {
     }
   }
   
-  public static class SimulationHandler extends ClientNode {
-    private static class SimulationHandlerProcess extends KlavaNodeCoordinator {
+  public static class Environment extends ClientNode {
+    private static class EnvironmentProcess extends KlavaNodeCoordinator {
       @Override
       public void executeProcess() {
         out(new Tuple(new Object[] {GlobalConstants.ITEM, "item1", "sector1", "red", 0.583518, 0.0}), MRS.Arm);
-        out(new Tuple(new Object[] {GlobalConstants.ITEM, "item2", "sector2", "blue", 0.554542, 0.187360}), MRS.Arm);
-        out(new Tuple(new Object[] {GlobalConstants.ITEM, "item3", "sector2", "red", 0.504, 0.307}), MRS.Arm);
-        out(new Tuple(new Object[] {GlobalConstants.ITEM, "item4", "sector1", "blue", 0.332977, 0.470854}), MRS.Arm);
+        out(new Tuple(new Object[] {GlobalConstants.ITEM, "item2", "sector1", "red", 0.554542, 0.187360}), MRS.Arm);
+        out(new Tuple(new Object[] {GlobalConstants.ITEM, "item3", "sector1", "red", 0.504, 0.307}), MRS.Arm);
+        out(new Tuple(new Object[] {GlobalConstants.ITEM, "item4", "sector1", "red", 0.332977, 0.470854}), MRS.Arm);
         Unload _unload = new Unload(MRS.DeliveryRobot1, (-9.0), (-9.0));
         eval(_unload, this.self);
         Unload _unload_1 = new Unload(MRS.DeliveryRobot1, 9.0, (-9.0));
@@ -101,12 +101,12 @@ public class MRS extends LogicalNet {
       }
     }
     
-    public SimulationHandler() {
-      super(new PhysicalLocality("localhost:9999"), new LogicalLocality("SimulationHandler"));
+    public Environment() {
+      super(new PhysicalLocality("localhost:9999"), new LogicalLocality("Environment"));
     }
     
     public void addMainProcess() throws IMCException {
-      addNodeCoordinator(new MRS.SimulationHandler.SimulationHandlerProcess());
+      addNodeCoordinator(new MRS.Environment.EnvironmentProcess());
     }
   }
   
@@ -118,10 +118,10 @@ public class MRS extends LogicalNet {
     MRS.Arm arm = new MRS.Arm();
     MRS.DeliveryRobot1 deliveryRobot1 = new MRS.DeliveryRobot1();
     MRS.DeliveryRobot2 deliveryRobot2 = new MRS.DeliveryRobot2();
-    MRS.SimulationHandler simulationHandler = new MRS.SimulationHandler();
+    MRS.Environment environment = new MRS.Environment();
     arm.addMainProcess();
     deliveryRobot1.addMainProcess();
     deliveryRobot2.addMainProcess();
-    simulationHandler.addMainProcess();
+    environment.addMainProcess();
   }
 }
