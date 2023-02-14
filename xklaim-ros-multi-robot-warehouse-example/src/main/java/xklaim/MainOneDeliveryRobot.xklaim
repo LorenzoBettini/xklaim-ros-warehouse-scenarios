@@ -7,13 +7,6 @@ import static xklaim.GlobalConstants.*
 
 net MRS_one_delivery physical "localhost:9999" {
 	node Arm {
-		// setup of the knowledge of the arm robot: info about  
-		// items (id, warehouse destination sector, type and coordinates)
-		// that are located at fixed positions
-		out(ITEM,"item1","sector1","red",0.583518, 0.0)@self
-		out(ITEM,"item2","sector1","red",0.554542, 0.187360)@self
-		out(ITEM,"item3","sector1","red",0.504, 0.307)@self
-		out(ITEM,"item4","sector1","red",0.332977,0.470854)@self 
 		eval(new ArmBehaviour())@self
 	}
 
@@ -24,6 +17,13 @@ net MRS_one_delivery physical "localhost:9999" {
 	}
 
 	node Environment {
+		// notify the arm robot about the presence of items located at fixed positions
+		// the info for each item are: id, warehouse destination sector, type and coordinates
+		out(ITEM,"item1","sector1","red",0.583518, 0.0)@Arm
+		out(ITEM,"item2","sector1","red",0.554542, 0.187360)@Arm
+		out(ITEM,"item3","sector1","red",0.504, 0.307)@Arm
+		out(ITEM,"item4","sector1","red",0.332977,0.470854)@Arm
+		
 		// activate the process in charge of unloading items from the delivery robot
 		// and posing them in the floor
 		eval(new Unload(DeliveryRobot1, -8.0, 0.0))@self
