@@ -87,9 +87,9 @@ public class MRS extends LogicalNet {
       @Override
       public void executeProcess() {
         out(new Tuple(new Object[] {GlobalConstants.ITEM, "item1", "sector1", "red", 0.583518, 0.0}), MRS.Arm);
-        out(new Tuple(new Object[] {GlobalConstants.ITEM, "item2", "sector1", "red", 0.554542, 0.187360}), MRS.Arm);
-        out(new Tuple(new Object[] {GlobalConstants.ITEM, "item3", "sector1", "red", 0.504, 0.307}), MRS.Arm);
-        out(new Tuple(new Object[] {GlobalConstants.ITEM, "item4", "sector1", "red", 0.332977, 0.470854}), MRS.Arm);
+        out(new Tuple(new Object[] {GlobalConstants.ITEM, "item2", "sector2", "blue", 0.554542, 0.187360}), MRS.Arm);
+        out(new Tuple(new Object[] {GlobalConstants.ITEM, "item3", "sector2", "red", 0.504, 0.307}), MRS.Arm);
+        out(new Tuple(new Object[] {GlobalConstants.ITEM, "item4", "sector1", "blue", 0.332977, 0.470854}), MRS.Arm);
         Unload _unload = new Unload(MRS.DeliveryRobot1, (-9.0), (-9.0));
         eval(_unload, this.self);
         Unload _unload_1 = new Unload(MRS.DeliveryRobot1, 9.0, (-9.0));

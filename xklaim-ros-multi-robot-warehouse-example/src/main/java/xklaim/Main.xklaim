@@ -11,37 +11,37 @@ net MRS physical "localhost:9999" {
 	}
 
 	node DeliveryRobot1 {
-		val robotId = "robot1"			
+		val robotId = "robot1"
 		// the robot is in charge of delivering to the sector1 (left-hand side)
-		val sector ="sector1"
-		out(TYPE_2_DESTINATION,"red",-9.0,-9.0)@self	
-		out(TYPE_2_DESTINATION,"blue",9.0,-9.0)@self		
-		eval(new DeliveryRobotBehaviour(robotId,sector,Arm))@self
+		val sector = "sector1"
+		out(TYPE_2_DESTINATION,"red",-9.0,-9.0)@self
+		out(TYPE_2_DESTINATION,"blue",9.0,-9.0)@self
+		eval(new DeliveryRobotBehaviour(robotId, sector, Arm))@self
 	}
 
 	node DeliveryRobot2 {
-		val robotId = "robot2"		
+		val robotId = "robot2"
 		// the robot is in charge of delivering to the sector2 (right-hand side)
-		val sector ="sector2"
+		val sector = "sector2"
 		out(TYPE_2_DESTINATION,"red",9.0,9.0)@self
-		out(TYPE_2_DESTINATION,"blue",-9.0,9.0)@self		
-		eval(new DeliveryRobotBehaviour(robotId,sector,Arm))@self
+		out(TYPE_2_DESTINATION,"blue",-9.0,9.0)@self
+		eval(new DeliveryRobotBehaviour(robotId, sector, Arm))@self
 	}
 
 	node Environment {
 		// notify the arm robot about the presence of items located at fixed positions
 		// the info for each item are: id, warehouse destination sector, type and coordinates
 		out(ITEM,"item1","sector1","red",0.583518, 0.0)@Arm
-		out(ITEM,"item2","sector1","red",0.554542, 0.187360)@Arm
-		out(ITEM,"item3","sector1","red",0.504, 0.307)@Arm
-		out(ITEM,"item4","sector1","red",0.332977,0.470854)@Arm
-		
+		out(ITEM,"item2","sector2","blue",0.554542, 0.187360)@Arm
+		out(ITEM,"item3","sector2","red",0.504, 0.307)@Arm
+		out(ITEM,"item4","sector1","blue",0.332977,0.470854)@Arm
+
 		// activate the processes in charge of unloading items from delivery robots 
 		// and posing them in the floor (there is one process for each pickup area)
-		eval(new Unload(DeliveryRobot1,-9.0,-9.0))@self
-		eval(new Unload(DeliveryRobot1,9.0,-9.0))@self
-		eval(new Unload(DeliveryRobot2,-9.0,9.0))@self
-		eval(new Unload(DeliveryRobot2,9.0,9.0))@self		
+		eval(new Unload(DeliveryRobot1, -9.0, -9.0))@self
+		eval(new Unload(DeliveryRobot1, 9.0, -9.0))@self
+		eval(new Unload(DeliveryRobot2, -9.0, 9.0))@self
+		eval(new Unload(DeliveryRobot2, 9.0, 9.0))@self
 	}
 }
 
