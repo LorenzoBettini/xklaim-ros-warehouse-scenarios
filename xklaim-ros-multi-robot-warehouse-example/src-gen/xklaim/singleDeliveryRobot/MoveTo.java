@@ -49,8 +49,8 @@ public class MoveTo extends KlavaProcess {
         double currentTheta = angle.getYaw();
         double deltaX = ((this.x).doubleValue() - currentX);
         double deltaY = ((this.y).doubleValue() - currentY);
-        double agular = Math.atan2(deltaY, deltaX);
-        double headingError = (agular - currentTheta);
+        double angular = Math.atan2(deltaY, deltaX);
+        double headingError = (angular - currentTheta);
         if ((headingError > PI)) {
           headingError = (headingError - (2 * PI));
         }

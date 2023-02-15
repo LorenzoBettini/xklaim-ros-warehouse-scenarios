@@ -53,8 +53,8 @@ proc MoveTo(String robotId, Double x, Double y) {
 			// calculate the error in heading and distance between current position and destination
 			var deltaX = x - currentX; // calculating the distance error in x-axis
 			var deltaY = y - currentY; // calculating the distance error in y-axis
-			var agular = Math.atan2(deltaY, deltaX) // calculating the angle error
-			var headingError = agular - currentTheta
+			var angular = Math.atan2(deltaY, deltaX) // calculating the angle error
+			var headingError = angular - currentTheta
 			if (headingError > PI) {
 				headingError = headingError - (2 * PI); // wrap angle to [-PI,PI]
 			}
