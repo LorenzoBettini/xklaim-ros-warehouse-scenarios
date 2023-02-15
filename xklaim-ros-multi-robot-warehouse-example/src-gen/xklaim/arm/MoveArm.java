@@ -13,10 +13,10 @@ import ros.RosListenDelegate;
 import ros.SubscriptionRequestMsg;
 
 @SuppressWarnings("all")
-public class MoveArmTo extends KlavaProcess {
+public class MoveArm extends KlavaProcess {
   private ArmTrajectory armTrajectory;
   
-  public MoveArmTo(final ArmTrajectory armTrajectory) {
+  public MoveArm(final ArmTrajectory armTrajectory) {
     this.armTrajectory = armTrajectory;
   }
   

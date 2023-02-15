@@ -7,7 +7,7 @@ import ros.SubscriptionRequestMsg
 
 import static xklaim.arm.ArmConstants.*
 
-proc MoveArmTo(ArmTrajectory armTrajectory) {
+proc MoveArm(ArmTrajectory armTrajectory) {
 	val local = self;
 
 	// connect to the ROS bridge

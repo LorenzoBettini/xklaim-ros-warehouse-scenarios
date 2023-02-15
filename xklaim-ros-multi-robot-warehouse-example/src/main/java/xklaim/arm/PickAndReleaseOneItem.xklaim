@@ -18,11 +18,11 @@ proc PickAndReleaseOneItem() {
 	val OPEN = new GripperTrajectory(#[0.0, 0.0], 0.00008)
 
 	// move the arm half down
-	eval(new MoveArmTo(HALF_DOWN))@self
+	eval(new MoveArm(HALF_DOWN))@self
 	in(MOVE_ARM_TO_COMPLETED)@self
 
 	// move the arm completely down
-	eval(new MoveArmTo(COMPLETE_DOWN))@self
+	eval(new MoveArm(COMPLETE_DOWN))@self
 	in(MOVE_ARM_TO_COMPLETED)@self
 
 	// close the gripper to grip the item
@@ -30,21 +30,21 @@ proc PickAndReleaseOneItem() {
 	in(USE_GRIPPER_COMPLETED)@self
 
 	// move the arm up 
-	eval(new MoveArmTo(UP))@self
+	eval(new MoveArm(UP))@self
 	in(MOVE_ARM_TO_COMPLETED)@self
 
 	// call for a delivery robot
 	out(ITEM_READY_FOR_DELIVERY,sector)@self
 
 	// rotate the arm
-	eval(new MoveArmTo(ROTATE))@self
+	eval(new MoveArm(ROTATE))@self
 	in(MOVE_ARM_TO_COMPLETED)@self
 
 	// wait for the arrival of a delivery robot
 	in(DELIVERY_ROBOT_ARRIVED)@self
 
 	// move the arm down to lay the item on the delivery robot's bowl  
-	eval(new MoveArmTo(LAY_DOWN))@self
+	eval(new MoveArm(LAY_DOWN))@self
 	in(MOVE_ARM_TO_COMPLETED)@self
 
 	// open the gripper to release the item
@@ -55,7 +55,7 @@ proc PickAndReleaseOneItem() {
 	out(GRIPPER_OPENED,itemId,itemType)@self
 
 	// move the arm to the initial position
-	eval(new MoveArmTo(INITIAL_POSITION))@self
+	eval(new MoveArm(INITIAL_POSITION))@self
 	in(MOVE_ARM_TO_COMPLETED)@self
 
 	// notify that the arm is in the initial position
