@@ -28,12 +28,8 @@ class OpenGripper:
 
 		self.trajectoryPositions = JointTrajectoryPoint()
 		
-		self.firstMovement = JointTrajectory()
-		
-		self.secondTrajectoryPositions = JointTrajectoryPoint()
-		
-		self.secondMovement = JointTrajectory()
-		
+		self.openGripper = JointTrajectory()
+				
 		self.rate = rospy.Rate(0.1)
 		
 		self.tick = False
@@ -61,15 +57,14 @@ class OpenGripper:
 
 		#################### First mouvement ###############################
 
-		self.firstMovement.joint_names = ["f_joint1","f_joint2"]
+		self.openGripper.joint_names = ["f_joint1","f_joint2"]
 		self.trajectoryPositions.positions = [0.0, 0.0]
 		self.trajectoryPositions.time_from_start = rospy.Duration(20, 0)
-		self.firstMovement.points.append(self.trajectoryPositions)
-		#################### Second mouvement ###############################
+		self.openGripper.points.append(self.trajectoryPositions)
 
 		while self.pub.get_num_connections() < 1:
 			pass
-		self.pub.publish(self.firstMovement)
+		self.pub.publish(self.openGripper)
 
 
 

@@ -23,11 +23,7 @@ class Rotate:
 
 		self.trajectoryPositions = JointTrajectoryPoint()
 		
-		self.firstMovement = JointTrajectory()
-		
-		self.secondTrajectoryPositions = JointTrajectoryPoint()
-		
-		self.secondMovement = JointTrajectory()
+		self.rotate = JointTrajectory()
 		
 		self.rate = rospy.Rate(0.1)
 		
@@ -52,17 +48,16 @@ class Rotate:
         
 	def Publish(self):
 
-		#################### First mouvement ###############################
 
-		self.firstMovement.joint_names = ["joint1","joint2","joint3","joint4","joint5","joint6"]
+		self.rotate.joint_names = ["joint1","joint2","joint3","joint4","joint5","joint6"]
 		self.trajectoryPositions.positions = [-0.9546, -0.20, -0.7241, 3.1400, 1.6613, -0.0142]
 		self.trajectoryPositions.time_from_start = rospy.Duration(20, 0)
-		self.firstMovement.points.append(self.trajectoryPositions)
-		#################### Second mouvement ###############################
+		self.rotate.points.append(self.trajectoryPositions)
+
 
 		while self.pub.get_num_connections() < 1:
 			pass
-		self.pub.publish(self.firstMovement)
+		self.pub.publish(self.rotate)
 
 
 

@@ -33,11 +33,11 @@ public class MoveUp {
 					"joint6"
 				 };
 
-				// set joint positions for performing the first movement of the arm
+				// set joint positions for performing the moveUp movement of the arm
 				 JointTrajectory getUpJointTrajectory = new JointTrajectory().positions(jointPositions).jointNames(names);
 
 		
-			// publish the first movement trajectory
+			// publish the moveUp movement trajectory
 			pub.publish(getUpJointTrajectory);
 
 			// subscribe to the topic providing the actual status of the arm 
@@ -48,8 +48,6 @@ public class MoveUp {
 					// extract the actual joint positions from the arm's status	
 					 JsonNode actual = data.get("msg").get("actual").get("positions");
 
-					// calculate the delta between the actual joint positions and the destination positions
-					// to measure the completeness of the first and second movements
 					double delta = 0.0;
 					double tolerance=0.008;
 					for (int i = 0; i < jointPositions.length; i++) {
@@ -58,7 +56,7 @@ public class MoveUp {
 					double norm = Math.sqrt(delta);
 
 
-					if (norm <= tolerance) { /* the arm has completed the second movement */
+					if (norm <= tolerance) { 
 						long elapsedTime = System.nanoTime() - startTime;
 						 System.out.print("Total execution time to perform Move up process in millis: "
 		                + elapsedTime/1000000 + "ms.");

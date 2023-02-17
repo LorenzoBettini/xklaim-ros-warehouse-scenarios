@@ -27,12 +27,12 @@ public class Closegripper {
 					"f_joint2"
 				 };
 
-				// set joint positions for performing the first movement of the arm
-				 JointTrajectory getUpJointTrajectory = new JointTrajectory().positions(jointPositions).jointNames(names);
+				// set joint positions for performing the closeGripper movement of the arm
+				 JointTrajectory closeGripperJointTrajectory = new JointTrajectory().positions(jointPositions).jointNames(names);
 
 		
-			// publish the first movement trajectory
-			pub.publish(getUpJointTrajectory);
+			// publish the closeGripper movement trajectory
+			pub.publish(closeGripperJointTrajectory);
 
 			// subscribe to the topic providing the actual status of the arm 
 			bridge.subscribe(
@@ -42,8 +42,6 @@ public class Closegripper {
 					// extract the actual joint positions from the arm's status	
 					 JsonNode actual = data.get("msg").get("actual").get("positions");
 
-					// calculate the delta between the actual joint positions and the destination positions
-					// to measure the completeness of the first and second movements
 					double delta = 0.0;
 					double tolerance=0.007;
 					for (int i = 0; i < jointPositions.length; i++) {
@@ -52,7 +50,7 @@ public class Closegripper {
 					double norm = Math.sqrt(delta);
 
 
-					if (norm <= tolerance) { /* the arm has completed the second movement */
+					if (norm <= tolerance) {
 						long elapsedTime = System.nanoTime() - startTime;
 						 System.out.print("Total execution time to perform Close gripper process in millis: "
 		                + elapsedTime/1000000 + "ms.");

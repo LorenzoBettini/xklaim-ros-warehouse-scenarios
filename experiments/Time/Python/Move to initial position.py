@@ -22,16 +22,11 @@ class MoveToInitialPosition:
 			
 		self.pub = rospy.Publisher('/arm_controller/command', JointTrajectory, queue_size=10)
 
-
 		self.pose_subscriber = rospy.Subscriber('/arm_controller/state', JointTrajectoryControllerState, self.update_pose)
 
 		self.trajectoryPositions = JointTrajectoryPoint()
 		
-		self.firstMovement = JointTrajectory()
-		
-		self.secondTrajectoryPositions = JointTrajectoryPoint()
-		
-		self.secondMovement = JointTrajectory()
+		self.moveToInitial = JointTrajectory()
 		
 		self.rate = rospy.Rate(0.1)
 		
@@ -57,17 +52,14 @@ class MoveToInitialPosition:
         
 	def Publish(self):
 
-		#################### First mouvement ###############################
-
-		self.firstMovement.joint_names = ["joint1","joint2","joint3","joint4","joint5","joint6"]
+		self.moveToInitial.joint_names = ["joint1","joint2","joint3","joint4","joint5","joint6"]
 		self.trajectoryPositions.positions = [0.000, 0.000, 0.000, 0.000, 0.000, 0.000]
 		self.trajectoryPositions.time_from_start = rospy.Duration(20, 0)
-		self.firstMovement.points.append(self.trajectoryPositions)
-		#################### Second mouvement ###############################
+		self.moveToInitial.points.append(self.trajectoryPositions)
 
 		while self.pub.get_num_connections() < 1:
 			pass
-		self.pub.publish(self.firstMovement)
+		self.pub.publish(self.moveToInitial)
 
 
 

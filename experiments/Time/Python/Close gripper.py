@@ -23,18 +23,11 @@ class CloseGripper:
 			
 		self.pub = rospy.Publisher('/gripper_controller/command', JointTrajectory, queue_size=10)
 
-
-		# A subscriber to the topic '/turtle1/pose'. self.update_pose is called
-		# when a message of type Pose is received.
 		self.pose_subscriber = rospy.Subscriber('/gripper_controller/state', JointTrajectoryControllerState, self.update_pose)
 
 		self.trajectoryPositions = JointTrajectoryPoint()
 		
-		self.firstMovement = JointTrajectory()
-		
-		self.secondTrajectoryPositions = JointTrajectoryPoint()
-		
-		self.secondMovement = JointTrajectory()
+		self.closeGripper = JointTrajectory()
 		
 		self.rate = rospy.Rate(0.1)
 		
@@ -61,17 +54,14 @@ class CloseGripper:
         
 	def Publish(self):
 
-		#################### First mouvement ###############################
-
-		self.firstMovement.joint_names = ["f_joint1","f_joint2"]
+		self.closeGripper.joint_names = ["f_joint1","f_joint2"]
 		self.trajectoryPositions.positions = [0.0138, -0.0138]
 		self.trajectoryPositions.time_from_start = rospy.Duration(20, 0)
-		self.firstMovement.points.append(self.trajectoryPositions)
-		#################### Second mouvement ###############################
+		self.closeGripper.points.append(self.trajectoryPositions)
 
 		while self.pub.get_num_connections() < 1:
 			pass
-		self.pub.publish(self.firstMovement)
+		self.pub.publish(self.closeGripper)
 
 
 

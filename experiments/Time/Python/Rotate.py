@@ -9,15 +9,12 @@ import math
 import time 
 
 
-
-class MoveUp:
+class Rotate:
 
 	def __init__(self):
-
 		self.start = time.time_ns()
-
 		
-		rospy.init_node('MoveUp', anonymous=True)
+		rospy.init_node('Rotate', anonymous=True)
 		
 		self.actual = None
 			
@@ -27,7 +24,7 @@ class MoveUp:
 
 		self.trajectoryPositions = JointTrajectoryPoint()
 		
-		self.moveUp = JointTrajectory()
+		self.rotate = JointTrajectory()
 		
 		self.rate = rospy.Rate(0.1)
 		
@@ -47,26 +44,26 @@ class MoveUp:
 		norm = math.sqrt(delta)
 		if norm < tolerance:
 			self.end = time.time_ns()
-			print("Total execution time to perform Move up process in Python in millis: ", (self.end-self.start)/1000000, "ms.") 
+			print("Total execution time to perform Rotate in Python in millis: ", (self.end-self.start)/1000000, "ms.") 
 			   
 
         
 	def Publish(self):
 
-		self.moveUp.joint_names = ["joint1","joint2","joint3","joint4","joint5","joint6"]
-		self.trajectoryPositions.positions = [0.0 - 3.14, -0.2862, -0.5000, 3.1400, 1.6613, -0.0142]
+		self.rotate.joint_names = ["joint1","joint2","joint3","joint4","joint5","joint6"]
+		self.trajectoryPositions.positions = [-0.9546, -0.20, -0.7241, 3.1400, 1.6613, -0.0142]
 		self.trajectoryPositions.time_from_start = rospy.Duration(20, 0)
-		self.moveUp.points.append(self.trajectoryPositions)
+		self.rotate.points.append(self.trajectoryPositions)
 
 		while self.pub.get_num_connections() < 1:
 			pass
-		self.pub.publish(self.moveUp)
+		self.pub.publish(self.rotate)
 
 
 
 if __name__ == '__main__':
 	try:
-		x = MoveUp()
+		x = Rotate()
 		x.Publish()
 		rospy.spin()
 	except rospy.ROSInterruptException:

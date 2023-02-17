@@ -21,16 +21,15 @@ class MoveDown:
 			
 		self.pub = rospy.Publisher('/arm_controller/command', JointTrajectory, queue_size=10)
 
-
 		self.pose_subscriber = rospy.Subscriber('/arm_controller/state', JointTrajectoryControllerState, self.update_pose)
 
 		self.trajectoryPositions = JointTrajectoryPoint()
 		
-		self.firstMovement = JointTrajectory()
+		self.moveHalf = JointTrajectory()
 		
 		self.secondTrajectoryPositions = JointTrajectoryPoint()
 		
-		self.secondMovement = JointTrajectory()
+		self.moveDown = JointTrajectory()
 		
 		self.rate = rospy.Rate(0.1)
 		
@@ -61,23 +60,23 @@ class MoveDown:
 
 		#################### First mouvement ###############################
 
-		self.firstMovement.joint_names = ["joint1","joint2","joint3","joint4","joint5","joint6"]
+		self.moveHalf.joint_names = ["joint1","joint2","joint3","joint4","joint5","joint6"]
 		self.trajectoryPositions.positions = [0.0 - 3.14, -0.2862, -0.5000, 3.1400, 1.6613, -0.0142]
 		self.trajectoryPositions.time_from_start = rospy.Duration(20, 0)
-		self.firstMovement.points.append(self.trajectoryPositions)
+		self.moveHalf.points.append(self.trajectoryPositions)
 		#################### Second mouvement ###############################
 		
-		self.secondMovement.joint_names = ["joint1","joint2","joint3","joint4","joint5","joint6"]
+		self.moveDown.joint_names = ["joint1","joint2","joint3","joint4","joint5","joint6"]
 		self.secondTrajectoryPositions.positions = [0.0 - 3.14, -0.9975, -0.4970, 3.1400, 1.6613, -0.0142]
 		self.secondTrajectoryPositions.time_from_start = rospy.Duration(20, 0)
-		self.secondMovement.points.append(self.secondTrajectoryPositions)
+		self.moveDown.points.append(self.secondTrajectoryPositions)
 
 		while self.pub.get_num_connections() < 1:
 			pass
-		self.pub.publish(self.firstMovement)		
+		self.pub.publish(self.moveHalf)		
 		while self.tick == False:
 			pass
-		self.pub.publish(self.secondMovement)			
+		self.pub.publish(self.moveDown)			
 
 
 if __name__ == '__main__':
