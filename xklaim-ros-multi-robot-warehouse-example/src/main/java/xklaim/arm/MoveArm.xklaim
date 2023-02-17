@@ -47,7 +47,7 @@ proc MoveArm(ArmTrajectory armTrajectory) {
 
 			if (norm <= armTrajectory.tolerance) { 
 				// notify the completion of the movement
-				out(MOVE_ARM_TO_COMPLETED)@local
+				out(MOVE_ARM_COMPLETED)@local
 
 				// unsubscribe from the arm state topic
 				bridge.unsubscribe("/arm_controller/state")

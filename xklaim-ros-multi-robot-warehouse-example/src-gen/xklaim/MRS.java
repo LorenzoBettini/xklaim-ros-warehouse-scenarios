@@ -44,8 +44,8 @@ public class MRS extends LogicalNet {
       public void executeProcess() {
         final String robotId = "robot1";
         final String sector = "sector1";
-        out(new Tuple(new Object[] {GlobalConstants.TYPE_2_DESTINATION, "red", (-9.0), (-9.0)}), this.self);
-        out(new Tuple(new Object[] {GlobalConstants.TYPE_2_DESTINATION, "blue", 9.0, (-9.0)}), this.self);
+        out(new Tuple(new Object[] {GlobalConstants.ITEM_DESTINATION, "red", (-9.0), (-9.0)}), this.self);
+        out(new Tuple(new Object[] {GlobalConstants.ITEM_DESTINATION, "blue", 9.0, (-9.0)}), this.self);
         DeliveryRobotBehaviour _deliveryRobotBehaviour = new DeliveryRobotBehaviour(robotId, sector, MRS.Arm);
         eval(_deliveryRobotBehaviour, this.self);
       }
@@ -66,8 +66,8 @@ public class MRS extends LogicalNet {
       public void executeProcess() {
         final String robotId = "robot2";
         final String sector = "sector2";
-        out(new Tuple(new Object[] {GlobalConstants.TYPE_2_DESTINATION, "red", 9.0, 9.0}), this.self);
-        out(new Tuple(new Object[] {GlobalConstants.TYPE_2_DESTINATION, "blue", (-9.0), 9.0}), this.self);
+        out(new Tuple(new Object[] {GlobalConstants.ITEM_DESTINATION, "red", 9.0, 9.0}), this.self);
+        out(new Tuple(new Object[] {GlobalConstants.ITEM_DESTINATION, "blue", (-9.0), 9.0}), this.self);
         DeliveryRobotBehaviour _deliveryRobotBehaviour = new DeliveryRobotBehaviour(robotId, sector, MRS.Arm);
         eval(_deliveryRobotBehaviour, this.self);
       }

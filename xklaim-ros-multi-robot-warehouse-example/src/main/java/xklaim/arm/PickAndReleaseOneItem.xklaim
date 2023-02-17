@@ -19,11 +19,11 @@ proc PickAndReleaseOneItem() {
 
 	// move the arm half down
 	eval(new MoveArm(HALF_DOWN))@self
-	in(MOVE_ARM_TO_COMPLETED)@self
+	in(MOVE_ARM_COMPLETED)@self
 
 	// move the arm completely down
 	eval(new MoveArm(COMPLETE_DOWN))@self
-	in(MOVE_ARM_TO_COMPLETED)@self
+	in(MOVE_ARM_COMPLETED)@self
 
 	// close the gripper to grip the item
 	eval(new UseGripper(CLOSE))@self
@@ -31,21 +31,21 @@ proc PickAndReleaseOneItem() {
 
 	// move the arm up 
 	eval(new MoveArm(UP))@self
-	in(MOVE_ARM_TO_COMPLETED)@self
+	in(MOVE_ARM_COMPLETED)@self
 
 	// call for a delivery robot
 	out(ITEM_READY_FOR_DELIVERY,sector)@self
 
 	// rotate the arm
 	eval(new MoveArm(ROTATE))@self
-	in(MOVE_ARM_TO_COMPLETED)@self
+	in(MOVE_ARM_COMPLETED)@self
 
 	// wait for the arrival of a delivery robot
 	in(DELIVERY_ROBOT_ARRIVED)@self
 
 	// move the arm down to lay the item on the delivery robot's bowl  
 	eval(new MoveArm(LAY_DOWN))@self
-	in(MOVE_ARM_TO_COMPLETED)@self
+	in(MOVE_ARM_COMPLETED)@self
 
 	// open the gripper to release the item
 	eval(new UseGripper(OPEN))@self
@@ -56,7 +56,7 @@ proc PickAndReleaseOneItem() {
 
 	// move the arm to the initial position
 	eval(new MoveArm(INITIAL_POSITION))@self
-	in(MOVE_ARM_TO_COMPLETED)@self
+	in(MOVE_ARM_COMPLETED)@self
 
 	// notify that the arm is in the initial position
 	out(IS_IN_THE_INITIAL_POSITION)@self

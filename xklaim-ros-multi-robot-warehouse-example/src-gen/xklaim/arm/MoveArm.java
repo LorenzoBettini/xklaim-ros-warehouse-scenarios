@@ -43,7 +43,7 @@ public class MoveArm extends KlavaProcess {
       double _tolerance = this.armTrajectory.getTolerance();
       boolean _lessEqualsThan = (norm <= _tolerance);
       if (_lessEqualsThan) {
-        out(new Tuple(new Object[] {ArmConstants.MOVE_ARM_TO_COMPLETED}), local);
+        out(new Tuple(new Object[] {ArmConstants.MOVE_ARM_COMPLETED}), local);
         bridge.unsubscribe("/arm_controller/state");
       }
     };

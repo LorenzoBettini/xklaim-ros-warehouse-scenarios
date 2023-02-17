@@ -34,31 +34,31 @@ public class PickAndReleaseOneItem extends KlavaProcess {
     final GripperTrajectory OPEN = new GripperTrajectory(new double[] { 0.0, 0.0 }, 0.00008);
     MoveArm _moveArm = new MoveArm(HALF_DOWN);
     eval(_moveArm, this.self);
-    in(new Tuple(new Object[] {ArmConstants.MOVE_ARM_TO_COMPLETED}), this.self);
+    in(new Tuple(new Object[] {ArmConstants.MOVE_ARM_COMPLETED}), this.self);
     MoveArm _moveArm_1 = new MoveArm(COMPLETE_DOWN);
     eval(_moveArm_1, this.self);
-    in(new Tuple(new Object[] {ArmConstants.MOVE_ARM_TO_COMPLETED}), this.self);
+    in(new Tuple(new Object[] {ArmConstants.MOVE_ARM_COMPLETED}), this.self);
     UseGripper _useGripper = new UseGripper(CLOSE);
     eval(_useGripper, this.self);
     in(new Tuple(new Object[] {ArmConstants.USE_GRIPPER_COMPLETED}), this.self);
     MoveArm _moveArm_2 = new MoveArm(UP);
     eval(_moveArm_2, this.self);
-    in(new Tuple(new Object[] {ArmConstants.MOVE_ARM_TO_COMPLETED}), this.self);
+    in(new Tuple(new Object[] {ArmConstants.MOVE_ARM_COMPLETED}), this.self);
     out(new Tuple(new Object[] {GlobalConstants.ITEM_READY_FOR_DELIVERY, sector}), this.self);
     MoveArm _moveArm_3 = new MoveArm(ROTATE);
     eval(_moveArm_3, this.self);
-    in(new Tuple(new Object[] {ArmConstants.MOVE_ARM_TO_COMPLETED}), this.self);
+    in(new Tuple(new Object[] {ArmConstants.MOVE_ARM_COMPLETED}), this.self);
     in(new Tuple(new Object[] {GlobalConstants.DELIVERY_ROBOT_ARRIVED}), this.self);
     MoveArm _moveArm_4 = new MoveArm(LAY_DOWN);
     eval(_moveArm_4, this.self);
-    in(new Tuple(new Object[] {ArmConstants.MOVE_ARM_TO_COMPLETED}), this.self);
+    in(new Tuple(new Object[] {ArmConstants.MOVE_ARM_COMPLETED}), this.self);
     UseGripper _useGripper_1 = new UseGripper(OPEN);
     eval(_useGripper_1, this.self);
     in(new Tuple(new Object[] {ArmConstants.USE_GRIPPER_COMPLETED}), this.self);
     out(new Tuple(new Object[] {GlobalConstants.GRIPPER_OPENED, itemId, itemType}), this.self);
     MoveArm _moveArm_5 = new MoveArm(INITIAL_POSITION);
     eval(_moveArm_5, this.self);
-    in(new Tuple(new Object[] {ArmConstants.MOVE_ARM_TO_COMPLETED}), this.self);
+    in(new Tuple(new Object[] {ArmConstants.MOVE_ARM_COMPLETED}), this.self);
     out(new Tuple(new Object[] {ArmConstants.IS_IN_THE_INITIAL_POSITION}), this.self);
   }
 }

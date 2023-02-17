@@ -39,7 +39,7 @@ public class DeliveryOneItem extends KlavaProcess {
     in(new Tuple(new Object[] {DeliveryRobotConstants.ITEM_LOADED}), this.self);
     Double x2 = null;
     Double y2 = null;
-    Tuple _Tuple_1 = new Tuple(new Object[] {GlobalConstants.TYPE_2_DESTINATION, itemType, Double.class, Double.class});
+    Tuple _Tuple_1 = new Tuple(new Object[] {GlobalConstants.ITEM_DESTINATION, itemType, Double.class, Double.class});
     read(_Tuple_1, this.self);
     x2 = (Double) _Tuple_1.getItem(2);
     y2 = (Double) _Tuple_1.getItem(3);
