@@ -42,8 +42,8 @@ public class MRS_one_delivery extends LogicalNet {
       public void executeProcess() {
         final String robotId = "robot1";
         final String sector = "sector1";
-        DeliveryRobotBehavior _deliveryRobotBehaviour = new DeliveryRobotBehavior(robotId, sector, MRS_one_delivery.Arm);
-        eval(_deliveryRobotBehaviour, this.self);
+        DeliveryRobotBehavior _deliveryRobotBehavior = new DeliveryRobotBehavior(robotId, sector, MRS_one_delivery.Arm);
+        eval(_deliveryRobotBehavior, this.self);
       }
     }
     

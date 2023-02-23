@@ -23,7 +23,7 @@ public class DeliveryRobotBehavior extends KlavaProcess {
     DeliveryOneItem _deliveryOneItem = new DeliveryOneItem(this.robotId, this.sector, this.Arm);
     eval(_deliveryOneItem, this.self);
     in(new Tuple(new Object[] {DeliveryRobotConstants.AVAILABLE_FOR_DELIVERY}), this.self);
-    DeliveryRobotBehavior _deliveryRobotBehaviour = new DeliveryRobotBehavior(this.robotId, this.sector, this.Arm);
-    eval(_deliveryRobotBehaviour, this.self);
+    DeliveryRobotBehavior _deliveryRobotBehavior = new DeliveryRobotBehavior(this.robotId, this.sector, this.Arm);
+    eval(_deliveryRobotBehavior, this.self);
   }
 }
