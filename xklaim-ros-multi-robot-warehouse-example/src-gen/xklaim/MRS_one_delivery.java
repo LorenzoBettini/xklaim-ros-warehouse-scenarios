@@ -7,8 +7,8 @@ import klava.topology.ClientNode;
 import klava.topology.KlavaNodeCoordinator;
 import klava.topology.LogicalNet;
 import org.mikado.imc.common.IMCException;
-import xklaim.arm.ArmBehaviour;
-import xklaim.singleDeliveryRobot.DeliveryRobotBehaviour;
+import xklaim.arm.ArmBehavior;
+import xklaim.singleDeliveryRobot.DeliveryRobotBehavior;
 
 @SuppressWarnings("all")
 public class MRS_one_delivery extends LogicalNet {
@@ -22,8 +22,8 @@ public class MRS_one_delivery extends LogicalNet {
     private static class ArmProcess extends KlavaNodeCoordinator {
       @Override
       public void executeProcess() {
-        ArmBehaviour _armBehaviour = new ArmBehaviour();
-        eval(_armBehaviour, this.self);
+        ArmBehavior _armBehavior = new ArmBehavior();
+        eval(_armBehavior, this.self);
       }
     }
     
@@ -42,7 +42,7 @@ public class MRS_one_delivery extends LogicalNet {
       public void executeProcess() {
         final String robotId = "robot1";
         final String sector = "sector1";
-        DeliveryRobotBehaviour _deliveryRobotBehaviour = new DeliveryRobotBehaviour(robotId, sector, MRS_one_delivery.Arm);
+        DeliveryRobotBehavior _deliveryRobotBehaviour = new DeliveryRobotBehavior(robotId, sector, MRS_one_delivery.Arm);
         eval(_deliveryRobotBehaviour, this.self);
       }
     }

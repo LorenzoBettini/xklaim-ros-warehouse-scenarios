@@ -4,8 +4,8 @@ import klava.Locality
 
 import static xklaim.deliveryRobot.DeliveryRobotConstants.*
 
-proc DeliveryRobotBehaviour(String robotId,String sector,Locality Arm) {
+proc DeliveryRobotBehavior(String robotId,String sector,Locality Arm) {
 	eval(new DeliveryOneItem(robotId,sector,Arm))@self
 	in(AVAILABLE_FOR_DELIVERY)@self
-	eval(new DeliveryRobotBehaviour(robotId,sector,Arm))@self
+	eval(new DeliveryRobotBehavior(robotId,sector,Arm))@self
 }

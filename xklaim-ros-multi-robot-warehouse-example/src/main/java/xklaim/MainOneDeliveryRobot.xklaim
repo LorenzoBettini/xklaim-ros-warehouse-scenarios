@@ -1,19 +1,19 @@
 package xklaim
 
-import xklaim.arm.ArmBehaviour
-import xklaim.singleDeliveryRobot.DeliveryRobotBehaviour
 
 import static xklaim.GlobalConstants.*
+import xklaim.arm.ArmBehavior
+import xklaim.singleDeliveryRobot.DeliveryRobotBehavior
 
 net MRS_one_delivery physical "localhost:9999" {
 	node Arm {
-		eval(new ArmBehaviour())@self
+		eval(new ArmBehavior())@self
 	}
 
 	node DeliveryRobot1 {
 		val robotId = "robot1"
 		val sector = "sector1"
-		eval(new DeliveryRobotBehaviour(robotId, sector, Arm))@self
+		eval(new DeliveryRobotBehavior(robotId, sector, Arm))@self
 	}
 
 	node Environment {

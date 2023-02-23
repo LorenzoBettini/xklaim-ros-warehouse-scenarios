@@ -7,8 +7,8 @@ import klava.topology.ClientNode;
 import klava.topology.KlavaNodeCoordinator;
 import klava.topology.LogicalNet;
 import org.mikado.imc.common.IMCException;
-import xklaim.arm.ArmBehaviour;
-import xklaim.deliveryRobot.DeliveryRobotBehaviour;
+import xklaim.arm.ArmBehavior;
+import xklaim.deliveryRobot.DeliveryRobotBehavior;
 
 @SuppressWarnings("all")
 public class MRS extends LogicalNet {
@@ -24,8 +24,8 @@ public class MRS extends LogicalNet {
     private static class ArmProcess extends KlavaNodeCoordinator {
       @Override
       public void executeProcess() {
-        ArmBehaviour _armBehaviour = new ArmBehaviour();
-        eval(_armBehaviour, this.self);
+        ArmBehavior _armBehavior = new ArmBehavior();
+        eval(_armBehavior, this.self);
       }
     }
     
@@ -46,8 +46,8 @@ public class MRS extends LogicalNet {
         final String sector = "sector1";
         out(new Tuple(new Object[] {GlobalConstants.ITEM_DESTINATION, "red", (-9.0), (-9.0)}), this.self);
         out(new Tuple(new Object[] {GlobalConstants.ITEM_DESTINATION, "blue", 9.0, (-9.0)}), this.self);
-        DeliveryRobotBehaviour _deliveryRobotBehaviour = new DeliveryRobotBehaviour(robotId, sector, MRS.Arm);
-        eval(_deliveryRobotBehaviour, this.self);
+        DeliveryRobotBehavior _deliveryRobotBehavior = new DeliveryRobotBehavior(robotId, sector, MRS.Arm);
+        eval(_deliveryRobotBehavior, this.self);
       }
     }
     
@@ -68,8 +68,8 @@ public class MRS extends LogicalNet {
         final String sector = "sector2";
         out(new Tuple(new Object[] {GlobalConstants.ITEM_DESTINATION, "red", 9.0, 9.0}), this.self);
         out(new Tuple(new Object[] {GlobalConstants.ITEM_DESTINATION, "blue", (-9.0), 9.0}), this.self);
-        DeliveryRobotBehaviour _deliveryRobotBehaviour = new DeliveryRobotBehaviour(robotId, sector, MRS.Arm);
-        eval(_deliveryRobotBehaviour, this.self);
+        DeliveryRobotBehavior _deliveryRobotBehavior = new DeliveryRobotBehavior(robotId, sector, MRS.Arm);
+        eval(_deliveryRobotBehavior, this.self);
       }
     }
     

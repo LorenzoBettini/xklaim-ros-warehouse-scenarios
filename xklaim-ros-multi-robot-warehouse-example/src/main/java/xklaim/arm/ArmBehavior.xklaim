@@ -3,8 +3,8 @@ package xklaim.arm
 import xklaim.arm.PickAndReleaseOneItem
 import static xklaim.arm.ArmConstants.*
 
-proc ArmBehaviour() {
+proc ArmBehavior() {
 	eval(new PickAndReleaseOneItem())@self
 	in(IS_IN_THE_INITIAL_POSITION)@self
-	eval(new ArmBehaviour())@self
+	eval(new ArmBehavior())@self
 }
