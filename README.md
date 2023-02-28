@@ -50,6 +50,7 @@ $ rosdep update
 $ rosdep install --from-paths src --ignore-src -r -y --rosdistro noetic    
 ```
 # Simple Warehouse Scenario
+![Alt text](https://github.com/LorenzoBettini/xklaim-ros-warehouse-scenarios/blob/master/one_delivery_robot/SimpleWarehouse.jpg "Simple Warehouse")
 ## Build 
 
 1. Change directory to: `cd xklaim-ros-warehouse-scenarios/one_delivery_robot`.
@@ -71,6 +72,7 @@ $ cd xklaim-ros-warehouse-scenarios/one_delivery_robot/
 $ ./start.sh
 ```
 # Enriched Warehouse Scenario
+![Alt text](https://github.com/LorenzoBettini/xklaim-ros-warehouse-scenarios/blob/master/warehouse_ws/EnrichedWarehouse.jpg "Enriched Warehouse")
 ## Build 
 1. Change directory:`cd xklaim-ros-warehouse-scenarios/warehouse_ws/src/multi_robot/models`.
 2. Copy models to gazebo to add pallets to the warehouse.
