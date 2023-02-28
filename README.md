@@ -7,7 +7,7 @@ This repository provides examples of using X-Klaim and ROS to program multi-robo
 
 
 1. Clone the repository: `git clone https://github.com/LorenzoBettini/xklaim-ros-warehouse-scenarios`.
-2. Change directory to: `cd /xklaim-ros-warehouse-scenarios/warehouse_ws`
+2. Change directory to: `cd xklaim-ros-warehouse-scenarios/warehouse_ws`
 
 ## Install dependencies
 ```
@@ -72,7 +72,7 @@ $ ./start.sh
 ```
 # Enriched Warehouse Scenario
 ## Build 
-1. Change directory:`cd /xklaim-ros-warehouse-scenarios/warehouse_ws/src/multi_robot/models`.
+1. Change directory:`cd xklaim-ros-warehouse-scenarios/warehouse_ws/src/multi_robot/models`.
 2. Copy models to gazebo to add pallets to the warehouse.
 ```
 $ sudo cp -r warehouse_walls ~/.gazebo/models
