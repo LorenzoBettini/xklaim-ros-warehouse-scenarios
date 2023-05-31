@@ -27,7 +27,7 @@ proc MoveTo(String robotId, Double x, Double y) {
 	val vel_msg = new Twist()
 
 	// value of pi
-	val PI = 3.141592654;
+	val PI = Math.PI;
 
 	// gain K used to calculate the linear velocity
 	val double K_l = 0.5;

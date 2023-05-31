@@ -35,7 +35,7 @@ public class MoveTo extends KlavaProcess {
     final XklaimToRosConnection bridge = new XklaimToRosConnection(DeliveryRobotConstants.ROS_BRIDGE_SOCKET_URI);
     final Publisher pub = new Publisher((("/" + this.robotId) + "/cmd_vel"), "geometry_msgs/Twist", bridge);
     final Twist vel_msg = new Twist();
-    final double PI = 3.141592654;
+    final double PI = Math.PI;
     final double K_l = 0.5;
     final double K_a = 0.5;
     final RosListenDelegate _function = (JsonNode data, String stringRep) -> {
